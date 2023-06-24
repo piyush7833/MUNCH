@@ -5,7 +5,7 @@ import Btn from '@/utils/Button'
 import ModeBtn from '@/utils/ModeBtn'
 import NavbarLogo from '../../public/Images/NavLogo.png'
 import Image from 'next/image'
-const NavbarOne = (props: { Theme:boolean,setTheme:boolean}) => {
+const NavbarOne = (props: { Theme:boolean,setTheme:any}) => {
   return (
     <div className="nav flex items-center sticky" >
       <div className="logo flex">
