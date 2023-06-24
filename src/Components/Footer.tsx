@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import NavLogo from '../../public/Images/NavLogo.png'
-const Footer = (props: { theme:boolean}) => {
+const Footer = (props: { theme:boolean |undefined}) => {
   return (
     <div className='flex bg-slate-500 rounded-xl items-center justify-between'>
       <div className="logo flex">

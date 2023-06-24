@@ -13,7 +13,7 @@ import HomeGet from '../../../public/Images/HomeGet.gif'
 import HomeGetDark from '../../../public/Images/HomeGetDark.gif'
 import Btn from '@/utils/Button'
 
-const page = (props: { theme:boolean}) => {
+const page = (props: { theme:boolean|undefined}) => {
   return (
     <>
       <div className="main">

@@ -6,17 +6,29 @@
 import NavbarOne from '@/Components/NavbarOne';
 import Footer from '@/Components/Footer';
 import Page from './landing/page'
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 export default function Home() {
-  const [Theme,setTheme]=useState(true)
+  const [Theme,setTheme]=useState<boolean | undefined>(undefined);
+  useEffect(()=>{
+    if(Theme){
+      localStorage.setItem("Theme","true");
+      window.document.documentElement.classList.add("dark");
+      window.document.documentElement.classList.remove("light");
+    }
+    else if(Theme===false){
+      localStorage.setItem("Theme","false")
+      window.document.documentElement.classList.remove("dark");
+    }
+    else{
+      setTheme(localStorage.getItem("Theme")==="true")
+    }
+  },[Theme])
   return (
     <>
     <NavbarOne  theme={Theme} setTheme={setTheme}/>
-    <div className='main text-gray-950 bg-slate-100 dark:text-gray-200 dark:bg-gray-950 my-2'>
       <Page theme={Theme}/>
       <Footer theme={Theme} />
-    </div>
     </>
   )
 }
