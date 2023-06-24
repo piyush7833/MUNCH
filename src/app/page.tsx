@@ -12,10 +12,10 @@ export default function Home() {
   const [Theme,setTheme]=useState(true)
   return (
     <>
-    <NavbarOne  Theme={Theme} setTheme={setTheme}/>
+    <NavbarOne  theme={Theme} setTheme={setTheme}/>
     <div className='main text-gray-950 bg-slate-100 dark:text-gray-200 dark:bg-gray-950 my-2'>
-      <Page Theme={Theme}/>
-      <Footer Theme={Theme} />
+      <Page theme={Theme}/>
+      <Footer theme={Theme} />
     </div>
     </>
   )

@@ -12,7 +12,8 @@ import HomeBetterDark from '../../../public/Images/HomeBetterDark.gif'
 import HomeGet from '../../../public/Images/HomeGet.gif'
 import HomeGetDark from '../../../public/Images/HomeGetDark.gif'
 import Btn from '@/utils/Button'
-const page = (props: { Theme:boolean}) => {
+
+const page = (props: { theme:boolean}) => {
   return (
     <>
       <div className="main">
@@ -20,7 +21,7 @@ const page = (props: { Theme:boolean}) => {
 
           <div className="image w-1/2 flex justify-center">
             <Image className='mx-2 h-110 w-auto'
-              src= {props.Theme===true?HomeFirstDark:HomeFirst}
+              src= {props.theme===true?HomeFirstDark:HomeFirst}
               alt="Logo"
             />
           </div>
@@ -55,7 +56,7 @@ const page = (props: { Theme:boolean}) => {
 
           <div className="image w-1/2 flex justify-center">
             <Image className='mx-2 h-96 w-auto'
-              src= {props.Theme===true?HomeFasterDark:HomeFaster}
+              src= {props.theme===true?HomeFasterDark:HomeFaster}
               alt="Logo"
             />
           </div>
@@ -66,7 +67,7 @@ const page = (props: { Theme:boolean}) => {
 
           <div className="image w-1/2 flex justify-center">
             <Image className='mx-2 h-96 w-auto'
-              src= {props.Theme===true?HomeEasierDark:HomeEasier}
+              src= {props.theme===true?HomeEasierDark:HomeEasier}
               alt="Logo"
             />
           </div>
@@ -97,7 +98,7 @@ const page = (props: { Theme:boolean}) => {
 
           <div className="image w-1/2 flex justify-center">
             <Image className='mx-2 h-96 w-auto'
-              src= {props.Theme===true?HomeBetterDark:HomeBetter}
+              src= {props.theme===true?HomeBetterDark:HomeBetter}
               alt="Logo"
             />
           </div>
@@ -108,7 +109,7 @@ const page = (props: { Theme:boolean}) => {
 
           <div className="image w-1/2 flex justify-center">
             <Image className='mx-2 h-96 w-auto'
-              src= {props.Theme===true?HomeGetDark:HomeGet}
+              src= {props.theme===true?HomeGetDark:HomeGet}
               alt="Logo"
             />
           </div>

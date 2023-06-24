@@ -3,7 +3,12 @@ import React from 'react'
 const Auth = () => {
   return (
     <div>
-      Auth
+      <div className="signin">
+
+      </div>
+      <div className="signup">
+        
+      </div>
     </div>
   )
 }
