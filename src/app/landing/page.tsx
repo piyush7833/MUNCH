@@ -11,9 +11,10 @@ import HomeBetter from '../../../public/Images/HomeBetter.gif'
 import HomeBetterDark from '../../../public/Images/HomeBetterDark.gif'
 import HomeGet from '../../../public/Images/HomeGet.gif'
 import HomeGetDark from '../../../public/Images/HomeGetDark.gif'
+import { Link } from 'react-router-dom'
 import Btn from '@/utils/Button'
 
-const page = (props: { theme:boolean|undefined}) => {
+const page = (props: { theme: boolean | undefined }) => {
   return (
     <>
       <div className="main">
@@ -21,7 +22,7 @@ const page = (props: { theme:boolean|undefined}) => {
 
           <div className="image w-1/2 flex justify-center">
             <Image className='mx-2 h-110 w-auto'
-              src= {props.theme===true?HomeFirstDark:HomeFirst}
+              src={props.theme === true ? HomeFirstDark : HomeFirst}
               alt="Logo"
             />
           </div>
@@ -34,8 +35,12 @@ const page = (props: { theme:boolean|undefined}) => {
               Introducing the IIIT Una Canteen Web App, designed to revolutionize the way students order food from their hostel. No more waiting in long queues or dealing with cash transactions. Our user-friendly app provides a seamless and convenient experience.
             </div>
             <div className="btn mt-4 flex">
-              <Btn Text="Login" Clr="red"></Btn>
-              <Btn Text="Signup" Clr="gray"></Btn>
+              <Link to="/auth" style={{ textDecoration: "none", color: "inherit" }}>
+                <Btn Text="Login" Clr="red" ></Btn>
+              </Link>
+              <Link to="/auth" style={{ textDecoration: "none", color: "inherit" }}>
+                <Btn Text="Signup" Clr="gray"></Btn>
+              </Link>
             </div>
           </div>
         </div>
@@ -56,7 +61,7 @@ const page = (props: { theme:boolean|undefined}) => {
 
           <div className="image w-1/2 flex justify-center">
             <Image className='mx-2 h-96 w-auto'
-              src= {props.theme===true?HomeFasterDark:HomeFaster}
+              src={props.theme === true ? HomeFasterDark : HomeFaster}
               alt="Logo"
             />
           </div>
@@ -67,7 +72,7 @@ const page = (props: { theme:boolean|undefined}) => {
 
           <div className="image w-1/2 flex justify-center">
             <Image className='mx-2 h-96 w-auto'
-              src= {props.theme===true?HomeEasierDark:HomeEasier}
+              src={props.theme === true ? HomeEasierDark : HomeEasier}
               alt="Logo"
             />
           </div>
@@ -98,7 +103,7 @@ const page = (props: { theme:boolean|undefined}) => {
 
           <div className="image w-1/2 flex justify-center">
             <Image className='mx-2 h-96 w-auto'
-              src= {props.theme===true?HomeBetterDark:HomeBetter}
+              src={props.theme === true ? HomeBetterDark : HomeBetter}
               alt="Logo"
             />
           </div>
@@ -109,7 +114,7 @@ const page = (props: { theme:boolean|undefined}) => {
 
           <div className="image w-1/2 flex justify-center">
             <Image className='mx-2 h-96 w-auto'
-              src= {props.theme===true?HomeGetDark:HomeGet}
+              src={props.theme === true ? HomeGetDark : HomeGet}
               alt="Logo"
             />
           </div>
@@ -125,8 +130,12 @@ const page = (props: { theme:boolean|undefined}) => {
               Welcome to a world of hassle-free food ordering and delightful meals at the IIIT Una Canteen Web App!
             </div>
             <div className="btn mt-4 flex">
-              <Btn Text="Login" Clr="red"></Btn>
-              <Btn Text="Signup" Clr="gray"></Btn>
+              <Link to="/auth" style={{ textDecoration: "none", color: "inherit" }}>
+                <Btn Text="Login" Clr="red" ></Btn>
+              </Link>
+              <Link to="/auth" style={{ textDecoration: "none", color: "inherit" }}>
+                <Btn Text="Signup" Clr="gray"></Btn>
+              </Link>
             </div>
           </div>
         </div>
