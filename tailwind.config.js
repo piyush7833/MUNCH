@@ -10,7 +10,8 @@ module.exports = {
   theme: {
     extend: {
       spacing:{
-        's':"90vh"
+        's':"90vh",
+        'pointFive':"1vh"
       },
     },
   },
