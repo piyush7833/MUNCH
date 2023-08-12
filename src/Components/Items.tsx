@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Confirm = () => {
+const Items = () => {
   return (
     <div>
-      
+      Items
     </div>
   )
 }
 
-export default Confirm
+export default Items

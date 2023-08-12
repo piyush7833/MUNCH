@@ -1,21 +1,11 @@
 import React from 'react'
+import Logo from '../../public/images/logo.png'
 import Image from 'next/image'
-import NavLogo from '../../public/Images/NavLogo.png'
-const Footer = (props: { theme:boolean |undefined}) => {
+const Footer = () => {
   return (
-    <div className='flex bg-slate-500 rounded-xl items-center justify-between'>
-      <div className="logo flex">
-        <Image className='h-20 w-5/6 mx-2'
-          src={NavLogo}
-          alt="Logo"
-        />
-      </div>
-      <div className="list flex justify-evenly">
-        <ul>
-          <li>Connect with me on</li>
-          <li></li>
-        </ul>
-      </div>
+    <div className='h-fit bg-red-500 py-4 px-4 flex items-center justify-between text-base md:text-2xl text-white bottom-0 gap-8 text-center'>
+      <Image src={Logo} alt='logo' className=' h-10 w-24 md:h-14 md:w-32'/>
+      <p>Made with love by Piyush</p>
     </div>
   )
 }

@@ -2,26 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.btn{
+    @apply px-6 py-2 bg-red-500 rounded-3xl hover:bg-red-400 border-x-2 hover:border-x-0
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.slider-card{
+    @apply bg-inherit w-full md:w-[calc(100vw-12rem)] h-[calc(100vh-12rem)] flex items-center shadow-md dark:shadow-gray-600 flex-col md:flex-row
 }
