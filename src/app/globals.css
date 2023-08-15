@@ -3,9 +3,23 @@
 @tailwind utilities;
 
 .btn{
-    @apply px-6 py-2 bg-red-500 rounded-3xl hover:bg-red-400 border-x-2 hover:border-x-0
+    @apply md:px-6 md:py-2 py-2 px-3 border-x-2  text-xs md:text-base bg-red-500 rounded-3xl hover:bg-red-400 md:border-x-2  hover:border-x-0 mt-2 mx-2
 }
 
 .slider-card{
     @apply bg-inherit w-full md:w-[calc(100vw-12rem)] h-[calc(100vh-12rem)] flex items-center shadow-md dark:shadow-gray-600 flex-col md:flex-row
+}
+
+.offer-wraper{
+    @apply w-max flex
+}
+.single-item{
+    @apply w-screen h-[60vh] flex flex-col items-center justify-around text-justify p-4
+}
+.single-imgContainer{
+    @apply flex-1 relative w-full
+}
+
+.single-textContainer{
+    @apply flex-1 w-full flex flex-col items-center justify-center gap-4
 }
