@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Logo from '../../public/images/logo.png'
 import CartIcon from './CartIcon';
+import ModeBtn from './ModeBtn';
 
 const  user = true;
 const links = [
@@ -20,6 +21,7 @@ const Navbar = () => {
                 </Link>
             </div>
             <div className='hidden md:flex gap-4 text-white text-lg'>
+                <ModeBtn/>
                 {links.map(item => (
                     <Link key={item.id} href={item.url} className='hover:scale-105 hover:animate-bounce' >{item.title}</Link>
                 ))}

@@ -1,25 +1,28 @@
+// import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import React from 'react'
+// import CountDown from './CountDown'
+import dynamic from 'next/dynamic'
+ 
+const CountDown = dynamic(() => import('./CountDown'), { ssr: false })
 
 const Offer = () => {
   return (
-    <div className='overflow-x-scroll text-main'>
-      <div className="offer-wraper">
-
-        <div className="single-item">
-          <div className="single-imgContainer">
-            <Image src='/images/tempfood.webp' alt='food item' fill className='object-contain'/>
-          </div>
-        
-        <div className="single-textContainer">
-          <div className='text-xl uppercase  font-bold'>title</div>
-          <div>desc</div>
-          <div className='text-xl font-bold'>price</div>
-          <button className='btn flex text-white '> Add to cart</button>
-        </div>
+    <div className='offerContainer'>
+      <div className="offer-textContainer">
+        <h1 className="offer-title">
+            Delicious burger and french fry
+        </h1>
+        <p className="offer-desc">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis tempore nam perferendis dolorum impedit recusandae nesciunt nemo? Dolor, ullam cumque.
+        </p>
+        <CountDown />
+        <button className='btn'>Order Now</button>
+      </div>
+      <div className="offer-imgContainer">
+          <Image src='/images/tempfood.webp' alt='offerProduct' fill className='object-contain'/>
       </div>
       </div>
-    </div>
   )
 }
 

@@ -68,17 +68,18 @@ const Slider = () => {
     <div className="relative w-full h-[calc(100vh-5.5rem)] bg-inher overflow-hidden">
       <div className="flex transition-transform duration-300" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
         {items.map((item, index) => (
-          <div key={index} className="w-full h-[calc(100vh-5.5rem)] flex-shrink-0">
-            <div className="w-full h-full flex items-center justify-center rounded">
-
-              <div className={`slider-card`}>
+          <div key={index} className={`w-full h-[calc(100vh-5.5rem)] flex-shrink-0 relative transform transition-transform duration-500  ${
+            index === currentIndex ? 'scale-100' : 'scale-75'
+          }`}>
+            <div className="w-full h-full flex items-center justify-center rounded-xl ">
+              <div className={`slider-card `}>
                 <div className="img h-2/3 md:h-[calc(100vh-16rem)] w-4/5 md:w-1/2 bg-inherit items-center justify-center rounded-3xl">
                   <div className="imgContainer h-full w-full flex items-center justify-center ">
                     <Image src={item.imgSrc} alt={item.title} height={60} width={400} className='h-2/3 md:h-fit' />
                   </div>
                 </div>
                 <div className="content h-[calc(100vh-16rem)] w-4/5 md:w-1/2 bg-inherit items-start flex md:items-center">
-                  <div className="h-2/3 md:h-3/6 flex flex-col text-white md:justify-evenly">
+                  <div className="h-2/3 md:h-3/6 flex flex-col  md:justify-evenly">
                     <div className="title text-2xl md:text-6xl text-orange-600">{item.title}</div>
                     <div className="subTitle text-base md:text-2xl text-orange-300">{item.subtitle}</div>
                     <br />
