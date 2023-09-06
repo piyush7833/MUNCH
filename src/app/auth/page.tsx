@@ -8,9 +8,24 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import PersonIcon from '@mui/icons-material/Person';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
-const Auth = () => {
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation'
 
-  const [isLogin,SetIsLogin]=useState(true)
+
+const Auth = () => {
+  const session = useSession();
+  const router=useRouter()
+  const {data,status}=useSession();
+  const [isLogin,SetIsLogin]=useState(true) //for toggling with signup 
+  console.log("data "+data)
+  console.log("status "+status)
+  if(session.status==="authenticated"){
+    router.push("/")
+  }
+  else if(session.status==="loading"){
+    return <p>Loading....</p>
+  }
+  
   return (
     <div className='h-[calc(100vh-5.1rem)] md:h-[calc(100vh-5.5rem)] flex items-center justify-center p-4'>
       {/* Box */}
@@ -34,8 +49,10 @@ const Auth = () => {
         </div>
         <p>Do not have an account? <strong className='text-blue-600 cursor-pointer' onClick={()=>SetIsLogin((prev) => (prev===true ? false : true))}>Create One</strong> </p>
         <div className='flex '>
-        <button className='btn flex items-center group'>Signup with <GoogleIcon className='group-hover:text-blue-500'/> </button>
-        <button className='btn flex items-center group'>Signup with <FacebookIcon className='group-hover:text-blue-500'/> </button>
+        <button className='btn flex items-center group' onClick={() => {
+          signIn("google");  //it is handled by next auth
+        }}>Signin with <GoogleIcon className='group-hover:text-blue-500'/> </button>
+        <button className='btn flex items-center group'>Signin with <FacebookIcon className='group-hover:text-blue-500'/> </button>
         </div>
         <p>Have a problem? <strong className='text-blue-600 cursor-pointer'>Contact Us</strong> </p>
       </div>

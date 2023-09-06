@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: MUNCHdb
+      POSTGRES_USER: piyushdb
+      POSTGRES_PASSWORD: PSNLplsqldb
+    ports:
+      - "5432:5432"

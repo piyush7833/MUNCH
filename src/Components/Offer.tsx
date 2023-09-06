@@ -8,7 +8,7 @@ const CountDown = dynamic(() => import('./CountDown'), { ssr: false })
 
 const Offer = () => {
   return (
-    <div className='offerContainer'>
+    <div className='offerContainer text-white'>
       <div className="offer-textContainer">
         <h1 className="offer-title">
             Delicious burger and french fry

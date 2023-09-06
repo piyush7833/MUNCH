@@ -3,7 +3,7 @@ import React from 'react'
 
 const Cart = () => {
   return (
-    <div className='h-[calc(100vh-9rem)] md:h-[calc(100vh-6rem)] flex flex-col text-main lg:flex-row'>
+    <div className='h-[calc(100vh-9rem)] md:h-[calc(100vh-5.5rem)] flex flex-col text-main lg:flex-row'>
 
       {/* product container*/}
       <div className="h-1/2 p-4 flex flex-col items-center overflow-y-auto lg:h-full lg:w-2/3 xl:w-1/2 lg:px-20 xl:px-40 hideScrollBar">
@@ -78,7 +78,7 @@ const Cart = () => {
       </div>
       
       {/* payment container*/}
-      <div className="h-1/2 p-4 bg-gray-600 flex flex-col gap-4 lg:h-full lg:w-1/3 xl:w-1/2 lg:px-20 xl:px-40 2xl:text-xl 2xl:gap-6 lg:justify-center">
+      <div className={`h-1/2 p-4 bg-gray-600 flex flex-col gap-4 lg:h-full lg:w-1/3 xl:w-1/2 lg:px-20 xl:px-40 2xl:text-xl 2xl:gap-6 lg:justify-center`}>
         <div className="flex justify-between">
           <span>Subtotal</span>
           <span>price</span>

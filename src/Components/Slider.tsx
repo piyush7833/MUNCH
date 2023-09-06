@@ -39,9 +39,11 @@ const items = [
     desc: `By using the IIIT Una Canteen Web App, you can save precious time, avoid unnecessary waiting, and enjoy delicious meals whenever it suits you. So, why wait? Embrace the convenience, efficiency, and ease of our web app today and elevate your canteen experience to a whole new level.`,
   },
 ]
-const Slider = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
 
+const Slider = () => {
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+ 
   const goToNextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
   };
@@ -50,21 +52,24 @@ const Slider = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + items.length) % items.length);
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (currentIndex < items.length - 1) {
-        setCurrentIndex(currentIndex + 1);
-      } else {
-        setCurrentIndex(0);
-      }
-    }, 5000); // 5000 milliseconds = 5 seconds
-    return () => {
-      clearInterval(interval);
-    };
-  }, [currentIndex]);
+
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        if (currentIndex < items.length - 1) {
+          setCurrentIndex(currentIndex + 1);
+        } else {
+          setCurrentIndex(0);
+        }
+      }, 5000); // 5000 milliseconds = 5 seconds
+      return () => {
+        clearInterval(interval);
+      };
+    }, [currentIndex]);
 
 
   return (
+
     <div className="relative w-full h-[calc(100vh-5.5rem)] bg-inher overflow-hidden">
       <div className="flex transition-transform duration-300" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
         {items.map((item, index) => (

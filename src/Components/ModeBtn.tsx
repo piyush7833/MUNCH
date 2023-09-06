@@ -11,7 +11,7 @@ const ModeBtn = () => {
     }
   const { toggleTheme, themeMode } = useTheme();
   return (
-    <div>
+    <div className="cursor-pointer text-white">
     {themeMode==="dark"?<LightModeIcon onClick={toggleTheme}/>:<DarkModeIcon onClick={toggleTheme}/>}
     </div>
   );
