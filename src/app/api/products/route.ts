@@ -19,3 +19,20 @@ export const GET=async(req:NextRequest)=>{
         }),{status:500})
     }
 }
+
+export const POST = async (req: NextRequest) => {
+    try {
+      const body = await req.json();
+      const newProduct = await prisma.product.create({
+        data: body,
+      });
+      console.log(newProduct)
+      return new NextResponse(JSON.stringify(newProduct), { status: 201 });
+    } catch (err) {
+      console.log(err);
+      return new NextResponse(
+        JSON.stringify({ message: "Something went wrong!" }),
+        { status: 500 }
+      );
+    }
+  };

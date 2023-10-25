@@ -1,28 +1,51 @@
 "use client";
+import { ProductType } from "@/types/types";
+import { userCartStore } from "@/utils/store";
 import React, { useEffect, useState } from "react";
-
-type Props = {
-  price: number;
-  id: number;
-  options?: { title: string; additionalPrice: number }[];
-};
+import { toast } from "react-toastify";
 
 
 
-const Price = ({ price, id, options }: Props) => {
+
+
+const Price = ({ product }: { product: ProductType }) => {
   const [selected, setSelected] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [totalPrice, setTotalPrice] = useState(price);
+  const [totalPrice, setTotalPrice] = useState(product.price);
+  const { addToCart } = userCartStore();
+  const handleCart=()=>{
+    addToCart({
+      id: product.id.toString(),
+      title: product.title,
+      img: product.img,
+      price: totalPrice,
+      ...(product.options?.length && { optionTitle: product.options[selected].title }),
+      quantity: quantity,
+    })
+    toast.success(`${product.options?.length && product.options[selected].title} ${product.title} added to cart successfully`)
+  }
 
   useEffect(()=>{
-    setTotalPrice(quantity*(options ? price+options[selected].additionalPrice : price))
-  },[quantity,selected,options,price])
+    userCartStore.persist.rehydrate()
+  },[])
+  useEffect(() => {
+    if (product.options?.length) {
+      setTotalPrice(
+        quantity * product.price + quantity * product.options[selected].additionalPrice
+      );
+    }
+    else {
+      setTotalPrice(
+        quantity * product.price
+      );
+    }
+  }, [product, quantity, selected])
+
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="font-bold text-xl">Rs {totalPrice.toFixed(2)}</h2>
-      {/* options container */}
-      <div className="flex gap-4 flex-wrap">
-        {options?.map((option, index) => (
+      {totalPrice && <h2 className="font-bold text-xl">Rs {totalPrice}</h2>}
+      <div className="flex gap-4 flex-wrap text-black">
+        {product.options?.map((option, index) => (
           <button
             key={option.title}
             className="min-w-[6rem] p-2 ring-1 ring-main rounded-md"
@@ -45,12 +68,12 @@ const Price = ({ price, id, options }: Props) => {
             <button className="btn" onClick={() => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))}
             >{'-'}</button>
             <span className="">{quantity}</span>
-            <button className="btn" onClick={() => setQuantity((prev) => prev+1)}
+            <button className="btn" onClick={() => setQuantity((prev) => prev + 1)}
             >{'+'}</button>
           </div>
         </div>
         {/* cart btn */}
-        <button className="btn">Add to cart</button>
+        <button className="btn" onClick={()=>handleCart()}>Add to cart</button>
       </div>
     </div>
   )

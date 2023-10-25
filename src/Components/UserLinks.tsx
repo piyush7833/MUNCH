@@ -7,6 +7,7 @@ const UserLinks = () => {
   const router=useRouter()
   const handleSignout=async()=>{
     await signOut();
+    router.push('/')
   }
   
   const session=useSession()

@@ -12,6 +12,8 @@ export type MenuType = {
     title: string;
     desc?: string;
     img?: string;
+    rating?: number;
+    review?: {userName:string,comment:string}[];
     price: number;
     options?: { title: string; additionalPrice: number }[];
   };
@@ -20,6 +22,7 @@ export type MenuType = {
     userEmail: string;
     shopperEmail:string;
     price: number;
+    // customerName:string
     products: CartItemType[];
     status: string;
     createdAt: Date;
@@ -35,11 +38,25 @@ export type MenuType = {
   };
   
   export type OrderProductType = {
+    id:string;
     title: string;
     img?: string;
     price: number;
     quantity:number;
-    options?: { title: string; additionalPrice: number }[];
+    shopName?:string;
+    optionTitle?: string;
   };
 
   export type ProductsType = ProductType[];
+
+  export type CartType = {
+    products: CartItemType[];
+    totalItems: number;
+    totalPrice: number;
+  };
+  
+
+export type ActionTypes={
+  addToCart:(item:CartItemType)=>void,
+  removeFromCart:(item:CartItemType)=>void
+}

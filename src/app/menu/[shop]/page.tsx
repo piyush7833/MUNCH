@@ -17,6 +17,7 @@ const getData=async(shop:string)=>{
 type Props={
   params:{shop:string}
 }
+
 const ShopMenuPage =async ({params}:Props) => {
   const shopProduct:ProductsType=await getData(params.shop)
   return (
@@ -29,7 +30,8 @@ const ShopMenuPage =async ({params}:Props) => {
         <div className="product-textContainer">
           <h1 className='text-xl uppercase p-2'>{item.title}</h1>
           <h2 className='group-hover:hidden text-xl'>Rs {item.price}</h2>
-          <button className='btn hidden group-hover:block'>Add to Cart</button>
+          <button className='btn hidden group-hover:block'>Add to Cart</button>  
+          {/* add to cart functionality to be added */}
         </div>
       </Link>
     ))}

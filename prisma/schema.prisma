@@ -18,7 +18,8 @@ model Product{
   desc String
   img String?
   price Decimal
-  review Decimal
+  rating Decimal?
+  review Json[]
   isFeatured Boolean @default(false)
   options Json[]
   shop Shop @relation(fields: [shopSlug],references: [slug],onDelete: Cascade,onUpdate: Cascade)  //references from shop as slug is unique
@@ -80,6 +81,7 @@ model Order{
   intent_id String? @unique
   user    User @relation(fields: [userEmail],references: [email])
   userEmail String
+  // userName String
   shop    Shop @relation(fields: [shopperEmail],references: [userEmail])
   shopperEmail String
 }
@@ -87,6 +89,7 @@ model Order{
 model User {
   id            String    @id @default(cuid())
   name          String?
+  // userName      String?   @unique
   email         String?   @unique
   emailVerified DateTime?
   image         String?

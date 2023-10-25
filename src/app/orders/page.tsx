@@ -1,16 +1,34 @@
 "use client"
-import OrderInput from '@/components/OrderInput'
 import { OrderProductType, OrderType, ProductType } from "@/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
+import EditIcon from '@mui/icons-material/Edit';
+import { toast } from "react-toastify";
+import Items from "@/components/Items";
 
 const OrdersPage = () => {
-  const { data: session, status } = useSession();
 
+  const { data: session, status } = useSession();
   const router = useRouter();
+
+  const [selectedStars, setSelectedStars] = useState(0);
+  const [rating, setRating] = useState(0);
+
+  const [selectedOption, setSelectedOption] = useState('');
+
+  const handleRatingChange = (newRating: number) => {
+    setRating(newRating);
+  };
+
+  const handleStarClick = (starCount: number) => {
+    setSelectedStars(starCount);
+    if (handleRatingChange) {
+      handleRatingChange(starCount);
+    }
+  };
 
   if (status === "unauthenticated") {
     router.push("/auth");
@@ -22,57 +40,179 @@ const OrdersPage = () => {
       fetch("http://localhost:3000/api/orders").then((res) => res.json()),
   });
 
-  const queryClient = useQueryClient();
+  const queryClient=useQueryClient()
+
+  const mutation=useMutation({
+    mutationFn:({id,status}:{id:String, status:String})=>{
+      return fetch(`http://localhost:3000/api/orders/${id}`,{
+        method:"PUT",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(status),
+      });
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({queryKey:["orders"]})
+    },
+  })
+
+    // // Define a function to handle changes to the dropdown
+    // const handleDropdownChange = (event:any) => {
+    //   setSelectedOption(event.target.value);
+    // };
+
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>, id: string) => {
+    e.preventDefault()
+    const form = e.target as HTMLFormElement;  //we can do the same by creating useState variables tooo 
+    const input = form.elements[0] as HTMLInputElement;
+    const status = input.value;
+    mutation.mutate({id,status})
+    toast.success("The order status has been changed")
+  }
+
 
 
   if (isLoading || status === "loading") return "Loading...";
 
   return (
-    <div className='h-[calc(100vh-6rem)] md:h-[calc(100vh-5.5rem)] flex flex-col items-center p-4 overflow-y-auto gap-8 hideScrollBar'>
-          {data.map((item: OrderType) => (
-            // <div className='text-main text-9xl'>hello</div>
-            <div className="h-fit  sm:h-1/2  md:h-2/5 w-full shadow-xl p-4 rounded-3xl flex flex-col justify-center sm:justify-start sm:gap-8 sm:flex-row hover:border-2" key={item.id}>
+    <div className="h-[calc(100vh-9rem)] md:h-[calc(100vh-5.5rem)] flex flex-col text-main items-center overflow-x-hidden overflow-y-auto hideScrollBar gap-9 p-4">
 
-{item.products.map((product:OrderProductType)=>(
-                    <div className="h-fit  sm:h-1/2  md:h-2/5 w-full shadow-xl p-4 rounded-3xl flex flex-col justify-center sm:justify-start sm:gap-8 sm:flex-row hover:border-2 " key={product.title}>
-                      {/* imgContainer */}
-                      <div className="relative hidden w-full h-1/3 sm:h-full sm:w-1/3 sm:block lg:w-1/4">
-                        <Image src={product.img!} fill alt={product.title}/>
-                      </div>
-                      {/* order details */}
-                      <div className="flex gap-4 mt-2 sm:w-2/3 sm:h-full justify-center items-center">
-                      <div className="flex flex-col justify-center text-main w-2/3 gap-2">
-                        <div className="flex justify-between">
-                        <h1 className=" font-bold hidden sm:block">Item</h1>
-                        <h1 className=" font-bold">{product.title}</h1>
-                        </div>
-                        <div className="flex justify-between">
-                        <h1 className="  hidden sm:block">{session?.user.isShopOwner===true?"customer":"shop"}</h1>
-                        <h1 className="">{session?.user.isShopOwner===true?item.shopperEmail:item.userEmail}</h1>
-                        </div>
-                        <div className="flex justify-between">
-                        <h1 className="  hidden sm:block">Quantity</h1>
-                        <h1 className=" ">{item.products[0].quantity}</h1>
-                        </div>
-                        <div className="flex justify-between">
-                        <h1 className= "font-bold hidden sm:block ">Price</h1>
-                        <h1 className=" font-bold">{item.price}</h1>
-                        </div>
-                        <div className="flex justify-between">
-                        <h1 className=" font-bold hidden sm:block">Status</h1>
-                        <h1 className=" font-bold">{item.status}</h1>
-                        </div>
-                      </div>
-                      <div className="w-1/2">
-                      <OrderInput/>
-                      </div>
-                      </div>
-                    </div>
+      {data.map((item: OrderType) => (
+
+
+        <div className={`orderContainer h-fit w-[98%] justify-center flex flex-col items-center shadow-lg gap-4 rounded-lg px-4 py-4 `} key={item.id}>
+
+          <div className="details w-[98%] flex flex-col items-stretch px-2 sm:px-9">
+            <div className="orderDetails">
+              <h1>Order Id</h1>
+              <h1>{item.id}</h1>
+            </div>
+            <div className="orderDetails">
+              <h1>Date</h1>
+              <h1>{item.createdAt.toString().slice(0, 10)}</h1>
+            </div>
+            <div className="orderDetails">
+              <h1>Price</h1>
+              <h1>Rs {item.price}</h1>
+            </div>
+          </div>
+
+          {item.products.map((product: OrderProductType) => (
+            <div className="itemContainer flex flex-col justify-between w-[100%] shadow-lg px-2 sm:px-9 py-4 sm:flex-row rounded-lg" key={product.id}>
+
+              <div className="orderImgContainer w-full h-[25%] sm:h-full sm:w-[25%] relative">
+                <Image src={product.img!} alt={product.title} fill />
+              </div>
+              <div className={`details w-full sm:w-[50%] flex flex-col items-stretch sm:px-4 gap-3 ${item.status != "Delievered" ? "sm:w-[75%]" : "sm:w-[50%] "} ${session?.user.isShopOwner ? "sm:w-[75%]" : "sm:w-[50%]"}`}>
+                <div className="orderDetails">
+                  <h1>product</h1>
+                  <h1>{product.title}</h1>
+                </div>
+                <div className="orderDetails">
+                  <h1>{session?.user.isShopOwner === true ? "Customer" : "Shop"}</h1>
+                  <h1>{session?.user.isShopOwner === true ? item.userEmail : product.shopName}</h1>
+                </div>
+                {product.optionTitle && <div className="orderDetails">
+                  <h1>option</h1>
+                  <h1>{product.optionTitle}</h1>
+                </div>}
+                <div className="orderDetails">
+                  <h1>quantity</h1>
+                  <h1>{product.quantity}</h1>
+                </div>
+                <div className="orderDetails">
+                  <h1>Price</h1>
+                  <h1>Rs {product.price}</h1>
+                </div>
+              </div>
+              <div className={`orderInputs w-full sm:w-1/4 ${item.status != "Delievered" ? "hidden" : "block"} ${session?.user.isShopOwner ? "hidden" : "block"}`}>
+                <div className='flex flex-col justify-center items-center lg:items-start'>
+                  <p className='text-sm text-main font-bold md:text-base'>Feedback</p>
+                  <div>
+                    {[...Array(5)].map((_, index) => (
+                      <span
+                        key={index}
+                        onClick={() => handleStarClick(index + 1)}
+                        className={`cursor-pointer text-2xl sm:text-3xl ${index < selectedStars ? 'text-main' : 'text-gray-400'
+                          }`}
+                      >
+                        &#9733;
+                      </span>
                     ))}
-          </div>
+                  </div>
+
+                  {session?.user.isShopOwner === true ? <textarea rows={3} cols={5} placeholder='Enter status' className=' w-full sm:w-[80%] text-sm input  ' /> : <textarea rows={3} cols={5} placeholder='Enter Message' className=' w-80% text-sm input  ' />}
+
+                  <button className='btn'>Submit</button>
+                </div>
+              </div>
+            </div>
           ))}
+          <div className="details w-[98%] flex flex-col items-stretch px-2 sm:px-9">
+            {session?.user.isShopOwner ?
+              <div className="orderDetails">
+                <h1>Status</h1>
+                <form
+                  className="flex items-center justify-center gap-4"
+                  onSubmit={(e) => handleUpdate(e, item.id)}
+                >
+                  <input
+                      placeholder={item.status}
+                      className={`p-2 ring-1 ring-red-100 rounded-md bg-transparent border-none ${item.status != "Delievered" ? "" : "text-green-300 "}`}
+                    />
+                  <button className="bg-red-400 p-2 rounded-full text-white">
+                    <EditIcon />
+                  </button>
+                </form>
+              </div>
+              :
+              <div className="orderDetails">
+                <h1>Status</h1>
+                <h1>{item.status}</h1>
+              </div>}
           </div>
+        </div>
+      ))}
+    </div>
   );
 };
+
+
+// function Dropdown({status}:{status:string}) {
+//   // Define a state variable to hold the selected option for this dropdown
+//   const [selectedOption, setSelectedOption] = useState('');
+
+//   // Define a function to handle changes to this dropdown
+//   const handleDropdownChange = (event:any) => {
+//     setSelectedOption(event.target.value);
+//   };
+
+//   // An array of options for this dropdown
+//   const options = [
+//     'Accepted',
+//     'Declined',
+//     'Being prepared',
+//     'On the way',
+//     'Delievered',
+//   ];
+
+//   return (
+//     <div>
+//       <select
+//         id="dropdown"
+//         value={selectedOption}
+//         onChange={handleDropdownChange}
+//       >
+//         <option value="">{status}</option>
+//         {options.map((option, index) => (
+//           <option key={index} value={option}>
+//             {option}
+//           </option>
+//         ))}
+//       </select>
+//     </div>
+//   );
+// }
 
 export default OrdersPage;
