@@ -7,9 +7,7 @@ import { useSession } from 'next-auth/react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { baseUrl } from '@/baseUrl';
 
-interface ImageInputProps {
-    onImageSelect: (file: File | undefined) => void;
-}
+
 type optionType = {
     title: string | null,
     additionalPrice: number |null
@@ -25,15 +23,12 @@ type Review = {
     rating:number
 };
 
-const AddPage = ({ onImageSelect }: ImageInputProps) => {
-
-
+const AddPage = () => {
 
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string>("/images/addImage.png");
-    const [shopSlug, setShopSlug] = useState<string|null>("hpmc"); //logic to be cleared
     const [shop, setShop] = useState<string|null>("HPMC"); //logic to be cleared
-    // const [review, setReview] = useState<Review[]>([]); //logic to be cleared
+    // const [review, setReview] = useState<Review[]>([]);
     const [review, setReview] = useState<number>(4); //logic to be cleared
 
     const [input, setInputs] = useState<Inputs>({

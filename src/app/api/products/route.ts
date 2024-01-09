@@ -20,9 +20,22 @@ export const GET=async(req:NextRequest)=>{
     }
 }
 
+
 export const POST = async (req: NextRequest) => {
     try {
-      const body = await req.json();
+      let body = await req.json();
+      const shopName=body.shop;
+      const shop= await prisma.shop.findFirst({
+        where: {
+          title: shopName,
+        },
+      });
+      const shopData={
+        connect:{
+          slug:shop?.slug
+        }
+      }
+      body.shop=shopData;
       const newProduct = await prisma.product.create({
         data: body,
       });

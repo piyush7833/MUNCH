@@ -10,13 +10,13 @@ export const GET=async(req:NextRequest)=>{
     try {
         if(session.user.isShopOwner){
             const orders=await prisma.order.findMany({where:{
-                shopperEmail:session.user.email!
+                shopId:session.user.id!
             }})
             return new NextResponse(JSON.stringify(orders),{status:200})
         }
         else {
             const orders=await prisma.order.findMany({where:{
-                userEmail:session.user.email!
+                userId:session.user.id!
             }})
             return new NextResponse(JSON.stringify(orders),{status:200})
         }
