@@ -10,101 +10,73 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model Product{
-  id String @id @default(cuid())
-  createdAt DateTime @default(now())
-  title String
-  desc String
-  img String?
-  price Decimal
-  rating Decimal?
-  review Json[]
-  isFeatured Boolean @default(false)
-  options Json[]
-  shop Shop @relation(fields: [shopSlug],references: [slug],onDelete: Cascade,onUpdate: Cascade)  //references from shop as slug is unique
-  shopSlug String
-}
-
-
-
-
-
-
-model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade,onUpdate: Cascade)
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade,onUpdate: Cascade)
-}
-
-model Shop{
-  id String @id @default(cuid())
-  userEmail  String @unique
-  createdAt DateTime @default(now())
-  // manager Manager
-  title String
-  desc String
-  img String?
-  slug String @unique
-  products Product[]  //array of product
-  user         User     @relation(fields: [userEmail], references: [email], onDelete: Cascade,onUpdate: Cascade)
-  order      Order[]  //array of orders
-}
-
-model Order{
-  id String @id @default(cuid())
-  createdAt DateTime @default(now())
-  price Decimal
-  products Json[]
-  status String
-  intent_id String? @unique
-  user    User @relation(fields: [userEmail],references: [email])
-  userEmail String
-  // userName String
-  shop    Shop @relation(fields: [shopperEmail],references: [userEmail])
-  shopperEmail String
-}
-
 model User {
   id            String    @id @default(cuid())
-  name          String?
-  // userName      String?   @unique
+  name          String
+  userName      String    @unique
   email         String?   @unique
   emailVerified DateTime?
+  phone         String?   @unique
+  phoneVerified DateTime? @default(now())
   image         String?
-  isShopOwner   Boolean @default(false)
-  // shopId        String?
-  order         Order[]
-  shop          Shop[]
-  accounts      Account[]
-  sessions      Session[]
+  password      String?
+  isShopOwner   Boolean   @default(false)
+  activeSession Boolean   @default(false)
+  shops         Shop[]
+  reviews       Review[]
 }
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
+model Shop {
+  id        String    @id @default(cuid())
+  userId    String //reference to userId
+  createdAt DateTime  @default(now())
+  title     String
+  desc      String
+  img       String?
+  slug      String    @unique
+  verified  Boolean
+  address   String
+  user      User      @relation(fields: [userId], references: [id])
+  products  Product[]
+  orders    Order[]
+}
 
-  @@unique([identifier, token])
+model Order {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  price     Decimal
+  status    String
+  intent_id String?   @unique
+  userId    String
+  shopId    String // Reference from shop
+  shop      Shop      @relation(fields: [shopId], references: [id])
+  products  Product[] // @relation("OrderToProduct")
+}
+
+model Product {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  title      String
+  desc       String
+  img        String?
+  price      Decimal
+  rating     Decimal?
+  isFeatured Boolean  @default(false)
+  options    Json[] // Title and additional price
+  shopId     String // Reference from shop
+  shop       Shop     @relation(fields: [shopId], references: [id])
+  reviews    Review[]
+  //orders     Order[]  @relation("OrderToProduct") // Reference to orders
+  Order      Order?   @relation(fields: [orderId], references: [id])
+  orderId    String?
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  productId String //reference from product
+  userId    String //reference from user
+  comment   String
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
 }
