@@ -10,73 +10,133 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum userRole {
+  Admin
+  ShopOwner
+  User
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String
   userName      String    @unique
-  email         String?   @unique
+  email         String?
   emailVerified DateTime?
-  phone         String?   @unique
-  phoneVerified DateTime? @default(now())
+  phone         String?
+  phoneVerified DateTime?
   image         String?
   password      String?
-  isShopOwner   Boolean   @default(false)
+  role          userRole  @default(User)
   activeSession Boolean   @default(false)
   shops         Shop[]
   reviews       Review[]
+  softDelete    Boolean   @default(false)
+}
+
+enum ShopStatus {
+  Open
+  Closed
+  Discontinued
 }
 
 model Shop {
-  id        String    @id @default(cuid())
-  userId    String //reference to userId
-  createdAt DateTime  @default(now())
-  title     String
-  desc      String
-  img       String?
-  slug      String    @unique
-  verified  Boolean
-  address   String
-  user      User      @relation(fields: [userId], references: [id])
-  products  Product[]
-  orders    Order[]
-}
-
-model Order {
-  id        String    @id @default(cuid())
-  createdAt DateTime  @default(now())
-  price     Decimal
-  status    String
-  intent_id String?   @unique
-  userId    String
-  shopId    String // Reference from shop
-  shop      Shop      @relation(fields: [shopId], references: [id])
-  products  Product[] // @relation("OrderToProduct")
-}
-
-model Product {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
+  id         String     @id @default(cuid())
+  userId     String //reference to userId
+  createdAt  DateTime   @default(now())
   title      String
   desc       String
   img        String?
-  price      Decimal
-  rating     Decimal?
-  isFeatured Boolean  @default(false)
-  options    Json[] // Title and additional price
-  shopId     String // Reference from shop
-  shop       Shop     @relation(fields: [shopId], references: [id])
-  reviews    Review[]
-  //orders     Order[]  @relation("OrderToProduct") // Reference to orders
-  Order      Order?   @relation(fields: [orderId], references: [id])
-  orderId    String?
+  slug       String     @unique
+  verified   Boolean    @default(false)
+  address    String
+  user       User       @relation(fields: [userId], references: [id])
+  products   Product[]
+  orders     Order[]
+  status     ShopStatus @default(Open)
+  softDelete Boolean    @default(false)
+}
+
+enum OrderStatus {
+  Processing
+  Accepted
+  Cooking
+  Prepared
+  Out
+  Delievered
+  Completed
+}
+
+enum PayMode {
+  UPI
+  Card
+  Net_Banking
+  COD
+}
+
+model Order {
+  id           String         @id @default(cuid())
+  createdAt    DateTime       @default(now())
+  totalPrice   Decimal
+  couponPrice  Decimal
+  taxes        Decimal
+  delieveryFee Decimal
+  platformFee  Decimal
+  status       OrderStatus   @default(Processing)
+  userId       String
+  shopId       String // Reference from shop
+  shop         Shop           @relation(fields: [shopId], references: [id])
+  products     OrderProduct[]
+  address      String
+  payMode      PayMode
+}
+
+model OrderProduct {
+  id        String  @id @default(cuid())
+  productId String
+  price     Decimal
+  option    String
+  quantity  Decimal
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+enum ProductStatus {
+  Available
+  Unavailable
+  Discontinued
+}
+enum ProductType {
+  Veg
+  Non_Veg
+}
+
+model Product {
+  id           String         @id @default(cuid())
+  createdAt    DateTime       @default(now())
+  title        String
+  desc         String
+  img          String?
+  price        Decimal
+  isFeatured   Boolean        @default(false)
+  options      Json[] // Title and additional price
+  shopId       String // Reference from shop
+  type         ProductType
+  shop         Shop           @relation(fields: [shopId], references: [id])
+  reviews      Review[]
+  status       ProductStatus  @default(Available)
+  OrderProduct OrderProduct[]
+  softDelete   Boolean        @default(false)
 }
 
 model Review {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  productId String //reference from product
-  userId    String //reference from user
-  comment   String
-  user      User     @relation(fields: [userId], references: [id])
-  product   Product  @relation(fields: [productId], references: [id])
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  productId  String //reference from product
+  userId     String //reference from user
+  comment    String?
+  rating     Decimal
+  user       User     @relation(fields: [userId], references: [id])
+  product    Product  @relation(fields: [productId], references: [id])
+  softDelete Boolean  @default(false)
 }

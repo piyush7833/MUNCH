@@ -7,12 +7,12 @@ export const PUT=async(req:NextRequest)=>{
 try {
     const {password}:{password:string}=await req.json();
     const user=await getUserDetails(req);
-    if(user==null){
+    if(user===null){
         return NextResponse.json({
             error:true,
-            message:"User not found",
-            status:404
-        })
+            message:"Login first to change password",
+            status:403
+        },{status:403})
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -28,7 +28,7 @@ try {
         error:true,
         message:"User password updated successfully",
         status:200
-    })
+    },{status:200})
 } catch (error) {
     return NextResponse.json({
         error:true,

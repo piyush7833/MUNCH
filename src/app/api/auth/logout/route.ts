@@ -7,21 +7,11 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
 import { cookies } from 'next/headers'
 import { headers } from 'next/headers'
+import { getUserDetails } from "../../utils/action";
 dotenv.config();
 export const POST=async(req:NextRequest)=>{
-    const { userName,email,phone, password }:signinType = await req.json();
-    // console.log("object")
     try {
-        const user = await prisma.user.findFirst({
-            where: {
-                OR: [
-                    { userName },
-                    { email },
-                    { phone },
-                ],
-            },
-        });
-        // console.log(user)
+        const user = getUserDetails(req)
         if(!user){
             return NextResponse.json({
                 error:false,
@@ -29,30 +19,19 @@ export const POST=async(req:NextRequest)=>{
                 message:"User not found."
             }, { status: 404 })
         }
-        const isCorrect = await bcrypt.compare(password, user.password!);
-        if(!isCorrect){
-            return NextResponse.json({
-                error:false,
-                status:403,
-                message:"Incorrect password"
-            }, { status: 403 })
-        }
-        var token = jwt.sign({ id: user.id }, process.env.JWT!);
-        cookies().set('token', token);
+        cookies().delete('token');
         await prisma.user.update({
             where:{
                 id:user.id
             },
             data:{
-                activeSession:true
+                activeSession:false
             }
         })
         return NextResponse.json({
             error:false,
             status:200,
-            message:"User logged in successfully",
-            token,
-            user
+            message:"User logged out successfully",
         }, { status: 200 });
     } catch (error) {   
         console.log(error)

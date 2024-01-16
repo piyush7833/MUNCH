@@ -1,9 +1,8 @@
-"use server"
+// "use server"
 
 import { NextRequest, NextResponse } from "next/server";
 import { getUserDetails } from "../utils/action";
 import { prisma } from "@/utils/connect";
-import bcrypt from "bcryptjs";
 
 
 export const verifyEmail=async()=>{
@@ -22,9 +21,9 @@ export const PUT=async(req:NextRequest)=>{
         if(user==null){
             return NextResponse.json({
                 error:true,
-                message:"User not found",
-                status:404
-            })
+                message:"Login first to update user",
+                status:403
+            }, { status: 403 })
         }
 
         const updatedUser=await prisma.user.update({
@@ -40,16 +39,70 @@ export const PUT=async(req:NextRequest)=>{
             message:"User updated successfully",
             status:200,
             updatedUser
-        })
+        }, { status: 200 })
     } catch (error) {
         return NextResponse.json({
             error:true,
             message:"Something went wrong",
             status:404
-        })
+        }, { status: 404 })
     }
-    }
-
-export const deleteUser=async()=>{
-
 }
+
+export const GET=async(req:NextRequest)=>{
+    try {
+        const user=await getUserDetails(req);
+        if(user==null){
+            return NextResponse.json({
+                error:true,
+                message:"Login first to get your profile.",
+                status:403
+            }, { status: 403 })
+        }
+        return NextResponse.json({
+            error:true,
+            message:"User found successfully",
+            status:200,
+            user
+        }, { status: 200 })
+    } catch (error) {
+        return NextResponse.json({
+            error:true,
+            message:"Something went wrong",
+            status:404
+        }, { status: 404 })
+    }
+}
+export const DELETE=async(req:NextRequest)=>{
+    try {
+        const user=await getUserDetails(req);
+        if(user==null){
+            return NextResponse.json({
+                error:true,
+                message:"Login first to delete user",
+                status:403
+            }, { status: 403 })
+        }
+
+        await prisma.user.update({
+            where:{
+                id:user.id
+            },
+            data:{
+                softDelete:true
+            }
+        })
+        return NextResponse.json({
+            error:true,
+            message:"User deleted successfully",
+            status:200,
+        }, { status: 200 })
+    } catch (error) {
+        return NextResponse.json({
+            error:true,
+            message:"Something went wrong",
+            status:404
+        }, { status: 404 })
+    }
+    }
+

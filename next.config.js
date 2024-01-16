@@ -10,6 +10,7 @@ const nextConfig = {
               //by default next js not support any external domain acess we need to configure it
         ]
     }
+    
 }
 
 module.exports = nextConfig

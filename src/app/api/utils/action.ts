@@ -1,9 +1,11 @@
-"use server";
+// "use server";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/utils/connect";
 import { createTransport } from "nodemailer";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import { cookies } from 'next/headers';
+import { headers } from 'next/headers'
 dotenv.config();
 
 export const sendEmail = async (
@@ -39,15 +41,24 @@ export const sendEmail = async (
 
 export const sendMessage = async () => {};
 
-export const getUserDetails = async (req: NextRequest) => {
+export const getUserDetails = async (req:any) => {
   try {
-    const token = req.cookies.get("token")?.value || "";
+    const headersList = headers()
+    const token = headersList.get('authorization')
+    console.log(token)
+    const cookieStore = cookies()
+    // const token = cookieStore.get('token')?.value || "";
     // let token = req?.headers;
-    const decodedToken: any = jwt.verify(token, process.env.JWT!);
+    // console.log(token)
+    if(!token){
+      return null;
+    }
+    const decodedToken: any = jwt.verify(token!, process.env.JWT!);
     decodedToken.id;
     const user=await prisma.user.findUnique({
       where:{
-        id:decodedToken.id
+        id:decodedToken.id,
+        softDelete:false
       }
     })
     if(user){

@@ -8,6 +8,14 @@ export type registerType={
 }
 
 export type signinType={
-    userName:string,
+    userName?:string,
+    email?:string,
+    phone?:string,
     password:string
+}
+
+export type getUserType={
+    userName?:string,
+    email?:string,
+    phone?:string
 }

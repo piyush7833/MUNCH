@@ -1,3 +1,15 @@
+-- CreateEnum
+CREATE TYPE "userRole" AS ENUM ('Admin', 'ShopOwner', 'User');
+
+-- CreateEnum
+CREATE TYPE "ShopStatus" AS ENUM ('Open', 'Closed', 'Discontinued');
+
+-- CreateEnum
+CREATE TYPE "OrderStatus" AS ENUM ('Accepted', 'Cooking', 'Prepared', 'Out', 'Delievered', 'Completed');
+
+-- CreateEnum
+CREATE TYPE "ProductStatus" AS ENUM ('Available', 'Unavailabel', 'Discontinued');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -6,11 +18,12 @@ CREATE TABLE "User" (
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
     "phone" TEXT,
-    "phoneVerified" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "phoneVerified" TIMESTAMP(3),
     "image" TEXT,
     "password" TEXT,
-    "isShopOwner" BOOLEAN NOT NULL DEFAULT false,
+    "role" "userRole" NOT NULL DEFAULT 'User',
     "activeSession" BOOLEAN NOT NULL DEFAULT false,
+    "softDelete" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -24,8 +37,10 @@ CREATE TABLE "Shop" (
     "desc" TEXT NOT NULL,
     "img" TEXT,
     "slug" TEXT NOT NULL,
-    "verified" BOOLEAN NOT NULL,
+    "verified" BOOLEAN NOT NULL DEFAULT false,
     "address" TEXT NOT NULL,
+    "status" "ShopStatus" NOT NULL DEFAULT 'Open',
+    "softDelete" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Shop_pkey" PRIMARY KEY ("id")
 );
@@ -35,7 +50,7 @@ CREATE TABLE "Order" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "price" DECIMAL(65,30) NOT NULL,
-    "status" TEXT NOT NULL,
+    "status" "OrderStatus" NOT NULL,
     "intent_id" TEXT,
     "userId" TEXT NOT NULL,
     "shopId" TEXT NOT NULL,
@@ -51,11 +66,12 @@ CREATE TABLE "Product" (
     "desc" TEXT NOT NULL,
     "img" TEXT,
     "price" DECIMAL(65,30) NOT NULL,
-    "rating" DECIMAL(65,30),
     "isFeatured" BOOLEAN NOT NULL DEFAULT false,
     "options" JSONB[],
     "shopId" TEXT NOT NULL,
+    "status" "ProductStatus" NOT NULL DEFAULT 'Available',
     "orderId" TEXT,
+    "softDelete" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -66,19 +82,15 @@ CREATE TABLE "Review" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "productId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "comment" TEXT NOT NULL,
+    "comment" TEXT,
+    "rating" DECIMAL(65,30) NOT NULL,
+    "softDelete" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Review_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_userName_key" ON "User"("userName");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_phone_key" ON "User"("phone");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Shop_slug_key" ON "Shop"("slug");
