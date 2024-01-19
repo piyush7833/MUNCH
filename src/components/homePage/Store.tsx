@@ -4,7 +4,7 @@ import { MenuType } from '@/types/types';
 // import { menu } from '@/data'
 const apiUrl = process.env.BASEURL;
 const getData=async()=>{
-  const res=await fetch(`${apiUrl}/shops`,{
+  const res=await fetch(`${apiUrl}/shop`,{
     cache:"no-store",
 
   })
@@ -14,11 +14,12 @@ const getData=async()=>{
   return res.json();
 }
 const Store =async () => {
-  const menu:MenuType=await getData();
+  const menu:any=await getData();
+  const data:MenuType=menu.allShops;
   return (
     
     <div className='store-container hideScrollBar'>
-      {menu.map((shop)=>(
+      {data.map((shop:any)=>(
         <Link href={`/menu/${shop.slug}`} key={shop.id} className={`store-shop-container shadow-2xl group `} style={{backgroundImage:`url(${shop.img})`}}>
           <div className=''>
             <div className={`w-[45vw] sm:w-[25vw] overflow-clip flex flex-col items-center`}>

@@ -1,14 +1,16 @@
-import Navbar from '../components/Navbar'
+import Navbar from '../components/common/Navbar'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Notifications from '../components/Notifications'
-import Footer from '../components/Footer'
+import Notifications from '../components/common/Notifications'
+import Footer from '../components/common/Footer'
 import { ThemeProvider } from '@/context/themeContext/ThemeContext'
-import AuthProvider from '@/components/AuthProvider'
-import QuerryProvider from '@/components/QuerryProvider'
+import AuthProvider from '@/components/common/AuthProvider'
+import QuerryProvider from '@/components/common/QuerryProvider'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios'
+// import { SnackbarProvider } from 'notistack'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,6 +19,8 @@ export const metadata: Metadata = {
   description: 'Mobile Utility for Nourishing Campus Hunger',
 }
 
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://localhost:3000/api";
 export default function RootLayout({
   children,
 }: {

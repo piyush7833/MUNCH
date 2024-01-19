@@ -3,4 +3,5 @@ type updateForm={
     email?:string,
     phone?:string,
     image?:string,
+    address?:string,
 }

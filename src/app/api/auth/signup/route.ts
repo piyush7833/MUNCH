@@ -7,7 +7,6 @@ import { registerType } from "../types";
 import { cookies } from 'next/headers'
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
-    // console.log("hello")
     const { name, userName, password, email, phone, image }: registerType = await req.json();
 
     try {

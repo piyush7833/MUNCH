@@ -1,7 +1,7 @@
-import Items from '../components/Items'
-import Offer from '../components/Offer'
-import Slider from '../components/Slider'
-import Store from '../components/Store'
+import Items from '../components/homePage/Items'
+import Offer from '../components/homePage/Offer'
+import Slider from '../components/homePage/Slider'
+import Store from '../components/homePage/Store'
 
 export default function Home() {
   return (

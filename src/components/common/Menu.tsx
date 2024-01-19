@@ -3,9 +3,9 @@ import React, { useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
 import Image from 'next/image';
-import CartIcon from './CartIcon';
+import CartIcon from '../partials/CartIcon';
 import UserLinks from './UserLinks';
-import ModeBtn from './ModeBtn';
+import ModeBtn from '../partials/ModeBtn';
 
 const links=[
     {id:1,title:"Home",url:"/"},

@@ -1,4 +1,4 @@
-import DeleteButton from '@/components/DeleteButton';
+import DeleteButton from '@/components/partials/DeleteButton';
 import Price from '@/components/Price'
 import { singleProduct } from '@/data'
 import { ProductType } from '@/types/types';

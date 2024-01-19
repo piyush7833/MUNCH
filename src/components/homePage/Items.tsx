@@ -1,25 +1,31 @@
 import React from 'react'
 import Image from 'next/image'
-import { featuredProducts } from '@/data'
 import Link from 'next/link';
 import { ProductsType } from '@/types/types';
+import Alert from '../common/Alert';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const apiUrl = process.env.BASEURL;
-const getData=async()=>{
-  const res=await fetch(`${apiUrl}/products`,{
-    cache:"no-store",
-  })
-  if(!res.ok){
-    throw new Error("Something went wrong ")
+const getData = async () => {
+  try {
+    const response = await axios.get(`${apiUrl}/product`, {
+      headers: { 'Cache-Control': 'no-store' },
+    });
+    return response.data;
+  } catch (error) {
+    toast.error("Something went wrong")
   }
-  return res.json();
-}
+};
 const Items =async () => {
-  const featuredProducts:ProductsType=await getData()
+  const data:any=await getData()
+  const featuredProducts:ProductsType=data.featuredproducts
+  console.log(featuredProducts)
+  console.log("data",data)
   return (
     <div className='overflow-x-auto hideScrollBar cursor-pointer'>
       <div className="item-wraper">
-        {featuredProducts.map(item=>(
+        {featuredProducts && featuredProducts.map(item=>(
         <Link href={`/product/${item.id}`} key={item.id}>
         <div className="single-item group shadow-2xl" key={item.id}>
           {item.img && <div className="single-imgContainer group-hover:scale-110 md:group-hover:scale-105">

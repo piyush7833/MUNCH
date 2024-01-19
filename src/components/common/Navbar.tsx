@@ -2,9 +2,9 @@ import React from 'react'
 import Menu from './Menu'
 import Link from 'next/link';
 import Image from 'next/image';
-import Logo from '../../public/images/logo.png'
-import CartIcon from './CartIcon';
-import ModeBtn from './ModeBtn';
+// import Logo from '../../public/images/logo.png'
+import CartIcon from '../partials/CartIcon';
+import ModeBtn from '../partials/ModeBtn';
 import UserLinks from './UserLinks';
 
 const links = [
@@ -12,14 +12,13 @@ const links = [
     { id: 2, title: "Menu", url: "/menu" },
     { id: 3, title: "Contact Us", url: "/contact" },
 ]
-const Navbar = () => {
 
-
+const Navbar =async () => {
     return (
         <div className='bg-red-500 px-4 h-12 flex items-center justify-between border-b-2 border-b-red-600 '>
             <div>
                 <Link href='/'>
-                    <Image src={Logo} alt='logo' className='h-fit  w-20' />
+                    <Image src={"/images/logo.png"} alt='logo' className='h-fit  w-20' width={10} height={10}/>
                 </Link>
             </div>
             <div className='hidden md:flex gap-4 text-white text-lg'>

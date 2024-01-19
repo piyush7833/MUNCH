@@ -17,20 +17,33 @@ enum userRole {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String
-  userName      String    @unique
+  userName      String      @unique
   email         String?
   emailVerified DateTime?
   phone         String?
   phoneVerified DateTime?
   image         String?
   password      String?
-  role          userRole  @default(User)
-  activeSession Boolean   @default(false)
+  role          userRole    @default(User)
+  activeSession Boolean     @default(false)
   shops         Shop[]
+  shopOwner     ShopOwner[]
   reviews       Review[]
-  softDelete    Boolean   @default(false)
+  softDelete    Boolean     @default(false)
+  address       Json?
+}
+
+model ShopOwner {
+  id          String @id @default(cuid())
+  userId      String
+  user        User   @relation(fields: [userId], references: [id])
+  panCard     String
+  bankAccount String
+  IFSC        String
+  aadhar      String
+  GSTIN       String
 }
 
 enum ShopStatus {
@@ -64,6 +77,8 @@ enum OrderStatus {
   Out
   Delievered
   Completed
+  Cancelled
+  Failed
 }
 
 enum PayMode {
@@ -81,13 +96,14 @@ model Order {
   taxes        Decimal
   delieveryFee Decimal
   platformFee  Decimal
-  status       OrderStatus   @default(Processing)
+  status       OrderStatus    @default(Processing)
   userId       String
   shopId       String // Reference from shop
   shop         Shop           @relation(fields: [shopId], references: [id])
   products     OrderProduct[]
   address      String
   payMode      PayMode
+  softDelete   Boolean        @default(false)
 }
 
 model OrderProduct {
@@ -106,6 +122,7 @@ enum ProductStatus {
   Unavailable
   Discontinued
 }
+
 enum ProductType {
   Veg
   Non_Veg

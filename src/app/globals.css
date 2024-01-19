@@ -18,6 +18,9 @@
 .input{
     @apply px-4 py-2 bg-transparent border-2 hover:border-red-400 focus:border-blue-500 active:border-green-400 rounded-3xl w-[90%] placeholder:text-main text-main
 }
+.updateinput{
+    @apply px-4 py-2  bg-transparent border-2 hover:border-red-400 focus:border-blue-500 active:border-green-400 rounded-3xl w-auto placeholder:text-main text-main
+}
 .inputContainer{
     @apply flex w-5/6 sm:w-2/3 justify-around items-center gap-2
 }
@@ -135,4 +138,10 @@
 
 .orderDetails{
     @apply flex justify-between
+}
+
+
+
+.main{
+    @apply  min-h-[calc(100vh-9rem)] md:min-h-[calc(100vh-5.5rem)]  text-main 
 }

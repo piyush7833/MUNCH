@@ -1,3 +1,10 @@
+export type resDataType={
+  error:boolean;
+  message:string;
+  status:number;
+  data:any
+}
+
 export type MenuType = {
     id: number;
     slug: string;
@@ -60,3 +67,30 @@ export type ActionTypes={
   addToCart:(item:CartItemType)=>void,
   removeFromCart:(item:CartItemType)=>void
 }
+export type userActionTypes={
+  logIn:(user:userType)=>void,
+  logOut:(user:null)=>void
+}
+
+export type userType={
+  name:string | null,
+  userName:string | null,
+  email?:string| null,
+  phone?:string| null,
+  role:string| null,
+  id:string| null,
+}
+export type fullUserType={
+  name:string | null,
+  userName:string | null,
+  email?:string| null,
+  phone?:string| null,
+  role:string| null,
+  id:string| null,
+  address:object | null,
+  emailVerified:Date | null,
+  phoneVerified:Date | null,
+  activeSession:boolean,
+  image:boolean,
+}
+

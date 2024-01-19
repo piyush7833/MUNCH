@@ -117,7 +117,7 @@ export const GET=async(req:NextRequest)=>{ //get all shops of user  OR get all s
         }
         const allShops=await prisma.shop.findMany({where:{softDelete:false}})
         return NextResponse.json({
-            error:true,
+            error:false,
             message:"Shop fetched successfully",
             status:200,
             allShops

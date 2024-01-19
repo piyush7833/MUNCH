@@ -146,18 +146,18 @@ export const GET = async (req: NextRequest) => {  //get random featured product 
     try {
         const user = await getUserDetails(req);
         if (!user || user.role === "User") {
-            let featuredroducts = await prisma.product.findMany({where:{softDelete:false,isFeatured:true}});
+            let featuredproducts = await prisma.product.findMany({where:{softDelete:false,isFeatured:true}});
             const allProducts = await prisma.product.findMany({where:{softDelete:false}});
             const shuffledProducts = shuffleArray(allProducts);
-            while (featuredroducts.length < 20 && shuffledProducts.length > 0) {
-                featuredroducts.push(shuffledProducts.pop()!);
+            while (featuredproducts.length < 20 && shuffledProducts.length > 0) {
+                featuredproducts.push(shuffledProducts.pop()!);
               }
         
             return NextResponse.json({
-                error: true,
+                error: false,
                 message: "Product fetched successfully",
                 status: 200,
-                featuredroducts
+                featuredproducts
             }, { status: 200 })
         }
         if (user?.role === "ShopOwner") {
@@ -175,7 +175,7 @@ export const GET = async (req: NextRequest) => {  //get random featured product 
                 },
               });
             return NextResponse.json({
-                error: true,
+                error: false,
                 message: "Product fetched successfully",
                 status: 200,
                 products

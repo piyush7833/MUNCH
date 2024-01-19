@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUserDetails } from "../utils/action";
 import { prisma } from "@/utils/connect";
-
+import { cookies } from 'next/headers'
 
 export const verifyEmail=async()=>{
 
@@ -16,7 +16,7 @@ export const verifyPhone=async()=>{
 export const PUT=async(req:NextRequest)=>{
     try {
         // let {name,email,phone,image}:updateForm=await req.json();
-        var {name,phone,email,image}:updateForm=await req.json();
+        var {name,phone,email,image,address}:updateForm=await req.json();
         const user=await getUserDetails(req);
         if(user==null){
             return NextResponse.json({
@@ -31,7 +31,7 @@ export const PUT=async(req:NextRequest)=>{
                 id:user.id
             },
             data:{
-                name,phone,email,image
+                name,phone,email,image,address
             }
         })
         return NextResponse.json({
@@ -55,10 +55,11 @@ export const GET=async(req:NextRequest)=>{
         if(user==null){
             return NextResponse.json({
                 error:true,
-                message:"Login first to get your profile.",
+                message:"Login to view your profile.",
                 status:403
             }, { status: 403 })
         }
+        cookies().delete('name');
         return NextResponse.json({
             error:true,
             message:"User found successfully",
