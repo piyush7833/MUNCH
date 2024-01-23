@@ -56,8 +56,6 @@ const Profile = () => {
   }
   return (
     <div>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
       {/* {data ? ( */}
           <div className='main gap-4 hideScrollBar'>
             <UserProfile/>

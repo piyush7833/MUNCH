@@ -1,5 +1,5 @@
 "use client"
-import { userCartStore } from '@/utils/store'
+import { userCartStore } from '@/utils/cartStore'
 import Image from 'next/image'
 import React,{useEffect} from 'react'
 

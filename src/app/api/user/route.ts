@@ -35,12 +35,13 @@ export const PUT=async(req:NextRequest)=>{
             }
         })
         return NextResponse.json({
-            error:true,
+            error:false,
             message:"User updated successfully",
             status:200,
             updatedUser
         }, { status: 200 })
     } catch (error) {
+        console.log(error)
         return NextResponse.json({
             error:true,
             message:"Something went wrong",
@@ -61,7 +62,7 @@ export const GET=async(req:NextRequest)=>{
         }
         cookies().delete('name');
         return NextResponse.json({
-            error:true,
+            error:false,
             message:"User found successfully",
             status:200,
             user
@@ -94,7 +95,7 @@ export const DELETE=async(req:NextRequest)=>{
             }
         })
         return NextResponse.json({
-            error:true,
+            error:false,
             message:"User deleted successfully",
             status:200,
         }, { status: 200 })

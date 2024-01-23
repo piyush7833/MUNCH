@@ -8,8 +8,8 @@ export default function Home() {
     <div className='bg-inherit hideScrollBar'>
       <Slider/>
       <Offer/>
-      <Items/>
-      <Store/>
+      {/* <Items/> */}
+      {/* <Store/> */}
     </div>
   )
 }

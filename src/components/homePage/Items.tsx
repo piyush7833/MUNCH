@@ -14,11 +14,12 @@ const getData = async () => {
     });
     return response.data;
   } catch (error) {
-    toast.error("Something went wrong")
+    // toast.error("Something went wrong")
   }
 };
 const Items =async () => {
   const data:any=await getData()
+  console.log(data)
   const featuredProducts:ProductsType=data.featuredproducts
   console.log(featuredProducts)
   console.log("data",data)

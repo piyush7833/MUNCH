@@ -68,18 +68,11 @@ export type ActionTypes={
   removeFromCart:(item:CartItemType)=>void
 }
 export type userActionTypes={
-  logIn:(user:userType)=>void,
+  logIn:(user:fullUserType)=>void,
   logOut:(user:null)=>void
 }
 
-export type userType={
-  name:string | null,
-  userName:string | null,
-  email?:string| null,
-  phone?:string| null,
-  role:string| null,
-  id:string| null,
-}
+
 export type fullUserType={
   name:string | null,
   userName:string | null,
@@ -87,10 +80,17 @@ export type fullUserType={
   phone?:string| null,
   role:string| null,
   id:string| null,
-  address:object | null,
+  address:addressType,
   emailVerified:Date | null,
   phoneVerified:Date | null,
   activeSession:boolean,
-  image:boolean,
+  image:string | null,
 }
 
+export type addressType={
+  pincode?: number,
+  street?: string,
+  landmark?: string,
+  city?: string,
+  state?: string
+}

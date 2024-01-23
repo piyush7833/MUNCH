@@ -1,17 +1,18 @@
 import React from 'react'
 import Link from 'next/link'
 import { MenuType } from '@/types/types';
+import axios from 'axios';
 // import { menu } from '@/data'
 const apiUrl = process.env.BASEURL;
-const getData=async()=>{
-  const res=await fetch(`${apiUrl}/shop`,{
-    cache:"no-store",
-
-  })
-  if(!res.ok){
-    throw new Error("Something went wrong ")
+const getData = async () => {
+  try {
+    const response = await axios.get(`${apiUrl}/shop`, {
+      headers: { 'Cache-Control': 'no-store' },
+    });
+    return response.data;
+  } catch (error) {
+    // toast.error("Something went wrong")
   }
-  return res.json();
 }
 const Store =async () => {
   const menu:any=await getData();

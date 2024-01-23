@@ -5,7 +5,7 @@ const emailTemplate=(url:string,subject:string,userName:string,para:string,task:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IIITU Snapshot - Email Verification</title>
+    <title>MUNCH - ${subject}</title>
     <style>
         /* Add your custom styles here */
         body {
@@ -37,6 +37,11 @@ const emailTemplate=(url:string,subject:string,userName:string,para:string,task:
             display:flex;
             align-items: center;
             justify-content: center;
+            text-align: center;
+            width:100%;
+        }
+        .para{
+            text-align: justify;
         }
         .verification-button {
             display: inline-block;
@@ -57,14 +62,16 @@ const emailTemplate=(url:string,subject:string,userName:string,para:string,task:
             justify-content: center;
             text-align: center;
             background-color: #221d1d;
+            gap:10px;
             padding: 10px;
             color: #ffffff;
             height: 5vh;
+            width:100%;
         }
         .footer a {
             color: #ffffff;
             text-decoration: none;
-            margin: 0 10px;
+            // margin: 0 10px;
         }
         .img{
             height: 3vh;
@@ -75,19 +82,19 @@ const emailTemplate=(url:string,subject:string,userName:string,para:string,task:
 <body>
     <div class="email-container">
         <div class="header">
-            <img src="https://firebasestorage.googleapis.com/v0/b/iiitusnapshots.appspot.com/o/logo%2Flogo.png?alt=media&token=97c6d29b-0d79-47f0-9533-d7b62a7e46d5" alt="IIITU Snapshot Logo">
+            <img src="https://firebasestorage.googleapis.com/v0/b/munch-396608.appspot.com/o/utils%2Flogo.png?alt=media&token=6e5eec03-1f03-4f60-8e9d-6bb933ee710a" alt="MUNCH Logo">
         </div>
         <div class="content">
             <h2 style="color: #e74c3c;">${subject}</h2>
             <p>Hello <strong> ${userName} </strong>,</p>
-            <p>${para}</p>
-            <p><a href=${url} class="verification-button">${task}</a></p>
+            <p class="para">${para}</p>
+            <div class="btn"><a href=${url} class="verification-button">${task}</a></div>
             <p>${ignore}</p>
-            <p style="font-style: italic;">Best regards,<br>IIITU Snapshot Team</p>
+            <p style="font-style: italic;">Best regards,<br>MUNCH Team</p>
         </div>
         <div class="footer">
-            <a href="https://www.instagram.com/_piyush_8_3_3/"><img src="https://firebasestorage.googleapis.com/v0/b/iiitusnapshots.appspot.com/o/logo%2Finsta.png?alt=media&token=e6213c81-c98e-4c8f-8f6f-3066c4523e17" alt="" class="img"></a>
-            <a href="https://www.linkedin.com/in/piyush-singh-403089221/"><img src="https://firebasestorage.googleapis.com/v0/b/iiitusnapshots.appspot.com/o/logo%2Flinkedin.png?alt=media&token=aef86b70-8d92-45d3-b47e-e50cfd00b2fe" alt="" class="img"></a>
+            <a href="https://www.instagram.com/_piyush_8_3_3/"  ><img src="https://firebasestorage.googleapis.com/v0/b/iiitusnapshots.appspot.com/o/logo%2Finsta.png?alt=media&token=e6213c81-c98e-4c8f-8f6f-3066c4523e17" alt="" class="img"></a>
+            <a href="https://www.linkedin.com/in/piyush-singh-403089221/" ><img src="https://firebasestorage.googleapis.com/v0/b/iiitusnapshots.appspot.com/o/logo%2Flinkedin.png?alt=media&token=aef86b70-8d92-45d3-b47e-e50cfd00b2fe" alt="" class="img"></a>
         </div>
     </div>
 </body>
