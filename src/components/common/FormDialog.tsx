@@ -1,26 +1,18 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { IconButton, TextField } from '@mui/material';
-import PinIcon from '@mui/icons-material/Pin';
-import StreetviewIcon from '@mui/icons-material/Streetview';
-import NearMeIcon from '@mui/icons-material/NearMe';
-import LocationCityIcon from '@mui/icons-material/LocationCity';
-import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
 import { addressType } from '@/types/types';
-import { SvgIconTypeMap } from '@mui/material';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
-import { addressFormType } from '@/utils/formData';
+import { formType } from '@/utils/formData';
 
-type AddressDialogProps = {
-  data: addressFormType[];
+type propsType = {
+  data: formType[];
   onClose: () => void;
-  onSave: (data: addressType) => void;
+  onSave: any;
   image:string;
   title:string;
 };
 
-const FormDialog = ({ data, onClose, onSave,image,title }:AddressDialogProps) => {
-  const [formData, setFormData] = useState<addressType>({});
+const FormDialog = ({ data, onClose, onSave,image,title }:propsType) => {
+  const [formData, setFormData] = useState<any>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
     setFormData({
@@ -43,17 +35,17 @@ const FormDialog = ({ data, onClose, onSave,image,title }:AddressDialogProps) =>
         </div>
         {/* form container */}
         <div className="flex justify-center flex-col items-center gap-4 h-2/3 w-full md:w-1/2 md:h-full">
-          <h1 className="text-2xl sm:text-3xl font-bold">{title}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-center">{title}</h1>
           {data.map((field) => (
             <div key={field.name} className="inputContainer">
               <field.icon/>
               <input
-                type="text"
+                type={field.type}
                 name={field.name}
                 id={field.name}
                 onChange={(e) => handleChange(e, field.name)}
                 placeholder={field.placeholder}
-                required
+                required={field.required}
                 className="input"
               />
             </div>

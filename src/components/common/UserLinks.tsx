@@ -14,7 +14,6 @@ const UserLinks = () => {
     userAuthStore.persist.rehydrate()
   }, [])
   const { name, userName } = userAuthStore()
-  // console.log(session)
   return (
     <div className='gap-4 flex-col lg:flex-row flex'>
       {(name !== null || userName !== null) ?

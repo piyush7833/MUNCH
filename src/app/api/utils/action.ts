@@ -16,9 +16,9 @@ import app from './firebase'
 dotenv.config();
 
 const auth = getAuth(app);
-const messaging = getMessaging(app);
+// const messaging = getMessaging(app);
 
-getToken(messaging, {vapidKey: "BOeFzYK5Z2sjxRK8NkVR4NZv_RAz4-HdcKSi2PiPpfrB7Y8MA5euE9JtMbz4sIaiY_W64RLx5RLMHroothJlBxA"});
+// getToken(messaging, {vapidKey: "BOeFzYK5Z2sjxRK8NkVR4NZv_RAz4-HdcKSi2PiPpfrB7Y8MA5euE9JtMbz4sIaiY_W64RLx5RLMHroothJlBxA"});
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',

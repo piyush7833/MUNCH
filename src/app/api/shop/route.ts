@@ -60,6 +60,7 @@ export const PUT=async(req:NextRequest)=>{   //verify shop by admin  //take id i
 export const POST=async(req:NextRequest)=>{  //add shop
     try {
         const {title,desc,img,slug,address}:shopType=await req.json()
+        // console.log("data",await req.json());
         const user=await getUserDetails(req);
         if(user==null){
             return NextResponse.json({
@@ -102,27 +103,28 @@ export const GET=async(req:NextRequest)=>{ //get all shops of user  OR get all s
     try {
         const user=await getUserDetails(req);
         if(user?.role==="ShopOwner"){
-            const userShops=await prisma.shop.findMany({
+            const shops=await prisma.shop.findMany({
                 where:{
                     userId:user.id,
                     softDelete:false
-                }
+                },
             });
             return NextResponse.json({
                 error:false,
                 message:"Your shop fetched successfully",
                 status:200,
-                userShops
+                shops
             },{status:200})
         }
-        const allShops=await prisma.shop.findMany({where:{softDelete:false}})
+        const shops=await prisma.shop.findMany({where:{softDelete:false}})
         return NextResponse.json({
             error:false,
             message:"Shop fetched successfully",
             status:200,
-            allShops
+            shops
         },{status:200})
     } catch (error) {
+        console.log("err",error)
         return NextResponse.json({
             error:true,
             message:"Something went wrong",

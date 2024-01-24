@@ -8,17 +8,18 @@ export function middleware(request: NextRequest) {
 
   const isProtected = path === '/profile'  || path === '/orders'
 
-  const isAdmin=path==='/verifyShops'
+  const isAdmin=path==='/verifyshops'
+  const isShopOwner=path==='/addshop' || path==='/addproduct'
   // console.log("frontend",request.cookies)
   const token = request.cookies.get('token')?.value || ''
-
+// console.log(token)
   if(isProtected && !token) {
     return NextResponse.redirect(new URL('/auth', request.nextUrl))
   }
     
-  // if(path==="/auth" && token ){
-  //   return NextResponse.redirect(new URL('/', request.nextUrl))
-  // }
+  if(path==="/auth" && token ){
+    return NextResponse.redirect(new URL('/', request.nextUrl))
+  }
 }
 
  

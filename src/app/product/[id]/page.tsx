@@ -1,5 +1,5 @@
 import DeleteButton from '@/components/partials/DeleteButton';
-import Price from '@/components/Price'
+import Price from '@/components/product/Price'
 import { singleProduct } from '@/data'
 import { ProductType } from '@/types/types';
 import Image from 'next/image'

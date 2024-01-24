@@ -12,7 +12,10 @@
     @apply transition-all duration-500
   }
 .btn{
-    @apply text-white md:px-6  py-2 px-3 border-x-2  text-xs md:text-base bg-red-500 rounded-3xl  md:border-x-2  hover:border-x-0 mt-2 mx-2 hover:bg-green-300 hover:text-black hover:font-bold transition-all duration-200 disabled:cursor-not-allowed disabled:bg-gray-200
+    @apply md:px-6  py-2 px-3 border-x-2  text-xs md:text-base bg-red-500 rounded-3xl  md:border-x-2  hover:border-x-0 mt-2 mx-2  text-white hover:bg-green-300 focus:outline-none hover:text-black hover:font-bold  disabled:cursor-not-allowed disabled:bg-gray-200
+}
+.cancelBtn{
+    @apply md:px-6  py-2 px-3 border-x-2  text-xs md:text-base bg-white  text-gray-700 hover:bg-orange-200 focus:outline-none rounded-3xl  md:border-x-2  hover:border-x-0 mt-2 mx-2 hover:text-black hover:border-red-400 hover:font-bold disabled:cursor-not-allowed disabled:bg-gray-200
 }
 
 .input{
@@ -81,7 +84,7 @@
 }
 
 .store-shop-container{
-    @apply h-[30vh] sm:h-[30vh] md:h-[60vh] saturate-100 hover:saturate-200   transition duration-500   flex flex-col items-center justify-center bg-contain bg-no-repeat bg-center
+    @apply h-[30vh] sm:h-[30vh] md:h-[60vh] saturate-100 hover:saturate-200   transition duration-500   flex flex-col items-center justify-center bg-contain bg-no-repeat bg-center 
 }
 .store-shop-title{
     @apply uppercase font-bold sm:text-xl md:text-3xl  text-center transition-all duration-500
@@ -124,9 +127,6 @@
     @apply p-4 lg:px-20 xl:px-40 h-screen flex flex-col justify-around text-main md:flex-row md:gap-8 md:items-center 
 }
 
-.single-product-imgContainer{
-    @apply relative w-full h-1/2 md:h-1/2 md:w-1/2
-}
 
 .single-product-textContainer{
     @apply flex gap-4 flex-col md:h-4/5 md:justify-center md:gap-6 
@@ -144,4 +144,16 @@
 
 .main{
     @apply  min-h-[calc(100vh-9rem)] md:min-h-[calc(100vh-5.5rem)]  text-main 
+}
+
+.single-product-imgContainer{
+    @apply relative w-full h-1/2 md:h-1/2 md:w-1/2
+}
+
+.form{
+    @apply h-1/2 w-full md:h-full md:w-1/2
+}
+
+.shopHeading{
+    @apply flex flex-col w-full h-fit bg-gray-300 shadow-lg md:flex-row justify-between
 }

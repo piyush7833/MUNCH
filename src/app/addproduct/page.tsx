@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { baseUrl } from '@/baseUrl';
+import { userAuthStore } from '@/utils/userStore';
 
 
 type optionType = {
@@ -28,7 +29,6 @@ const AddPage = () => {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string>("/images/addImage.png");
     const [shop, setShop] = useState<string|null>("HPMC"); //logic to be cleared
-    // const [review, setReview] = useState<Review[]>([]);
     const [review, setReview] = useState<number>(4); //logic to be cleared
 
     const [input, setInputs] = useState<Inputs>({
@@ -44,13 +44,13 @@ const AddPage = () => {
     )
     const [options, setOptions] = useState<optionType[]>([])
     const inputRef = useRef<HTMLInputElement | null>(null);
-
+    const {userName,role}=userAuthStore()
     const { data: session, status } = useSession()
     const router = useRouter()
     if (status === "loading") {
         return <p>loading...</p>
     }
-    if (status === "unauthenticated" || !session?.user.isShopOwner) {
+    if (!userName || role!=="ShopOwner") {
         router.push('/')
     }
     const handleImageClick = () => {

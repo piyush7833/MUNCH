@@ -5,3 +5,10 @@ type updateForm={
     image?:string,
     address?:string,
 }
+type shopOwnerForm={
+    panCard:string,
+    bankAccount:string,
+    GSTIN:string,
+    aadhar:string,
+    IFSC:string,
+}

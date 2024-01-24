@@ -8,7 +8,7 @@ import { updateShopType } from "../types";
 export const GET = async (req: NextRequest, { params }: { params: { slug: string } }) => {  //get particular shop
     try {
         const { slug } = params;
-        const shop = await prisma.shop.findUnique({ where: { slug: slug,softDelete:false } })
+        const shop = await prisma.shop.findUnique({ where: { slug: slug,softDelete:false },include: {products: true,user:{select:{name:true,id:true}}}, })
         if (shop == null) {
             return NextResponse.json({
                 error: true,
@@ -17,7 +17,7 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
             }, { status: 404 })
         }
         return NextResponse.json({
-            error: true,
+            error: false,
             message: "shop found successfully",
             status: 200,
             shop
@@ -56,7 +56,7 @@ export const PUT = async (req: NextRequest, { params }: { params: { slug: string
             }
         })
         return NextResponse.json({
-            error: true,
+            error: false,
             message: "shop updated successfully",
             status: 200,
             updatedShop
@@ -94,7 +94,7 @@ export const DELETE = async (req: NextRequest, { params }: { params: { slug: str
             }
         })
         return NextResponse.json({
-            error: true,
+            error: false,
             message: "shop deleted successfully",
             status: 200,
             updatedShop

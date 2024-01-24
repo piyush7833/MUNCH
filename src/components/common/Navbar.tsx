@@ -9,7 +9,7 @@ import UserLinks from './UserLinks';
 
 const links = [
     { id: 1, title: "Home", url: "/" },
-    { id: 2, title: "Menu", url: "/menu" },
+    { id: 2, title: "Shops", url: "/shops" },
     { id: 3, title: "Contact Us", url: "/contact" },
 ]
 

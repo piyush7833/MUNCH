@@ -9,7 +9,7 @@ import ModeBtn from '../partials/ModeBtn';
 
 const links=[
     {id:1,title:"Home",url:"/"},
-    {id:2,title:"Menu",url:"/menu"},
+    {id:2,title:"Shops",url:"/shops"},
     {id:3,title:"Contact Us",url:"/contact"},
 ]
 const Menu = () => {
@@ -26,7 +26,7 @@ const Menu = () => {
         ))}
     <Link href='/cart' onClick={()=>SetOpen(false)}><CartIcon/></Link>
     <UserLinks/>
-    <ModeBtn/>
+    <ModeBtn/> 
     </div>}
     </div>
   )

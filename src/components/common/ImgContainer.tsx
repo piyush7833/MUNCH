@@ -3,10 +3,11 @@ import Image from 'next/image';
 import React, { useRef, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
+import { profile } from 'console';
 type PropsType = {
     imgUrl?: string;
     alt: string;
-    type: string;
+    type?: string;
     edit?: boolean;
     func?: any;
 };
@@ -45,33 +46,23 @@ const ImgContainer: React.FC<PropsType> = ({ imgUrl, type, edit, alt, func }) =>
     }, [previewUrl, imgUrl]);
 
     return (
-<div className='flex flex-col gap-2 '>
-  <div
-    className={`${
-      type === 'singleProduct'
-        ? 'single-product-imgContainer'
-        : type === 'profile'
-        ? 'relative h-[50vh] w-[50vh]'
-        : ''
-    }`}
-  >
+  <div className={`relative ${ type!=="heading"?" h-[30vh] w-[30vh] sm:h-[50vh] sm:w-[50vh]":"h-[30vh] w-[30vh]"}`} >
     <Image
       src={previewUrl || '/images/addImage.png'}
       fill
       alt={alt}
-      className='object-cover rounded-full'
+      className={` ${type==="profile"?"rounded-full object-cover":"object-contain"}`}
       onClick={() => handleImageClick()}
     />
   {edit ? !editing ? (
-    <div className="icon absolute bottom-0 right-0 translate-x-[100] translate-y-[100%] flex gap-3">
-        <p className='text-lg'>Update Image</p>
+    <div className="icon absolute -bottom-10 right-20 translate-x-[100] translate-y-[100%] flex gap-3 cursor-pointer" onClick={() => setEditing(true)}>
+        <p className='text-2xl'>Update Image</p>
         <EditIcon
-          onClick={() => setEditing(true)}
           className=''/>
     </div>
     
   ) : (
-    <div className="inputContainer absolute bottom-0 right-0 translate-x-[100] translate-y-[100%]">
+    <div className="inputContainer absolute -bottom-10 right-20 translate-x-[100] translate-y-[100%]">
       <input
         className='text-2xl uppercase font-bold w-full flex items-center'
         type='file'
@@ -86,7 +77,6 @@ const ImgContainer: React.FC<PropsType> = ({ imgUrl, type, edit, alt, func }) =>
     ''
   )}
   </div>
-</div>
     );
 };
 

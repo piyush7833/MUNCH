@@ -12,8 +12,8 @@ generator client {
 // }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
@@ -25,6 +25,7 @@ enum userRole {
 
 model User {
   id                String              @id @default(cuid())
+  createdAt         DateTime            @default(now())
   name              String
   userName          String              @unique
   email             String?
@@ -44,14 +45,16 @@ model User {
 }
 
 model ShopOwner {
-  id          String @id @default(cuid())
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
   userId      String
-  user        User   @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
   panCard     String
   bankAccount String
   IFSC        String
   aadhar      String
   GSTIN       String
+  verified    DateTime? @default(now())
 }
 
 enum ShopStatus {
@@ -69,7 +72,7 @@ model Shop {
   img        String?
   slug       String     @unique
   verified   Boolean    @default(false)
-  address    String
+  address    Json
   user       User       @relation(fields: [userId], references: [id])
   products   Product[]
   orders     Order[]
