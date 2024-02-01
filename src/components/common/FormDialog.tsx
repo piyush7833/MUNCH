@@ -12,9 +12,9 @@ type propsType = {
 };
 
 const FormDialog = ({ data, onClose, onSave,image,title }:propsType) => {
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState<any>();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>, name: string) => {
     setFormData({
       ...formData,
       [name]: e.target.value,
@@ -38,7 +38,25 @@ const FormDialog = ({ data, onClose, onSave,image,title }:propsType) => {
           <h1 className="text-2xl sm:text-3xl font-bold text-center">{title}</h1>
           {data.map((field) => (
             <div key={field.name} className="inputContainer">
-              <field.icon/>
+            <field.icon />
+            {field.type === "select" ? (
+              <select
+                name={field.name}
+                id={field.name}
+                onChange={(e) => handleChange(e, field.name)}
+                required={field.required}
+                className="input"
+              >
+                <option value="" disabled selected>
+                  {field.placeholder}
+                </option>
+                {field.options?.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            ) : (
               <input
                 type={field.type}
                 name={field.name}
@@ -48,7 +66,8 @@ const FormDialog = ({ data, onClose, onSave,image,title }:propsType) => {
                 required={field.required}
                 className="input"
               />
-            </div>
+            )}
+          </div>
           ))}
           <div className="mt-4 flex justify-end">
             <button type="submit" className="btn mr-2">

@@ -1,8 +1,8 @@
 import React from 'react'
-import Link from 'next/link'
-import { MenuType } from '@/types/types';
 import axios from 'axios';
 import ShopCard from '../shop/ShopCard';
+import { ResponseShopType } from '@/types/types';
+import { baseUrl } from '@/baseUrl';
 // import { menu } from '@/data'
 const apiUrl = process.env.BASEURL;
 const getData = async () => {
@@ -11,17 +11,20 @@ const getData = async () => {
       headers: { 'Cache-Control': 'no-store' },
     });
     return response.data;
-  } catch (error) {
-    // toast.error("Something went wrong")
+  } catch (error:any) {
+    return error.response.data
   }
 }
 const Store =async () => {
-  const menu:any=await getData();
-  const data:MenuType=menu.allShops;
+  const data = await getData();
+  if (data.error) {
+    return <p>Something went wrong</p>
+  }
+  const shops: ResponseShopType = data.shops;
   return (
     
     <div className='store-container hideScrollBar'>
-      {data.map((shop:any)=>(
+      {shops.map((shop:any)=>(
         <ShopCard key={shop.id} imgUrl={shop.img} slug={shop.slug} desc={shop.desc} id={shop.id} title={shop.title}/>
       ))}
     </div>

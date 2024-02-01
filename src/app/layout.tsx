@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google'
 import Notifications from '../components/common/Notifications'
 import Footer from '../components/common/Footer'
 import { ThemeProvider } from '@/context/themeContext/ThemeContext'
-import AuthProvider from '@/components/common/AuthProvider'
+// import AuthProvider from '@/components/common/AuthProvider'
 import QuerryProvider from '@/components/common/QuerryProvider'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 }
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost:3000/api";
+// axios.defaults.baseURL = "http://localhost:3000/api";
 export default function RootLayout({
   children,
 }: {
@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
+        {/* <AuthProvider> */}
           <QuerryProvider>
             <ThemeProvider>
               <Navbar />
@@ -39,7 +39,7 @@ export default function RootLayout({
               <ToastContainer position='bottom-right' theme='dark' autoClose={3000}/>
             </ThemeProvider>
           </QuerryProvider>
-        </AuthProvider>
+        {/* </AuthProvider> */}
       </body>
     </html>
   )

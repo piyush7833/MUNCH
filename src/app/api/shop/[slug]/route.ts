@@ -8,7 +8,7 @@ import { updateShopType } from "../types";
 export const GET = async (req: NextRequest, { params }: { params: { slug: string } }) => {  //get particular shop
     try {
         const { slug } = params;
-        const shop = await prisma.shop.findUnique({ where: { slug: slug,softDelete:false },include: {products: true,user:{select:{name:true,id:true}}}, })
+        const shop = await prisma.shop.findUnique({ where: { slug: slug,softDelete:false },include: {products: {where:{softDelete:false}},user:{select:{name:true,id:true}}}, })
         if (shop == null) {
             return NextResponse.json({
                 error: true,

@@ -5,6 +5,7 @@ import { ProductsType } from '@/types/types';
 import Alert from '../common/Alert';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { baseUrl } from '@/baseUrl';
 
 const apiUrl = process.env.BASEURL;
 const getData = async () => {
@@ -13,16 +14,16 @@ const getData = async () => {
       headers: { 'Cache-Control': 'no-store' },
     });
     return response.data;
-  } catch (error) {
-    // toast.error("Something went wrong")
+  } catch (error:any) {
+    return error.response.data
   }
-};
+}
 const Items =async () => {
-  const data:any=await getData()
-  console.log(data)
+  const data = await getData();
+  if (data.error) {
+    return <p>Something went wrong</p>
+  }
   const featuredProducts:ProductsType=data.featuredproducts
-  console.log(featuredProducts)
-  console.log("data",data)
   return (
     <div className='overflow-x-auto hideScrollBar cursor-pointer'>
       <div className="item-wraper">

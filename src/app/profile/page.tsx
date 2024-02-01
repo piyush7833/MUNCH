@@ -5,12 +5,12 @@ import UserProfile from '@/components/profile/UserProfile';
 import UserShops from '@/components/profile/UserShops';
 
 const Profile = () => {
-
+const {role}=userAuthStore()
   return (
     <div>
       <div className='main gap-4 hideScrollBar'>
         <UserProfile />
-        <UserShops/>
+        {role!=="User" && <UserShops/>}
       </div>
     </div>
   );

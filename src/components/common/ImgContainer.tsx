@@ -46,7 +46,7 @@ const ImgContainer: React.FC<PropsType> = ({ imgUrl, type, edit, alt, func }) =>
     }, [previewUrl, imgUrl]);
 
     return (
-  <div className={`relative ${ type!=="heading"?" h-[30vh] w-[30vh] sm:h-[50vh] sm:w-[50vh]":"h-[30vh] w-[30vh]"}`} >
+  <div className={`relative ${ type==="heading"?"h-[30vh] w-[30vh] sm:h-[50vh] sm:w-[50vh]":type==="product"?"h-[20vh] w-[20vh]":type==="singleProduct"?"h-[30vh]  w-[30vh] md:h-[50vh] md:w-[50vh]":"h-[30vh] w-[30vh]"}`} >
     <Image
       src={previewUrl || '/images/addImage.png'}
       fill

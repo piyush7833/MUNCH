@@ -32,12 +32,12 @@
   }
 
 
-.addProductInput{
+/* .addProductInput{
     @apply focus:outline-none  px-4 py-2 bg-transparent border-2 hover:border-red-400 focus:border-blue-500 active:border-green-400 rounded-3xl placeholder:text-main text-main
 }
 .addOptionInput{
     @apply focus:outline-none  px-4 py-2 bg-transparent border-2 hover:border-red-400 focus:border-blue-500 active:border-green-400 rounded-3xl placeholder:text-main text-main
-}
+} */
 
 
 .slider-card{
@@ -123,9 +123,7 @@
 }
 
 
-.single-productContainer{
-    @apply p-4 lg:px-20 xl:px-40 h-screen flex flex-col justify-around text-main md:flex-row md:gap-8 md:items-center 
-}
+
 
 
 .single-product-textContainer{
@@ -156,4 +154,8 @@
 
 .shopHeading{
     @apply flex flex-col w-full h-fit bg-gray-300 shadow-lg md:flex-row justify-between
+}
+
+.single-productContainer{
+    @apply p-4 lg:px-20 xl:px-40 h-screen flex flex-col justify-around text-main md:flex-row md:gap-8 items-center
 }

@@ -9,12 +9,20 @@ export function middleware(request: NextRequest) {
   const isProtected = path === '/profile'  || path === '/orders'
 
   const isAdmin=path==='/verifyshops'
-  const isShopOwner=path==='/addshop' || path==='/addproduct'
+  const isShopOwner=path==='/addshop' || path==='/addproduct' || path==="/editproduct"
   // console.log("frontend",request.cookies)
-  const token = request.cookies.get('token')?.value || ''
-// console.log(token)
+  const token = request.cookies.get('token')?.value || '';
+  const role = request.cookies.get('role')?.value || '';
+console.log(role)
   if(isProtected && !token) {
     return NextResponse.redirect(new URL('/auth', request.nextUrl))
+  }
+    
+  if(isShopOwner && role!="ShopOwner") {
+    return NextResponse.redirect(new URL('/', request.nextUrl))
+  }
+  if(isAdmin && role!="Admin") {
+    return NextResponse.redirect(new URL('/', request.nextUrl))
   }
     
   if(path==="/auth" && token ){
@@ -29,5 +37,9 @@ export const config = {
     '/profile',
     '/auth',
     '/orders',
+    '/addshop',
+    '/addproduct',
+    '/editproduct',
+    '/verifyshops',
   ]
 }

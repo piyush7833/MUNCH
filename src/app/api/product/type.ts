@@ -7,7 +7,7 @@ export type productType={
     img:string,
     price:Decimal,
     options:optionType[],
-    shopId:string,
+    slug:string,
     type:ProductType
 }
 export type productEditAdminType={

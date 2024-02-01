@@ -1,35 +1,38 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { baseUrl } from '@/baseUrl';
 import { toast } from 'react-toastify';
-const DeleteButton = ({id}:{id:String}) => {
-    const {data:session,status}=useSession()
+import { userAuthStore } from '@/utils/userStore';
+import axios from 'axios';
+import ConfirmDialog from '../common/ConfirmDialog';
+const DeleteButton = ({url}:{url:string}) => {
+    const {userName,role}=userAuthStore()
+    const [isConfirmOpen, setConfirmOpen] = useState(false);
     const router=useRouter()
-    if(status==="loading"){
-        return <p>loading...</p>
-    }
-    if(status==="unauthenticated" || !session?.user.isShopOwner){
+    if(!userName || role!=="ShopOwner"){
         return 
     }
     const handleDelete=async()=>{
-        const res=await fetch(`${baseUrl}/products/${id}`,{
-            method:"Delete"
-        })
-        if(res.status===200){
-            router.push("/menu")
-            toast.success("The product has been deleted")
-        }
-        else{
-            const data=await res.json()
-            toast.error(data.message)
+        try {
+            const response=await axios.delete(url)
+            toast.success(response.data.message);
+            router.push('/')
+        } catch (error:any) {
+            toast.error(error.response.data.message)
         }
     }
   return (
     <div>
-      <button className='bg-red-500 p-2 text-white rounded-full absolute top-4 right-4' onClick={()=>handleDelete()}><DeleteIcon/></button>
+      <ConfirmDialog
+        isOpen={isConfirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleDelete}
+        title="Confirm Delete"
+        message="Are you sure you want to delete?"
+      />
+      <button className='bg-red-500 p-2 text-white rounded-full absolute bottom-3 right-4' onClick={()=>setConfirmOpen(true)}><DeleteIcon/></button>
     </div>
   )
 }

@@ -16,6 +16,7 @@ export const POST=async(req:NextRequest)=>{
             }, { status: 404 })
         }
         cookies().delete('token');
+        cookies().delete('role');
         await prisma.user.update({
             where:{
                 id:user.id

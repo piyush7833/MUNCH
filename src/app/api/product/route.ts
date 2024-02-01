@@ -7,15 +7,22 @@ import { prisma } from "@/utils/connect"
 
 export const POST = async (req: NextRequest) => {  //add product
     try {
-        const { title, desc, img, price, options, shopId,type }: productType = await req.json()
+        let { title, desc, img, price, options, slug,type }: productType = await req.json()
         const user = await getUserDetails(req);
-        const shop = await prisma.shop.findUnique({ where: { id: shopId } });
+        const shop = await prisma.shop.findUnique({ where: { slug: slug, softDelete:false } });
         if (!user) {
             return NextResponse.json({
                 error: true,
                 message: "Login to add products",
                 status: 401
             }, { status: 401 })
+        }
+        if (!shop) {
+            return NextResponse.json({
+                error: true,
+                message: "Shop not found",
+                status: 404
+            }, { status: 404 })
         }
         if (user.role !== "ShopOwner") {
             return NextResponse.json({
@@ -31,6 +38,7 @@ export const POST = async (req: NextRequest) => {  //add product
                 status: 403
             }, { status: 403 })
         }
+        const shopId=shop.id;
         const product = await prisma.product.create({
             data: {
                 title,

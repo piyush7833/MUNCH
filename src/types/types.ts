@@ -107,6 +107,7 @@ export type ResponseShopType = {
   color: string;
 }[];
 export type ProductType = {
+  type: string;
   id: string;
   title: string;
   desc?: string;
@@ -114,5 +115,10 @@ export type ProductType = {
   rating?: number;
   review?: { userName: string, comment: string }[];
   price: number;
-  options?: { title: string; additionalPrice: number }[];
+  options?: productOptionType[];
 };
+
+export type productOptionType={
+    title: string | null,
+    additionalPrice: number | null
+}

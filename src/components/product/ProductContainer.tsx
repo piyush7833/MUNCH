@@ -1,6 +1,12 @@
+"use client"
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import ImgContainer from '../common/ImgContainer'
+import { ProductType } from '@prisma/client'
+import DeleteButton from '../partials/DeleteButton'
+import { baseUrl } from '@/baseUrl'
+import EditButton from '../partials/EditButton'
 
 type propsType={
     img?:string,
@@ -9,29 +15,36 @@ type propsType={
     price?:number,
     edit?:boolean,
     add?:boolean
+    productType?:string,
+    shopSlug?:string,
+    shopUserId?:string
 }
-const ProductContainer = ({img,id,title,price,edit,add}:propsType) => {
+const ProductContainer = ({img,id,title,price,edit,add,productType,shopSlug,shopUserId}:propsType) => {
   let href;
   if(edit){
     href=`/edit-product/${id}`
   }
   if(add){
-    href=`/add-product`
+    href=`/add-product/${shopSlug}`
   }
   else{
     href=`/product/${id}`
   }
   return (
-    <Link className='product-container group'  href={href} key={id} >
-    <div className="product-imgContainer">
-    <Image src={img!} fill  alt={title} className='object-contain w-fit' />
-    </div>
-    <div className="product-textContainer">
-      <h1 className='text-xl uppercase p-2'>{title}</h1>
-      <h2 className='group-hover:hidden text-xl'>Rs {price}</h2>
-      <button className='btn hidden group-hover:block'>Add to Cart</button>  
-    </div>
+    <div className="relative flex  h-fit w-[80%] sm:w-[33%] md:w-[45%] px-4 py-2 items-center rounded-md shadow-md hover:shadow-lg hover:shadow-main shadow-main justify-around">
+    <Link className='flex h-fit flex-col md:flex-row w-full items-center justify-around '  href={href} key={id} >
+      <div className="details w-[80%]">
+      <p className='text-center md:text-start'>{title}</p>
+      <p className='text-center md:text-start'>{productType}</p>
+      <p className='text-center md:text-start'>Rs {price}</p>
+      </div>
+      <div className="img flex">
+      <ImgContainer imgUrl={img} alt={title} type='product'/>
+      </div>
   </Link>
+      {!add && <DeleteButton url={`${baseUrl}/product/${id}`}/>}
+      {!add && <EditButton url={`${baseUrl}/editproduct/${id}`}/>}
+    </div>
   )
 }
 

@@ -1,42 +1,46 @@
-import DeleteButton from '@/components/partials/DeleteButton';
+"use client"
+import { baseUrl } from '@/baseUrl';
+import ImgContainer from '@/components/common/ImgContainer';
 import Price from '@/components/product/Price'
-import { singleProduct } from '@/data'
-import { ProductType } from '@/types/types';
-import Image from 'next/image'
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 
-const apiUrl = process.env.BASEURL;
-const getData = async (id: string) => {
-  const res = await fetch(`${apiUrl}/products/${id}`, {
-    cache: "no-store",
-  });
-  if (!res.ok) {
-    throw new Error("Failed!");
+
+
+const Product =  ({ params }: { params: { id: string } }) => {
+  const [data,setData]=useState<any>()
+  useEffect(() => {
+    const getData = async (id:string) => {
+      try {
+        const response = await axios.get(`${baseUrl}/product/${id}`)
+        setData(response.data.product);
+      } catch (error: any) {
+        setData(error.response)
+      }
+    }
+    getData(params.id)
+  }, [params.id])
+  if(data && data.error){
+    return <div>Something went wrong</div>
   }
-  return res.json();
-};
-
-
-const SingleProductPage = async ({ params }: { params: { id: string } }) => {
-  const singleProduct: ProductType = await getData(params.id);
-
+  if(!data){
+    return <div>Loading...</div>
+  }
   return (
     <div className="main text-main relative">
       <div className='single-productContainer hideScrollBar'>
-        <div className="single-product-imgContainer">
-          {singleProduct.img && <Image src={singleProduct.img} fill alt={singleProduct.title} className='object-contain' />}
-        </div>
+          <ImgContainer imgUrl={data.img} type='singleProduct' alt={data.title}/>
         <div className="single-product-textContainer">
-          <h1 className='text-3xl uppercase font-bold'>{singleProduct.title}</h1>
-          {singleProduct.rating && <h1 className='text-xl first-letter:uppercase font-bold'>Rating {singleProduct.rating}</h1>}
-          <p className='text-base'>{singleProduct.desc}</p>
-          <Price product={singleProduct} />
+          <h1 className='text-3xl uppercase font-bold'>{data.title}</h1>
+          {data.rating && <h1 className='text-xl first-letter:uppercase font-bold'>Rating {data.rating}</h1>}
+          <p className='text-base'>{data.desc}</p>
+          <Price product={data} />
         </div>
       </div>
-      <DeleteButton id={params.id}/>
-      {/* <div className="review">Reviews
-        {singleProduct.review && <div className='text-xl first-letter:uppercase font-bold'>
-          {singleProduct.review.length && singleProduct.review?.map((r, index) => (
+      <div className="review px-4 md:px-10">
+        <p className='text-lg'>Reviews</p>
+        {data.review && <div className='text-xl first-letter:uppercase font-bold'>
+          {data.review.length && data.review?.map((r, index) => (
             <div className="singleReview" key={index}>
               <div className="userName">
                 {r.userName}
@@ -47,9 +51,9 @@ const SingleProductPage = async ({ params }: { params: { id: string } }) => {
             </div>
           ))}
         </div>}
-      </div> */}
+      </div>
     </div>
   )
 }
 
-export default SingleProductPage
+export default Product

@@ -5,6 +5,8 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
 import { SvgIconTypeMap } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
+import axios from 'axios';
+import { baseUrl } from '@/baseUrl';
 
 export type formType={
     type:string,
@@ -13,6 +15,7 @@ export type formType={
     placeholder:string,
     required:boolean,
     icon:OverridableComponent<SvgIconTypeMap<{}, "svg">> 
+    options?: string[];
 }
 export const addressFormData:formType[]=[
     {
@@ -32,6 +35,51 @@ export const addressFormData:formType[]=[
         required:true
     },
     {
+        type:"select",
+        name:"state",
+        id:"state",
+        placeholder:"Enter state",
+        icon:HolidayVillageIcon,
+        required:true,
+        options:[
+            "Andaman and Nicobar Islands",
+            "Andhra Pradesh",
+            "Arunachal Pradesh",
+            "Assam",
+            "Bihar",
+            "Chandigarh",
+            "Chhattisgarh",
+            "Dadra and Nagar Haveli",
+            "Daman and Diu",
+            "Delhi",
+            "Goa",
+            "Gujarat",
+            "Haryana",
+            "Himachal Pradesh",
+            "Jharkhand",
+            "Karnataka",
+            "Kerala",
+            "Lakshadweep",
+            "Madhya Pradesh",
+            "Maharashtra",
+            "Manipur",
+            "Meghalaya",
+            "Mizoram",
+            "Nagaland",
+            "Odisha",
+            "Puducherry",
+            "Punjab",
+            "Rajasthan",
+            "Sikkim",
+            "Tamil Nadu",
+            "Telangana",
+            "Tripura",
+            "Uttar Pradesh",
+            "Uttarakhand",
+            "West Bengal"
+          ] 
+    },
+    {
         type:"text",
         name:"city",
         id:"city",
@@ -47,14 +95,7 @@ export const addressFormData:formType[]=[
         icon:PinIcon,
         required:true
     },
-    {
-        type:"text",
-        name:"state",
-        id:"state",
-        placeholder:"Enter state",
-        icon:HolidayVillageIcon,
-        required:true
-    },
+ 
 ]
 export const passwordChangeFormData:formType[]=[
     {
@@ -148,5 +189,40 @@ export const addShopFormData:formType[]=[
         placeholder:"Enter unique identifier for your shop.",
         icon: StreetviewIcon,
         required:true
+    }
+]
+export const addProductFormData:formType[]=[
+    {
+        type:"text",
+        name:"title",
+        id:"title",
+        placeholder:"Enter name of product.",
+        icon: StreetviewIcon,
+        required:true
+    },
+    {
+        type:"text",
+        name:"desc",
+        id:"desc",
+        placeholder:"Enter description of product.",
+        icon: StreetviewIcon,
+        required:true
+    },
+    {
+        type:"text",
+        name:"price",
+        id:"price",
+        placeholder:"Enter price of product.",
+        icon: StreetviewIcon,
+        required:true
+    },
+    {
+        type:"select",
+        name:"type",
+        id:"type",
+        placeholder:"Enter type of product (Veg, Non-Veg).",
+        icon: StreetviewIcon,
+        required:true,
+        options:["Veg" , "Non_Veg"]
     }
 ]

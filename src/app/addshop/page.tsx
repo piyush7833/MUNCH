@@ -38,7 +38,7 @@ const Page = () => {
       console.log("address",addressData)
       const response =await  axios.post(`${baseUrl}/shop`, { title:shopData?.title, desc:shopData?.desc, slug:shopData?.slug  ,address: addressData,img:imgUrl })
       toast.success(response.data.message);
-      router.push(`/shop/${response.data.newShop.slug}`)
+      router.push(`/shops/${response.data.newShop.slug}`)
     } catch (error:any) {
       toast.error(error.response.data.message)
     }
@@ -64,7 +64,7 @@ const Page = () => {
         title="Confirm Action"
         message="Are you sure you want to perform this action?"
       />
-      <div className="profileImg w-full h-1/2 md:h-1/2 md:w-1/2 flex items-center justify-center">
+      <div className=" w-full h-1/2 md:h-1/2 md:w-1/2 flex items-center justify-center">
         <ImgContainer type='singleProduct' alt='add image' edit={true} func={handleImageChange} />
       </div>
       <FormContainer onSave={handleSave} data={addShopFormData} address={addressFormData} title="Add shop" />

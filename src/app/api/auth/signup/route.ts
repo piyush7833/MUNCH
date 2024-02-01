@@ -45,7 +45,11 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
         var token = jwt.sign({ id: newUser.id }, process.env.JWT!);
         cookies().set('token', token);
-
+        cookies().set({
+            name: 'role',
+            value: "User",
+            // httpOnly: true,
+          })
         return NextResponse.json({
             error: false,
             status: 201,  // Created

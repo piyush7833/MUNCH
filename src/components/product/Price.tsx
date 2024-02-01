@@ -19,7 +19,7 @@ const Price = ({ product }: { product: ProductType }) => {
       title: product.title,
       img: product.img,
       price: totalPrice,
-      ...(product.options?.length && { optionTitle: product.options[selected].title }),
+      ...(product.options?.length && { optionTitle: product.options[selected].title! }),
       quantity: quantity,
     })
     toast.success(`${product.options?.length && product.options[selected].title} ${product.title} added to cart successfully`)
@@ -31,7 +31,7 @@ const Price = ({ product }: { product: ProductType }) => {
   useEffect(() => {
     if (product.options?.length) {
       setTotalPrice(
-        quantity * product.price + quantity * product.options[selected].additionalPrice
+        quantity * product.price + quantity * product.options[selected].additionalPrice!
       );
     }
     else {
@@ -59,10 +59,9 @@ const Price = ({ product }: { product: ProductType }) => {
           </button>
         ))}
       </div>
-      {/* Qunatity and add btn container */}
-      <div className="flex justify-between items-center">
+      <div className="flex  flex-wrap">
         {/* Quantity */}
-        <div className="flex justify-between w-full px-4 py-2 ring-1 ring-main items-center">
+        <div className="flex justify-between w-auto px-4 py-2 ring-1 ring-main items-center">
           <span>Quantity</span>
           <div className="flex gap-4 items-center">
             <button className="btn" onClick={() => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))}
