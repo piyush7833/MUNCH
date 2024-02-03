@@ -5,14 +5,6 @@ import { getUserDetails } from "../utils/action";
 import { prisma } from "@/utils/connect";
 import { cookies } from 'next/headers'
 
-export const verifyEmail = async () => {
-
-}
-
-export const verifyPhone = async () => {
-
-}
-
 export const PUT = async (req: NextRequest) => {
     try {
         // let {name,email,phone,image}:updateForm=await req.json();

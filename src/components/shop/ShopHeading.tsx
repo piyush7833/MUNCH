@@ -1,9 +1,8 @@
+"use client"
 import React from 'react'
 import ImgContainer from '../common/ImgContainer'
 import { addressType } from '@/types/types'
 import { userAuthStore } from '@/utils/userStore'
-import { Edit } from '@mui/icons-material'
-import Link from 'next/link'
 import DeleteButton from '../partials/DeleteButton'
 import { baseUrl } from '@/baseUrl'
 import EditButton from '../partials/EditButton'
@@ -64,7 +63,7 @@ const ShopHeading = ({title,img,desc,address,userId,owner,totalProducts,slug}:pr
             </div>
         </div>
         {userId===id && <DeleteButton url={`${baseUrl}/shop/${slug}`} />}
-        {userId===id && <EditButton  url={`editshops/${slug}`} />}
+        {userId===id && <EditButton  url={`edit-shop/${slug}`} />}
     </div>
   )
 }

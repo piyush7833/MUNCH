@@ -43,7 +43,7 @@ const ProductContainer = ({img,id,title,price,edit,add,productType,shopSlug,shop
       </div>
   </Link>
       {!add && <DeleteButton url={`${baseUrl}/product/${id}`}/>}
-      {!add && <EditButton url={`${baseUrl}/editproduct/${id}`}/>}
+      {!add && <EditButton url={`/edit-product/${id}`}/>}
     </div>
   )
 }

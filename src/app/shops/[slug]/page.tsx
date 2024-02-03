@@ -1,8 +1,10 @@
 "use client"
 import { baseUrl } from '@/baseUrl';
+import Loader from '@/components/common/Loader';
 import ProductContainer from '@/components/product/ProductContainer';
 import ShopHeading from '@/components/shop/ShopHeading';
 import { ProductType } from '@/types/types';
+import { images } from '@/utils/formData';
 import { userAuthStore } from '@/utils/userStore';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -30,7 +32,7 @@ const ShopMenuPage = ({params}:Props) => {
     return <div>Something went wrong</div>
   }
   if(!data){
-    return <div>Loading...</div>
+    return <Loader  message='Shops are coming at your doorsteps'/>
   }
   return (
     <div className='flex text-main flex-wrap min-h-[calc(100vh-3rem)] md:min-h-[calc(100vh-5.5rem)] gap-4'>

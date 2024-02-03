@@ -8,6 +8,12 @@ import { OverridableComponent } from '@mui/material/OverridableComponent';
 import axios from 'axios';
 import { baseUrl } from '@/baseUrl';
 
+export const images = [
+    "https://res.cloudinary.com/dsgvp2wmj/image/upload/v1640050380/Codepen%20GSAP%20Bounce/burger_ebjuje.png",
+    "https://res.cloudinary.com/dsgvp2wmj/image/upload/v1640050408/Codepen%20GSAP%20Bounce/coffee-cup_ksq5xo.png",
+    "https://cdn-icons-png.flaticon.com/512/3125/3125268.png",
+    "https://res.cloudinary.com/dsgvp2wmj/image/upload/v1640050490/Codepen%20GSAP%20Bounce/pizza_xzzred.png",
+  ];
 export type formType={
     type:string,
     name:string,
@@ -16,6 +22,7 @@ export type formType={
     required:boolean,
     icon:OverridableComponent<SvgIconTypeMap<{}, "svg">> 
     options?: string[];
+    editable?:boolean;
 }
 export const addressFormData:formType[]=[
     {
@@ -94,6 +101,86 @@ export const addressFormData:formType[]=[
         placeholder:"Enter pincode",
         icon:PinIcon,
         required:true
+    },
+ 
+]
+export const editAddressFormData:formType[]=[
+    {
+        type:"text",
+        name:"street",
+        id:"street",
+        placeholder:"Enter street",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"landmark",
+        id:"landmark",
+        placeholder:"Enter landmark",
+        icon:NearMeIcon,
+        required:false
+    },
+    {
+        type:"select",
+        name:"state",
+        id:"state",
+        placeholder:"Enter state",
+        icon:HolidayVillageIcon,
+        required:false,
+        options:[
+            "Andaman and Nicobar Islands",
+            "Andhra Pradesh",
+            "Arunachal Pradesh",
+            "Assam",
+            "Bihar",
+            "Chandigarh",
+            "Chhattisgarh",
+            "Dadra and Nagar Haveli",
+            "Daman and Diu",
+            "Delhi",
+            "Goa",
+            "Gujarat",
+            "Haryana",
+            "Himachal Pradesh",
+            "Jharkhand",
+            "Karnataka",
+            "Kerala",
+            "Lakshadweep",
+            "Madhya Pradesh",
+            "Maharashtra",
+            "Manipur",
+            "Meghalaya",
+            "Mizoram",
+            "Nagaland",
+            "Odisha",
+            "Puducherry",
+            "Punjab",
+            "Rajasthan",
+            "Sikkim",
+            "Tamil Nadu",
+            "Telangana",
+            "Tripura",
+            "Uttar Pradesh",
+            "Uttarakhand",
+            "West Bengal"
+          ] 
+    },
+    {
+        type:"text",
+        name:"city",
+        id:"city",
+        placeholder:"Enter city",
+        icon:LocationCityIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"pincode",
+        id:"pincode",
+        placeholder:"Enter pincode",
+        icon:PinIcon,
+        required:false
     },
  
 ]
@@ -191,6 +278,33 @@ export const addShopFormData:formType[]=[
         required:true
     }
 ]
+export const editShopFormData:formType[]=[
+    {
+        type:"text",
+        name:"title",
+        id:"title",
+        placeholder:"Enter name of shop.",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"desc",
+        id:"desc",
+        placeholder:"Enter description of shop.",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"slug",
+        id:"slug",
+        placeholder:"Enter unique identifier for your shop.",
+        icon: StreetviewIcon,
+        required:false,
+        editable:false
+    }
+]
 export const addProductFormData:formType[]=[
     {
         type:"text",
@@ -223,6 +337,41 @@ export const addProductFormData:formType[]=[
         placeholder:"Enter type of product (Veg, Non-Veg).",
         icon: StreetviewIcon,
         required:true,
+        options:["Veg" , "Non_Veg"]
+    }
+]
+export const editProductFormData:formType[]=[
+    {
+        type:"text",
+        name:"title",
+        id:"title",
+        placeholder:"Enter name of product.",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"desc",
+        id:"desc",
+        placeholder:"Enter description of product.",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"price",
+        id:"price",
+        placeholder:"Enter price of product.",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"select",
+        name:"type",
+        id:"type",
+        placeholder:"Enter type of product (Veg, Non-Veg).",
+        icon: StreetviewIcon,
+        required:false,
         options:["Veg" , "Non_Veg"]
     }
 ]

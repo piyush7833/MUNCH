@@ -1,12 +1,7 @@
 "use client"
-import Image from 'next/image';
-import React, { useState, useRef } from 'react'
-import AddIcon from '@mui/icons-material/Add';
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { baseUrl } from '@/baseUrl';
-import { userAuthStore } from '@/utils/userStore';
 import ImgContainer from '@/components/common/ImgContainer';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -78,7 +73,7 @@ const AddPage = ({params}:Props) => {
             <div className=" w-full h-1/2 md:h-1/2 md:w-1/2 flex items-center justify-center">
                 <ImgContainer type='singleProduct' alt='add image' edit={true} func={handleImageChange} />
             </div>
-            <FormContainer onSave={handleSave} data={addProductFormData} title="Add Product" />
+            <FormContainer onSave={handleSave} data={addProductFormData} title="Add Product" additional={true} />
         </div>
     )
 }

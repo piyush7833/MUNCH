@@ -13,7 +13,7 @@ const getData = async () => {
     return error.response.data
   }
 }
-const MenuPage = async () => {
+const Page = async () => {
   const data = await getData();
   if (data.error) {
     return <p>Something went wrong</p>
@@ -28,4 +28,4 @@ const MenuPage = async () => {
   )
 }
 
-export default MenuPage
+export default Page

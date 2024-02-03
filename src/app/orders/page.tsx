@@ -1,17 +1,17 @@
 "use client"
-import { OrderProductType, OrderType, ProductType } from "@/types/types";
+import { OrderProductType, OrderType } from "@/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import EditIcon from '@mui/icons-material/Edit';
 import { toast } from "react-toastify";
-import Items from "@/components/Items";
+import { userAuthStore } from "@/utils/userStore";
+import { baseUrl } from "@/baseUrl";
 
-const OrdersPage = () => {
+const Page = () => {
 
-  const { data: session, status } = useSession();
+  const { userName,role} = userAuthStore();
   const router = useRouter();
 
   const [selectedStars, setSelectedStars] = useState(0);
@@ -30,14 +30,14 @@ const OrdersPage = () => {
     }
   };
 
-  if (status === "unauthenticated") {
+  if (!userName) {
     router.push("/auth");
   }
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["orders"],
     queryFn: () =>
-      fetch("http://localhost:3000/api/orders").then((res) => res.json()),
+      fetch(`${baseUrl}/order`).then((res) => res.json()),
   });
 
   const queryClient=useQueryClient()
@@ -73,12 +73,12 @@ const OrdersPage = () => {
 
 
 
-  if (isLoading || status === "loading") return "Loading...";
+  // if (isLoading) return "Loading...";
 
   return (
     <div className="h-[calc(100vh-9rem)] md:h-[calc(100vh-5.5rem)] flex flex-col text-main items-center overflow-x-hidden overflow-y-auto hideScrollBar gap-9 p-4">
 
-      {data.map((item: OrderType) => (
+      {data && data.map((item: OrderType) => (
 
 
         <div className={`orderContainer h-fit w-[98%] justify-center flex flex-col items-center shadow-lg gap-4 rounded-lg px-4 py-4 `} key={item.id}>
@@ -104,14 +104,14 @@ const OrdersPage = () => {
               <div className="orderImgContainer w-full h-[25%] sm:h-full sm:w-[25%] relative">
                 <Image src={product.img!} alt={product.title} fill />
               </div>
-              <div className={`details w-full sm:w-[50%] flex flex-col items-stretch sm:px-4 gap-3 ${item.status != "Delievered" ? "sm:w-[75%]" : "sm:w-[50%] "} ${session?.user.isShopOwner ? "sm:w-[75%]" : "sm:w-[50%]"}`}>
+              <div className={`details w-full sm:w-[50%] flex flex-col items-stretch sm:px-4 gap-3 ${item.status != "Delievered" ? "sm:w-[75%]" : "sm:w-[50%] "} ${role === "User" ? "sm:w-[75%]" : "sm:w-[50%]"}`}>
                 <div className="orderDetails">
                   <h1>product</h1>
                   <h1>{product.title}</h1>
                 </div>
                 <div className="orderDetails">
-                  <h1>{session?.user.isShopOwner === true ? "Customer" : "Shop"}</h1>
-                  <h1>{session?.user.isShopOwner === true ? item.userEmail : product.shopName}</h1>
+                  <h1>{role === "User" ? "Customer" : "Shop"}</h1>
+                  <h1>{role === "User" ? item.userEmail : product.shopName}</h1>
                 </div>
                 {product.optionTitle && <div className="orderDetails">
                   <h1>option</h1>
@@ -126,7 +126,7 @@ const OrdersPage = () => {
                   <h1>Rs {product.price}</h1>
                 </div>
               </div>
-              <div className={`orderInputs w-full sm:w-1/4 ${item.status != "Delievered" ? "hidden" : "block"} ${session?.user.isShopOwner ? "hidden" : "block"}`}>
+              <div className={`orderInputs w-full sm:w-1/4 ${item.status != "Delievered" ? "hidden" : "block"} ${role === "User" ? "hidden" : "block"}`}>
                 <div className='flex flex-col justify-center items-center lg:items-start'>
                   <p className='text-sm text-main font-bold md:text-base'>Feedback</p>
                   <div>
@@ -142,7 +142,7 @@ const OrdersPage = () => {
                     ))}
                   </div>
 
-                  {session?.user.isShopOwner === true ? <textarea rows={3} cols={5} placeholder='Enter status' className=' w-full sm:w-[80%] text-sm input  ' /> : <textarea rows={3} cols={5} placeholder='Enter Message' className=' w-80% text-sm input  ' />}
+                  {role === "User" ? <textarea rows={3} cols={5} placeholder='Enter status' className=' w-full sm:w-[80%] text-sm input  ' /> : <textarea rows={3} cols={5} placeholder='Enter Message' className=' w-80% text-sm input  ' />}
 
                   <button className='btn'>Submit</button>
                 </div>
@@ -150,7 +150,7 @@ const OrdersPage = () => {
             </div>
           ))}
           <div className="details w-[98%] flex flex-col items-stretch px-2 sm:px-9">
-            {session?.user.isShopOwner ?
+            {role === "User" ?
               <div className="orderDetails">
                 <h1>Status</h1>
                 <form
@@ -215,4 +215,4 @@ const OrdersPage = () => {
 //   );
 // }
 
-export default OrdersPage;
+export default Page;

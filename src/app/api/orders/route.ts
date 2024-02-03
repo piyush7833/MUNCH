@@ -65,7 +65,7 @@ export const POST = async (req: NextRequest) => {
   }
 }
 
-export const GET = async (req: NextRequest) => { //get all orders of shopOwner all shops 
+export const GET = async (req: NextRequest) => { //get all orders of shopOwner all shops or user
   try {
     const user = await getUserDetails(req);
     let orders;

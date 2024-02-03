@@ -1,7 +1,9 @@
 "use client"
 import { baseUrl } from '@/baseUrl';
 import ImgContainer from '@/components/common/ImgContainer';
+import Loader from '@/components/common/Loader';
 import Price from '@/components/product/Price'
+import { images } from '@/utils/formData';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
@@ -24,7 +26,7 @@ const Product =  ({ params }: { params: { id: string } }) => {
     return <div>Something went wrong</div>
   }
   if(!data){
-    return <div>Loading...</div>
+    return <Loader images={images}  text='Delicious Food'/>
   }
   return (
     <div className="main text-main relative">
@@ -37,7 +39,7 @@ const Product =  ({ params }: { params: { id: string } }) => {
           <Price product={data} />
         </div>
       </div>
-      <div className="review px-4 md:px-10">
+      {/* <div className="review px-4 md:px-10">
         <p className='text-lg'>Reviews</p>
         {data.review && <div className='text-xl first-letter:uppercase font-bold'>
           {data.review.length && data.review?.map((r, index) => (
@@ -51,7 +53,7 @@ const Product =  ({ params }: { params: { id: string } }) => {
             </div>
           ))}
         </div>}
-      </div>
+      </div> */}
     </div>
   )
 }
