@@ -5,15 +5,6 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
 import { SvgIconTypeMap } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
-import axios from 'axios';
-import { baseUrl } from '@/baseUrl';
-
-export const images = [
-    "https://res.cloudinary.com/dsgvp2wmj/image/upload/v1640050380/Codepen%20GSAP%20Bounce/burger_ebjuje.png",
-    "https://res.cloudinary.com/dsgvp2wmj/image/upload/v1640050408/Codepen%20GSAP%20Bounce/coffee-cup_ksq5xo.png",
-    "https://cdn-icons-png.flaticon.com/512/3125/3125268.png",
-    "https://res.cloudinary.com/dsgvp2wmj/image/upload/v1640050490/Codepen%20GSAP%20Bounce/pizza_xzzred.png",
-  ];
 export type formType={
     type:string,
     name:string,

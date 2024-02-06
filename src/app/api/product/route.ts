@@ -189,6 +189,23 @@ export const GET = async (req: NextRequest) => {  //get random featured product 
                 products
             }, { status: 200 })
         }
+        if (user?.role === "Admin") {
+            const products = await prisma.product.findMany({
+                where: {
+                  softDelete:false
+                },
+                orderBy: {
+                    createdAt: "desc"
+                },
+                include: {  shop: true }
+              });
+            return NextResponse.json({
+                error: false,
+                message: "Product fetched successfully",
+                status: 200,
+                products
+            }, { status: 200 })
+        }
     } catch (error) {
         console.log(error)
         return NextResponse.json({

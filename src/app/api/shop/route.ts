@@ -102,11 +102,12 @@ export const POST=async(req:NextRequest)=>{  //add shop
 export const GET=async(req:NextRequest)=>{ //get all shops of user  OR get all shops
     try {
         const user=await getUserDetails(req);
+        // console.log(user)
         if(user?.role==="ShopOwner"){
             const shops=await prisma.shop.findMany({
                 where:{
                     userId:user.id,
-                    softDelete:false
+                    softDelete:false,
                 },
             });
             return NextResponse.json({
@@ -116,7 +117,21 @@ export const GET=async(req:NextRequest)=>{ //get all shops of user  OR get all s
                 shops
             },{status:200})
         }
-        const shops=await prisma.shop.findMany({where:{softDelete:false}})
+        if(user?.role==="Admin"){
+            const shops=await prisma.shop.findMany({
+                where:{
+                    softDelete:false,
+                },orderBy:{createdAt:"desc"},
+                include:{user:{select:{name:true,id:true}}}
+            });
+            return NextResponse.json({
+                error:false,
+                message:"Your shop fetched successfully",
+                status:200,
+                shops
+            },{status:200})
+        }
+        const shops=await prisma.shop.findMany({where:{softDelete:false,verified:true}})
         return NextResponse.json({
             error:false,
             message:"Shop fetched successfully",

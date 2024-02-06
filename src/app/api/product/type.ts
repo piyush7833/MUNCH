@@ -2,13 +2,15 @@ import { ProductType } from "@prisma/client"
 import { Decimal } from "@prisma/client/runtime/library"
 
 export type productType={
+    id?:string,
     title:string,
     desc:string,
     img:string,
     price:Decimal,
     options:optionType[],
     slug:string,
-    type:ProductType
+    type:ProductType,
+    status?:string
 }
 export type productEditAdminType={
     title:string,

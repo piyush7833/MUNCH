@@ -1,5 +1,4 @@
 "use client"
-import ShopCard from '@/components/shop/ShopCard';
 import { ResponseShopType } from '@/types/types';
 import useSWR from 'swr'; // Assuming you have swr installed
 import axios from 'axios';
@@ -43,12 +42,7 @@ const Page = () => {
 
   return (
     <div className='main'>
-      <div className="menu-container">
-      {role!=="Admin" && shops.map((shop) => (
-        <ShopCard key={shop.id} imgUrl={shop.img!} slug={shop.slug} desc={shop.desc!} id={shop.id!} title={shop.title!} />
-      ))}
-      </div>
-    {role==="Admin" &&  <CustomTable data={extracedtedData} keys={findKeys(extracedtedData)} /> }
+    <CustomTable data={extracedtedData} keys={findKeys(extracedtedData)} />
     </div>
   )
 }

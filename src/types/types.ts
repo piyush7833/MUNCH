@@ -104,7 +104,11 @@ export type ResponseShopType = {
   title: string;
   desc?: string;
   img?: string;
-  color: string;
+  address: string;
+  createdAt: string;
+  status: string;
+  user: JSON;
+  verified: boolean;
 }[];
 export type ProductType = {
   type: string;

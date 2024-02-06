@@ -54,7 +54,7 @@ model ShopOwner {
   IFSC        String
   aadhar      String
   GSTIN       String
-  verified    DateTime? @default(now())
+  verified    DateTime? 
 }
 
 enum ShopStatus {
@@ -169,10 +169,16 @@ model Review {
   softDelete Boolean  @default(false)
 }
 
+enum VerificationType {
+  Email
+  Phone
+}
+
 model verificationToken {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   userId    String //reference from user
   token     String
+  type      VerificationType
   user      User     @relation(fields: [userId], references: [id])
 }

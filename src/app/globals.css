@@ -12,10 +12,10 @@
     @apply transition-all duration-500
   }
 .btn{
-    @apply cursor-pointer md:px-6  py-2 px-3 border-x-2  text-xs md:text-base bg-red-500 rounded-3xl  md:border-x-2  hover:border-x-0 mt-2 mx-2  text-white hover:bg-green-300 focus:outline-none hover:text-black hover:font-bold  disabled:cursor-not-allowed disabled:bg-gray-200
+    @apply cursor-pointer md:px-6  py-2 px-3 border-x-2  text-xs md:text-base bg-red-500 rounded-3xl  md:border-x-2  hover:border-x-0 mt-2 mx-2  text-white hover:bg-green-300 focus:outline-none hover:text-black hover:font-bold  disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-black
 }
 .cancelBtn{
-    @apply cursor-pointer md:px-6  py-2 px-3 border-x-2  text-xs md:text-base bg-white  text-gray-700 hover:bg-orange-200 focus:outline-none rounded-3xl  md:border-x-2  hover:border-x-0 mt-2 mx-2 hover:text-black hover:border-red-400 hover:font-bold disabled:cursor-not-allowed disabled:bg-gray-200
+    @apply cursor-pointer md:px-6  py-2 px-3 border-x-2  text-xs md:text-base bg-white  text-gray-700 hover:bg-orange-200 focus:outline-none rounded-3xl  md:border-x-2  hover:border-x-0 mt-2 mx-2 hover:text-black hover:border-red-400 hover:font-bold disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-black
 }
 
 .input{
@@ -95,7 +95,7 @@
 
 
 .menu-container{
-    @apply p-2 md:p-4 lg:px-20 xl:px-20 w-full min-h-[calc(100vh-3rem)] md:min-h-[calc(100vh-5.5rem)] flex flex-row items-center gap-8 flex-wrap justify-center text-white
+    @apply  h-full w-full flex flex-row items-center gap-8 flex-wrap justify-center text-white 
 }
 
 .menu-shop-container{
@@ -141,7 +141,7 @@
 
 
 .main{
-    @apply  min-h-[calc(100vh-9rem)] md:min-h-[calc(100vh-5.5rem)]  text-main 
+    @apply  min-h-[calc(100vh-9rem)] md:min-h-[calc(100vh-5.5rem)] p-4  text-main 
 }
 
 .single-product-imgContainer{

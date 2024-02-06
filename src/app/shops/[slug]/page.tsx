@@ -4,7 +4,6 @@ import Loader from '@/components/common/Loader';
 import ProductContainer from '@/components/product/ProductContainer';
 import ShopHeading from '@/components/shop/ShopHeading';
 import { ProductType } from '@/types/types';
-import { images } from '@/utils/formData';
 import { userAuthStore } from '@/utils/userStore';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'

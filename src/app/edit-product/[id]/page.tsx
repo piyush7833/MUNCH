@@ -90,7 +90,7 @@ const  Page = ({params}:Props) => {
       <div className=" w-full h-1/2 md:h-1/2 md:w-1/2 flex items-center justify-center">
         <ImgContainer type='singleProduct' alt='add image' edit={true} imgUrl={data.product.img} func={handleImageChange} />
       </div>
-      <FormContainer onSave={handleSave} data={editProductFormData} originalData={data.product}  originalAdditionalOptions={data.product.options} additional={true} title="Edit shop" />
+      <FormContainer onSave={handleSave} data={editProductFormData} originalData={data.product}  originalAdditionalOptions={data.product.options} additional={true} title="Edit Product" />
     </div>
     </div>
   )

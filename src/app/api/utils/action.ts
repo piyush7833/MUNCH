@@ -63,12 +63,13 @@ export const sendEmail = async (email: string, subject: string, htmlContent: any
   }
 }
 
-export const genrateToken = async (id: string) => {
+export const genrateToken = async (id: string,type:any) => {
   try {
     const token = await prisma.verificationToken.create({
       data: {
         userId: id,
-        token: crypto.randomBytes(32).toString("hex")
+        token: crypto.randomBytes(32).toString("hex"),
+        type: type// Add the missing 'type' property here
       }
     })
     return token;
@@ -83,7 +84,7 @@ export const getUserDetails = async (req: any) => {
   try {
     const token = req.cookies.get("token")?.value || '';
     const cookieStore = cookies()
-
+    // console.log(token)
     if (!token) {
       return null;
     }

@@ -17,9 +17,10 @@ type propsType={
     add?:boolean
     productType?:string,
     shopSlug?:string,
-    shopUserId?:string
+    shopUserId?:string,
+    desc?:string
 }
-const ProductContainer = ({img,id,title,price,edit,add,productType,shopSlug,shopUserId}:propsType) => {
+const ProductContainer = ({img,id,title,price,edit,add,productType,shopSlug,shopUserId,desc}:propsType) => {
   let href;
   if(edit){
     href=`/edit-product/${id}`
@@ -35,6 +36,7 @@ const ProductContainer = ({img,id,title,price,edit,add,productType,shopSlug,shop
     <Link className='flex h-fit flex-col md:flex-row w-full items-center justify-around '  href={href} key={id} >
       <div className="details w-[80%]">
       <p className='text-center md:text-start'>{title}</p>
+      <p className='text-center md:text-start'>{desc}</p>
       <p className='text-center md:text-start'>{productType}</p>
       <p className='text-center md:text-start'>Rs {price}</p>
       </div>
