@@ -8,9 +8,11 @@ export type shopType={
     slug:string
 }
 export type updateShopType={
-    title:string,
-    desc:string,
-    img:string,
-    address:string,
-    status:ShopStatus
+    title?:string,
+    desc?:string,
+    img?:string,
+    address?:string,
+    status?:ShopStatus,
+    verified?:boolean,
+    notVerified?:string
 }

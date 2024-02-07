@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 import { baseUrl } from '@/baseUrl';
 import Loader from '@/components/common/Loader';
 import { userAuthStore } from '@/utils/userStore';
-import CustomTable from '@/components/common/Table/CustomTable';
 import { productType } from '../api/product/type';
 import ProductContainer from '@/components/product/ProductContainer';
 

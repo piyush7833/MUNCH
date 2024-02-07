@@ -1,8 +1,8 @@
+"use client"
 import React from 'react'
 import Menu from './Menu'
 import Link from 'next/link';
 import Image from 'next/image';
-// import Logo from '../../public/images/logo.png'
 import CartIcon from '../partials/CartIcon';
 import ModeBtn from '../partials/ModeBtn';
 import UserLinks from './UserLinks';
@@ -13,7 +13,7 @@ const links = [
     { id: 3, title: "Contact Us", url: "/contact" },
 ]
 
-const Navbar =async () => {
+const Navbar = () => {
     return (
         <div className='bg-red-500 px-4 h-12 flex items-center justify-between border-b-2 border-b-red-600 '>
             <div>

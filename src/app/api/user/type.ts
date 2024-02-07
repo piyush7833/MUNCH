@@ -12,3 +12,13 @@ type shopOwnerForm={
     aadhar:string,
     IFSC:string,
 }
+type shopOwnerEditForm={
+    panCard?:string,
+    bankAccount?:string,
+    GSTIN?:string,
+    aadhar?:string,
+    IFSC?:string,
+    verified?:boolean,
+    notVerified?:string
+    id:string
+}

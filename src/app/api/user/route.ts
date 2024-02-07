@@ -105,34 +105,3 @@ export const DELETE = async (req: NextRequest) => {
     }
 }
 
-export const POST = async (req: NextRequest) => {
-    try {
-        const {panCard,bankAccount,IFSC,aadhar,GSTIN}:shopOwnerForm=await req.json();
-        const user = await getUserDetails(req);
-        if (user == null) {
-            return NextResponse.json({
-                error: true,
-                message: "Login to change your role.",
-                status: 403
-            }, { status: 403 })
-        }
-        const userId=user.id;
-        const newShopOwner=await prisma.shopOwner.create({
-            data:{
-                userId,panCard,aadhar,bankAccount,IFSC,GSTIN
-            }
-        })
-        return NextResponse.json({
-            error: false,
-            message: "Form subitted successfully your details will be verified soon for updating your role and you will be able to add shops.",
-            status: 200,
-            newShopOwner,
-        }, { status: 200 })
-    } catch (error) {
-        return NextResponse.json({
-            error: true,
-            message: "Something went wrong",
-            status: 500
-        }, { status: 500 })
-    }
-}

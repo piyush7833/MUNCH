@@ -7,11 +7,10 @@ type propsType = {
   data: formType[];
   onClose: () => void;
   onSave: any;
-  image:string;
   title:string;
 };
 
-const FormDialog = ({ data, onClose, onSave,image,title }:propsType) => {
+const InputDialog = ({ data, onClose, onSave,title }:propsType) => {
   const [formData, setFormData] = useState<any>();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>, name: string) => {
@@ -28,13 +27,8 @@ const FormDialog = ({ data, onClose, onSave,image,title }:propsType) => {
 
   return (
     <div className="dialog-container main fixed inset-0 bg-opacity-80 bg-white p-4 rounded-2xl shadow-2xl flex items-center justify-center">
-      <form onSubmit={handleSave} className="p-4 w-full max-w-[60%] md:h-3/4 lg:w-full flex flex-col md:flex-row items-center justify-center bg-white shadow-2xl rounded-xl">
-        {/* img container */}
-        <div className="hidden sm:block h-1/3 w-full md:h-full md:w-1/2 relative">
-          <Image src={image} alt="welcome" fill className="object-contain" />
-        </div>
-        {/* form container */}
-        <div className="flex justify-center flex-col items-center gap-4 h-2/3 w-full md:w-1/2 md:h-full">
+      <form onSubmit={handleSave} className="p-4 max-w-[30%] w-fit md:h-fit max-h-[75%] lg:w-full flex flex-col md:flex-row items-center justify-center bg-white shadow-2xl rounded-xl">
+        <div className="flex justify-center flex-col items-center gap-4 h-2/3 w-full md:h-full">
           <h1 className="text-2xl sm:text-3xl font-bold text-center">{title}</h1>
           {data.map((field) => (
             <div key={field.name} className="inputContainer">
@@ -83,4 +77,4 @@ const FormDialog = ({ data, onClose, onSave,image,title }:propsType) => {
   );
 };
 
-export default FormDialog;
+export default InputDialog;

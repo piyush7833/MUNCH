@@ -42,19 +42,21 @@ model User {
   softDelete        Boolean             @default(false)
   address           Json?
   verificationToken verificationToken[]
+  contact           contact[]
 }
 
 model ShopOwner {
   id          String    @id @default(cuid())
   createdAt   DateTime  @default(now())
-  userId      String
+  userId      String    @unique
   user        User      @relation(fields: [userId], references: [id])
   panCard     String
   bankAccount String
   IFSC        String
   aadhar      String
-  GSTIN       String
-  verified    DateTime? 
+  GSTIN       String?
+  verified    DateTime?
+  notVerified String?
 }
 
 enum ShopStatus {
@@ -71,13 +73,15 @@ model Shop {
   desc       String
   img        String?
   slug       String     @unique
-  verified   Boolean    @default(false)
+  verified   DateTime? // If verified by admin
+  notVerified String?   
   address    Json
   user       User       @relation(fields: [userId], references: [id])
   products   Product[]
   orders     Order[]
   status     ShopStatus @default(Open)
   softDelete Boolean    @default(false)
+  contact    contact[]
 }
 
 enum OrderStatus {
@@ -175,10 +179,22 @@ enum VerificationType {
 }
 
 model verificationToken {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
+  id        String           @id @default(cuid())
+  createdAt DateTime         @default(now())
   userId    String //reference from user
   token     String
   type      VerificationType
+  user      User             @relation(fields: [userId], references: [id])
+}
+
+model contact {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  img       String?
+  userId    String //reference from user
+  shopId    String? //reference from user
+  subject   String
+  message   String
   user      User     @relation(fields: [userId], references: [id])
+  shop      Shop?    @relation(fields: [shopId], references: [id])
 }

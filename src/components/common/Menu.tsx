@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
-import Image from 'next/image';
 import CartIcon from '../partials/CartIcon';
 import UserLinks from './UserLinks';
 import ModeBtn from '../partials/ModeBtn';

@@ -3,8 +3,6 @@ import Image from 'next/image'
 import React,{useState} from 'react'
 import EmailIcon from '@mui/icons-material/Email';
 import PasswordIcon from '@mui/icons-material/Password';
-import GoogleIcon from '@mui/icons-material/Google';
-import FacebookIcon from '@mui/icons-material/Facebook';
 import PersonIcon from '@mui/icons-material/Person';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
@@ -12,9 +10,10 @@ import { useRouter } from 'next/navigation'
 import { LocalPhone, Visibility, VisibilityOff } from '@mui/icons-material';
 import axios from 'axios';
 import { baseUrl } from '@/baseUrl';
-import Alert from '@/components/common/Alert';
 import { toast } from 'react-toastify';
 import { userAuthStore } from '@/utils/userStore';
+import tokenHelper from '@/utils/tokenHelper';
+import { httpservice } from '@/utils/httpService';
 
 
 const Auth = () => {
@@ -50,11 +49,13 @@ const handleOnChangeSignup = (e:React.ChangeEvent<HTMLInputElement>)=>{
 const handleLogin=async(e: React.FormEvent<HTMLFormElement>)=>{
   try {
     e.preventDefault()
-    const response = await axios.post(`${baseUrl}/auth/login`,loginData, {
+    const response = await httpservice.post(`${baseUrl}/auth/login`,loginData, {
       headers: { 'Cache-Control': 'no-store' },
     });
     logIn(response.data.user)
-      router.push('/')
+    tokenHelper.create("Authorization",response.data.token);
+    tokenHelper.create("role",response.data.user.role);
+    router.push('/')
   } catch (error:any) {
     console.log(error)
     toast.error(error.response.data.message)
@@ -67,10 +68,12 @@ const handleSignup=async(e: React.FormEvent<HTMLFormElement>)=>{
       toast.error("Password and confirm password is not same")
     }
     else{
-      const response = await axios.post(`${baseUrl}/auth/signup`,signupData, {
+      const response = await httpservice.post(`${baseUrl}/auth/signup`,signupData, {
         headers: { 'Cache-Control': 'no-store' },
       });
       logIn(response.data.newUser)
+      tokenHelper.create("Authorization",response.data.token);
+      tokenHelper.create("role","User");
         router.push('/')
     }
   } catch (error:any) {

@@ -40,14 +40,11 @@ const ColCell = ({ value, variant,url,data }: CustomTableCellProps) => {
       case "userId":
         return 
       case "verified":
-        return <div className="flex items-center w-full justify-center">
-          <button className="btn" disabled={value} onClick={handleVerify} >{value ? "Verified" : "Verify"}</button>
-        </div>
+        return <p className="">{value ?formatDate(value.split('T')[0]):"NaN"}</p>
       default:
-        return <p className="">{value}</p>;
+        return <p className="">{value ? value:"NaN"}</p>;
     }
   };
-
   return <>{renderCellContent()}</>;
 };
 

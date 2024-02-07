@@ -5,14 +5,12 @@ import React from 'react'
 import { toast } from 'react-toastify';
 import { baseUrl } from '@/baseUrl';
 import Loader from '@/components/common/Loader';
-import { userAuthStore } from '@/utils/userStore';
 import CustomTable from '@/components/common/Table/CustomTable';
 import { productType } from '@/app/api/product/type';
 
 const fetcher = async (url: string) => {
     try {
         const response = await axios.get(url);
-        console.log(response.data)
         return response.data;
     } catch (error: any) {
         console.log(error)
@@ -22,7 +20,6 @@ const fetcher = async (url: string) => {
 
 const Page = () => {
     const { data, error,isLoading } = useSWR(`${baseUrl}/product`, fetcher);
-    console.log(data)
     if (error) {
         return <p>Something went wrong</p>
     }
@@ -43,7 +40,8 @@ const Page = () => {
 
     return (
         <div className='main'>
-            <CustomTable data={extracedtedData} keys={findKeys(extracedtedData)} />
+            <CustomTable data={extracedtedData} keys={findKeys(extracedtedData)} originalData={products} type='products' />
+            {products.length === 0 && <p className='text-center'>No Product Owner Found</p>}
         </div>
     )
 }

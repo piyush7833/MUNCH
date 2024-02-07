@@ -1,7 +1,5 @@
-// import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import React from 'react'
-// import CountDown from './CountDown'
 import dynamic from 'next/dynamic'
  
 const CountDown = dynamic(() => import('./CountDown'), { ssr: false })

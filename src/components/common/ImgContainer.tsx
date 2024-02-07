@@ -3,7 +3,6 @@ import Image from 'next/image';
 import React, { useRef, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
-import { profile } from 'console';
 type PropsType = {
     imgUrl?: string;
     alt: string;
@@ -28,13 +27,10 @@ const ImgContainer: React.FC<PropsType> = ({ imgUrl, type, edit, alt, func }) =>
         if (file) {
             await func(file);
             const reader = new FileReader();
-
             reader.onload = () => {
                 setPreviewUrl(reader.result as string);
             };
-
             reader.readAsDataURL(file);
-            // setSelectedImage(file);
         }
     };
 

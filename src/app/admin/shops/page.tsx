@@ -6,7 +6,6 @@ import React from 'react'
 import { toast } from 'react-toastify';
 import { baseUrl } from '@/baseUrl';
 import Loader from '@/components/common/Loader';
-import { userAuthStore } from '@/utils/userStore';
 import CustomTable from '@/components/common/Table/CustomTable';
 
 const fetcher = async (url: string) => {
@@ -20,8 +19,6 @@ const fetcher = async (url: string) => {
 
 const Page = () => {
   const { data, error } = useSWR(`${baseUrl}/shop`, fetcher);
-  const {role}=userAuthStore()
-  console.log(data)
   if (error) {
     return <p>Something went wrong</p>;
   }
@@ -36,13 +33,14 @@ const Page = () => {
     }, []);
     return Array.from(new Set(keys));
   }
-  const extracedtedData=shops.map(({img,title,desc,slug,address,user,status,createdAt,verified})=>({
-    img,title,desc,slug,address,user,status,createdAt,verified
+  const extracedtedData=shops.map(({img,title,desc,slug,address,user,status,createdAt,verified,notVerified})=>({
+    img,title,desc,slug,address,user,status,createdAt,verified,notVerified
   }))
 
   return (
     <div className='main'>
-    <CustomTable data={extracedtedData} keys={findKeys(extracedtedData)} />
+    <CustomTable data={extracedtedData} keys={findKeys(extracedtedData)} originalData={shops} type='shops' />
+    {shops.length === 0 && <p className='text-center'>No Shops Found</p>}
     </div>
   )
 }

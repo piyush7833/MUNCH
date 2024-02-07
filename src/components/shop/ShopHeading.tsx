@@ -47,19 +47,19 @@ const ShopHeading = ({title,img,desc,address,userId,owner,totalProducts,slug}:pr
             <p>Address</p>
             <div className="details flex flex-row ">
                 <p className='font-bold text-lg w-1/2'>Street</p>
-                <p className='text-lg w-1/2'>{address.street}</p>
+                <p className='text-lg w-1/2'>{address?.street}</p>
             </div>
             <div className="details flex flex-row">
                 <p className='font-bold text-lg w-1/2'>Landmark</p>
-                <p className='text-lg w-1/2'>{address.landmark}</p>
+                <p className='text-lg w-1/2'>{address?.landmark}</p>
             </div>
             <div className="details flex flex-row">
                 <p className='font-bold text-lg w-1/2'>City</p>
-                <p className='text-lg w-1/2'>{address.city}</p>
+                <p className='text-lg w-1/2'>{address?.city}</p>
             </div>
             <div className="details flex flex-row">
                 <p className='font-bold text-lg w-1/2'>State</p>
-                <p className='text-lg w-1/2'>{address.state}</p>
+                <p className='text-lg w-1/2'>{address?.state}</p>
             </div>
         </div>
         {userId===id && <DeleteButton url={`${baseUrl}/shop/${slug}`} />}

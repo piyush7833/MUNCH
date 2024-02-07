@@ -24,31 +24,21 @@ const Page = () => {
   const {role}=userAuthStore()
   console.log(data)
   if (error) {
-    return <p>Something went wrong</p>;
+    return <p>{error.response.data}</p>;
   }
   if (!data) {
     return <Loader message='Shops are coming at your doorstep' />; // You can show a loading indicator
   }
   const shops: ResponseShopType = data.shops;
 
-  const findKeys = (arrayOfObjects: any[]): string[] => {
-    const keys = arrayOfObjects.reduce((acc, item) => {
-      return acc.concat(Object.keys(item));
-    }, []);
-    return Array.from(new Set(keys));
-  }
-  const extracedtedData=shops.map(({img,title,desc,slug,address,user,status,createdAt,verified})=>({
-    img,title,desc,slug,address,user,status,createdAt,verified
-  }))
 
   return (
     <div className='main'>
       <div className="menu-container">
-      {role!=="Admin" && shops.map((shop) => (
+      {shops.map((shop) => (
         <ShopCard key={shop.id} imgUrl={shop.img!} slug={shop.slug} desc={shop.desc!} id={shop.id!} title={shop.title!} />
       ))}
       </div>
-    {role==="Admin" &&  <CustomTable data={extracedtedData} keys={findKeys(extracedtedData)} /> }
     </div>
   )
 }

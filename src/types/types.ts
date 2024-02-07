@@ -87,9 +87,22 @@ export type passwordChangeType = {
 export type shopOwnerType = {
   panCard: string,
   bankAccount: string,
-  GSTIN: string,
+  GSTIN ?: string,
   aadhar: string,
   IFSC: string,
+}
+export type responseShopOwnerType = {
+  panCard: string,
+  bankAccount: string,
+  GSTIN ?: string,
+  aadhar: string,
+  IFSC: string,
+  id: string,
+  createdAt: Date,
+  verified: Date | null,
+  notVerified: string | null,
+  user ?: JSON
+  userId: string
 }
 
 export type shopType = {
@@ -108,7 +121,8 @@ export type ResponseShopType = {
   createdAt: string;
   status: string;
   user: JSON;
-  verified: boolean;
+  verified: Date | null;
+  notVerified: string | null;
 }[];
 export type ProductType = {
   type: string;
@@ -126,3 +140,20 @@ export type productOptionType={
     title: string | null,
     additionalPrice: number | null
 }
+
+export type ContactType = {
+  subject: string;
+  message: string;
+  shopId?: string;
+};
+export type ContactResponseType = {
+  subject: string;
+  message: string;
+  shopId?: string;
+  userId?: string;
+  id: string;
+  img: string;
+  createdAt: Date;
+  user?: JSON;
+  shop?: JSON;
+};

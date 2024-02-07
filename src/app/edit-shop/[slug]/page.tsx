@@ -10,28 +10,25 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import useSWR from 'swr'
 type Props={
   params:{slug:string}
 }
 const  Page = ({params}:Props) => {
-  const [data,setData]=useState<any>()
   const {id}=userAuthStore()
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [shopData, setShopData] = useState<shopType>();
   const [addressData, setAddressData] = useState<addressType>();
   const [isConfirmOpen, setConfirmOpen] = useState(false);
   const router=useRouter()
-  useEffect(() => {
-    const getData = async (slug:string) => {
-      try {
-        const response = await axios.get(`${baseUrl}/shop/${slug}`)
-        setData(response.data);
-      } catch (error: any) {
-        setData(error.response)
-      }
+  const fetcher = async (url: string) => {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
     }
-    getData(params.slug)
-  }, [params.slug])
+    return response.json();
+  };
+  const { data, error, isLoading } = useSWR(`${baseUrl}/shop/${params.slug}`, fetcher);
   const handleUploadImage = async () => {
     try {
       const formData = new FormData();
@@ -50,8 +47,6 @@ const  Page = ({params}:Props) => {
       if (selectedImage) {
         imgUrl = await handleUploadImage()
       }
-      console.log("shop",shopData)
-      console.log("address",addressData)
       const response =await  axios.put(`${baseUrl}/shop/${params.slug}`, { title:shopData?.title, desc:shopData?.desc, slug:shopData?.slug  ,address: addressData,img:imgUrl })
       toast.success(response.data.message);
       router.push(`/shops/${response.data.updatedShop.slug}`)
@@ -71,11 +66,14 @@ const  Page = ({params}:Props) => {
   const handleImageChange = (selectedImage: File | null) => {
     setSelectedImage(selectedImage);
   };
-  if(data && data.error){
+  if(error){
     return <div>Something went wrong</div>
   }
-  if(!data){
+  if(isLoading){
     return <div>Loading...</div>
+  }
+  if(data && data.shop.userId!==id){
+    return <div>Unauthorised</div>
   }
   return (
     <div>

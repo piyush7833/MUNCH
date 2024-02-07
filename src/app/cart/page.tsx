@@ -31,59 +31,7 @@ const Cart = () => {
             </div>
               <span className='text-red text-2xl cursor-pointer' onClick={() => removeFromCart(item)} >X</span>
           </div>))}
-        {/* <div className=" w-full flex items-center justify-between mb-4 ">
-          <div className="h-32 w-32 relative">
-              <Image src='/images/tempfood.webp' fill alt='cart'/>
-              </div>
-              <div className="">
-                <h1 className='uppercase font-bold text-xl'>title</h1>
-                <span>option</span>
-              </div>
-              <div className="">
-                <h2 className='font-bold'>Price</h2>
-                <span className='text-red text-2xl cursor-pointer'>x</span>
-              </div>
-        </div>
-        <div className=" w-full flex items-center justify-between mb-4">
-          <div className="h-32 w-32 relative">
-              <Image src='/images/tempfood.webp' fill alt='cart'/>
-              </div>
-              <div className="">
-                <h1 className='uppercase font-bold text-xl'>title</h1>
-                <span>option</span>
-              </div>
-              <div className="">
-                <h2 className='font-bold'>Price</h2>
-                <span className='text-red text-2xl cursor-pointer'>x</span>
-              </div>
-        </div>
-        <div className=" w-full flex items-center justify-between mb-4">
-          <div className="h-32 w-32 relative">
-              <Image src='/images/tempfood.webp' fill alt='cart'/>
-              </div>
-              <div className="">
-                <h1 className='uppercase font-bold text-xl'>title</h1>
-                <span>option</span>
-              </div>
-              <div className="">
-                <h2 className='font-bold'>Price</h2>
-                <span className='text-red text-2xl cursor-pointer'>x</span>
-              </div>
-        </div>
-        <div className=" w-full flex items-center justify-between mb-4">
-          <div className="h-32 w-32 relative">
-              <Image src='/images/tempfood.webp' fill alt='cart'/>
-              </div>
-              <div className="">
-                <h1 className='uppercase font-bold text-xl'>title</h1>
-                <span>option</span>
-              </div>
-              <div className="">
-                <h2 className='font-bold'>Price</h2>
-                <span className='text-red text-2xl cursor-pointer'>x</span>
-              </div>
-        </div> */}
-
+  
 
       </div>
 

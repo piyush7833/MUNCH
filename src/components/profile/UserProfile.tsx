@@ -11,6 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { addressType, passwordChangeType, shopOwnerType } from '@/types/types';
 import FormDialog from '../common/FormDialog';
 import { addressFormData, passwordChangeFormData, shopOwnerFormData } from '@/utils/formData';
+import tokenHelper from '@/utils/tokenHelper';
 
 const UserProfile = () => {
   const [phoneEditing, setPhoneEditing] = useState(false);
@@ -34,6 +35,8 @@ const UserProfile = () => {
         headers: { 'Cache-Control': 'no-store' },
       });
       logOut(null)
+      tokenHelper.delete("Authorization")
+      tokenHelper.delete("Role")
       router.push('/')
     } catch (error: any) {
       console.log("error ", error)
@@ -92,7 +95,7 @@ const UserProfile = () => {
   };
   const handleRoleChange = async (shopOwnerData: shopOwnerType) => {
     try {
-      const response = await axios.post(`${baseUrl}/user`, shopOwnerData);
+      const response = await axios.post(`${baseUrl}/shopowner`, shopOwnerData);
       toast.success(response.data.message);
       setRoleEditing(false)
     } catch (error: any) {

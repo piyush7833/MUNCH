@@ -7,32 +7,27 @@ import ImgContainer from '@/components/common/ImgContainer'
 import Loader from '@/components/common/Loader'
 import {  productOptionType } from '@/types/types'
 import {  editProductFormData } from '@/utils/formData'
+import { httpservice } from '@/utils/httpService'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import useSWR from 'swr'
 type Props={
   params:{id:string}
 }
 const  Page = ({params}:Props) => {
-  const [data,setData]=useState<any>()
+  const fetcher = async (url: string) => {
+    const response = await httpservice.get(url);
+    console.log(response.data, "response")
+    return response.data;
+  };
+  const { data, error, isLoading } = useSWR(`${baseUrl}/product/${params.id}`, fetcher);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isConfirmOpen, setConfirmOpen] = useState(false);
   const [productData, setProductData] = useState<productType>()
   const router = useRouter()
   const [options, setOptions] = useState<productOptionType[]>([])
-  useEffect(() => {
-    const getData = async (id:string) => {
-      try {
-        const response = await axios.get(`${baseUrl}/product/${id}`)
-        setData(response.data);
-      } catch (error: any) {
-        setData(error.response)
-      }
-    }
-    getData(params.id)
-  }, [params.id])
-
   const handleUploadImage = async () => {
       try {
           const formData = new FormData();
@@ -71,12 +66,13 @@ const  Page = ({params}:Props) => {
           toast.error("Something went wrong")
       }
   }
-  if(data && data.error){
+  if(error){
     return <div>Something went wrong</div>
   }
-  if(!data){
+  if(isLoading || !data){
     return <Loader message='Edit food details easliy on munch' />
   }
+
   return (
     <div>
     <div className='main flex flex-col md:flex-row gap-14 md:gap-4 items-center justify-center hideScrollBar w-full'>
@@ -88,9 +84,9 @@ const  Page = ({params}:Props) => {
         message="Are you sure you want to perform this action?"
       />
       <div className=" w-full h-1/2 md:h-1/2 md:w-1/2 flex items-center justify-center">
-        <ImgContainer type='singleProduct' alt='add image' edit={true} imgUrl={data.product.img} func={handleImageChange} />
+        <ImgContainer type='singleProduct' alt='add image' edit={true} imgUrl={data?.product?.img} func={handleImageChange} />
       </div>
-      <FormContainer onSave={handleSave} data={editProductFormData} originalData={data.product}  originalAdditionalOptions={data.product.options} additional={true} title="Edit Product" />
+      <FormContainer onSave={handleSave} data={editProductFormData} originalData={data?.product}  originalAdditionalOptions={data?.product?.options} additional={true} title="Edit Product" />
     </div>
     </div>
   )

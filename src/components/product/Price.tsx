@@ -3,11 +3,6 @@ import { ProductType } from "@/types/types";
 import { userCartStore } from "@/utils/cartStore";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
-
-
-
-
 const Price = ({ product }: { product: ProductType }) => {
   const [selected, setSelected] = useState(0);
   const [quantity, setQuantity] = useState(1);

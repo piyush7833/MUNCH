@@ -83,7 +83,8 @@ export const sendMessage = async (phoneNumber:string) => {
 export const getUserDetails = async (req: any) => {
   try {
     const token = req.cookies.get("token")?.value || '';
-    const cookieStore = cookies()
+    const token2=req?.headers?.authorization
+    console.log(token2)
     // console.log(token)
     if (!token) {
       return null;

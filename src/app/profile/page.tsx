@@ -10,7 +10,7 @@ const {role}=userAuthStore()
     <div>
       <div className='main gap-4 hideScrollBar'>
         <UserProfile />
-        {role==="shopOwner" && <UserShops/>}
+        {role==="ShopOwner" && <UserShops/>}
       </div>
     </div>
   );

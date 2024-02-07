@@ -366,3 +366,39 @@ export const editProductFormData:formType[]=[
         options:["Veg" , "Non_Veg"]
     }
 ]
+export const contactForm:formType[]=[
+    {
+        type:"text",
+        name:"subject",
+        id:"subject",
+        placeholder:"Enter subject.",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"message",
+        id:"message",
+        placeholder:"Enter message",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"select",
+        name:"shopId",
+        id:"shopId",
+        placeholder:"Select shop if querry is related to particular shop (optional)",
+        icon: StreetviewIcon,
+        required:false
+    }
+]
+export const unVerifyForm:formType[]=[
+    {
+        type:"text",
+        name:"notVerified",
+        id:"notVerified",
+        placeholder:"Enter reason to not verify.",
+        icon: StreetviewIcon,
+        required:false
+    }
+]

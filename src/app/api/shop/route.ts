@@ -6,55 +6,55 @@ import { prisma } from "@/utils/connect"
 import { shopType } from "./types";
 
 
-export const PUT=async(req:NextRequest)=>{   //verify shop by admin  //take id in json  //delete shop by admin
-    try {
-        const {slug,action}=await req.json();
-        const user=await getUserDetails(req);
-        if(user==null){
-            return NextResponse.json({
-                error:true,
-                message:"Login first to add shop",
-                status:403
-            },{status:403})
-        }
-        if(user.role!=="Admin"){
-                return NextResponse.json({
-                    error:true,
-                    message:"Only admin can verify shop",
-                    status:403
-                },{status:403})
-        }
-        let updatedShop;
-        if(action==="verify"){
-            updatedShop=await prisma.shop.update({where:{slug:slug},data:{
-                verified:true
-            }})
-        }
-        else if(action==="delete"){
-            updatedShop=await prisma.shop.update({where:{slug:slug},data:{
-                softDelete:true
-            }})
-        }
-        else if(action==="recover"){
-            updatedShop=await prisma.shop.update({where:{slug:slug},data:{
-                softDelete:false
-            }})
-        }
-        return NextResponse.json({
-            error:false,
-            message:"Shop updated Successfully",
-            status:201,
-            updatedShop
-        },{status:201})
-    } catch (error) {
-        console.log(error)
-        return NextResponse.json({
-            error:true,
-            message:"Something went wrong",
-            status:500
-        },{status:500})
-    }
-}
+// export const PUT=async(req:NextRequest)=>{   //verify shop by admin  //take id in json  //delete shop by admin
+//     try {
+//         const {slug,action}=await req.json();
+//         const user=await getUserDetails(req);
+//         if(user==null){
+//             return NextResponse.json({
+//                 error:true,
+//                 message:"Login first to add shop",
+//                 status:403
+//             },{status:403})
+//         }
+//         if(user.role!=="Admin"){
+//                 return NextResponse.json({
+//                     error:true,
+//                     message:"Only admin can verify shop",
+//                     status:403
+//                 },{status:403})
+//         }
+//         let updatedShop;
+//         if(action==="verify"){
+//             updatedShop=await prisma.shop.update({where:{slug:slug},data:{
+//                 verified:true
+//             }})
+//         }
+//         else if(action==="delete"){
+//             updatedShop=await prisma.shop.update({where:{slug:slug},data:{
+//                 softDelete:true
+//             }})
+//         }
+//         else if(action==="recover"){
+//             updatedShop=await prisma.shop.update({where:{slug:slug},data:{
+//                 softDelete:false
+//             }})
+//         }
+//         return NextResponse.json({
+//             error:false,
+//             message:"Shop updated Successfully",
+//             status:201,
+//             updatedShop
+//         },{status:201})
+//     } catch (error) {
+//         console.log(error)
+//         return NextResponse.json({
+//             error:true,
+//             message:"Something went wrong",
+//             status:500
+//         },{status:500})
+//     }
+// }
 
 
 export const POST=async(req:NextRequest)=>{  //add shop
@@ -102,7 +102,6 @@ export const POST=async(req:NextRequest)=>{  //add shop
 export const GET=async(req:NextRequest)=>{ //get all shops of user  OR get all shops
     try {
         const user=await getUserDetails(req);
-        // console.log(user)
         if(user?.role==="ShopOwner"){
             const shops=await prisma.shop.findMany({
                 where:{
@@ -121,7 +120,7 @@ export const GET=async(req:NextRequest)=>{ //get all shops of user  OR get all s
             const shops=await prisma.shop.findMany({
                 where:{
                     softDelete:false,
-                },orderBy:{createdAt:"desc"},
+                },orderBy:{verified:"desc" || null},
                 include:{user:{select:{name:true,id:true}}}
             });
             return NextResponse.json({
@@ -131,7 +130,9 @@ export const GET=async(req:NextRequest)=>{ //get all shops of user  OR get all s
                 shops
             },{status:200})
         }
-        const shops=await prisma.shop.findMany({where:{softDelete:false,verified:true}})
+        const shops=await prisma.shop.findMany({where:{softDelete:false,verified: {
+            not: null
+          }}})
         return NextResponse.json({
             error:false,
             message:"Shop fetched successfully",

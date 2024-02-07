@@ -165,7 +165,7 @@ export const GET = async (req: NextRequest) => {  //get random featured product 
                 error: false,
                 message: "Product fetched successfully",
                 status: 200,
-                featuredproducts
+                products:featuredproducts
             }, { status: 200 })
         }
         if (user?.role === "ShopOwner") {

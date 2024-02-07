@@ -1,3 +1,4 @@
+"use client"; 
 import { productOptionType } from '@/types/types';
 import { formType } from '@/utils/formData';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -41,18 +42,15 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
 
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(options)
-    console.log(addressData)
     if (addressData) {
-      console.log("object")
-      onSave(formData, addressData)
+      onSave(formData, addressData);
+      // setFormData(null);
+      // setAdressData(null);
     }
     else if (options.length > 0) {
-      console.log("object")
       onSave(formData, options)
     }
     else {
-      console.log("2object")
       onSave(formData)
     }
   };
@@ -78,7 +76,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
                <div className="relative w-full">
                <label
                  htmlFor={field.name}
-                 className={`absolute transition-all duration-300 ${focusedInput === field.name || (originalData && originalData[field.name]) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
+                 className={`absolute transition-all duration-300 ${focusedInput === field.name || ((originalData && originalData[field.name])) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
                >
                  {field.name}
                </label>
