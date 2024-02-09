@@ -1,80 +1,31 @@
 "use client"
-import React, { useState } from 'react';
-import axios from 'axios';
-import { baseUrl } from '@/baseUrl';
-import ImgContainer from '@/components/common/ImgContainer';
-import { userAuthStore } from '@/utils/userStore';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
-import EditIcon from '@mui/icons-material/Edit';
-import CloseIcon from '@mui/icons-material/Close';
-import { addressType, passwordChangeType, shopOwnerType } from '@/types/types';
-import FormDialog from '../common/FormDialog';
-import { addressFormData, passwordChangeFormData, shopOwnerFormData } from '@/utils/formData';
-import tokenHelper from '@/utils/tokenHelper';
+import { userAuthStore } from '@/utils/userStore'
+import React, { useState } from 'react'
+import ImgContainer from '../common/ImgContainer'
+import EditButton from '../partials/EditButton'
+import DeleteButton from '../partials/DeleteButton'
+import { httpservice } from '@/utils/httpService'
+import { baseUrl } from '@/baseUrl'
+import { toast } from 'react-toastify'
+import { passwordChangeType, responseShopOwnerType, shopOwnerType } from '@/types/types'
+import { format } from 'path'
+import { formatDate } from '@/utils/action'
+import { passwordChangeFormData, shopOwnerFormData } from '@/utils/formData'
+import FormDialog from '../common/FormDialog'
 
-const UserProfile = () => {
-  const [phoneEditing, setPhoneEditing] = useState(false);
-  const [emailEditing, setEmailEditing] = useState(false);
-  const [nameEditing, setNameEditing] = useState(false);
-  const [editing, setEditing] = useState(false);
+type propsType = {
+  extractedData?: any,
+  userData?: any,
+  shopOwnerData?: any,
+  shopOwnerExtracedData?: any
+}
+const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtracedData }: any) => {
   const [roleEditing, setRoleEditing] = useState(false);
-  const [updateDetails, setUpdateDetails] = useState({});
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isPasswordChange, setIsPasswordChange] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const handleOnChangeUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUpdateDetails({ ...updateDetails, [name]: value })
-  }
-  const router = useRouter()
-  const { logOut, logIn } = userAuthStore()
-  const handleSignout = async () => {
-    try {
-      const response = await axios.post(`${baseUrl}/auth/logout`, {
-        headers: { 'Cache-Control': 'no-store' },
-      });
-      logOut(null)
-      tokenHelper.delete("Authorization")
-      tokenHelper.delete("Role")
-      router.push('/')
-    } catch (error: any) {
-      console.log("error ", error)
-      toast.error(error.response.data.message)
-    }
-  }
-  const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    try {
-      let formData;
-      let response;
-      if (selectedImage) {
-        formData = new FormData();
-        formData.append('file', selectedImage);
-        formData.append('type', "single");
-        const imageResponse = await axios.post(`${baseUrl}/upload-image`, formData)
-        const imageUrl = imageResponse.data.imgUrls;
-        response = await axios.put(`${baseUrl}/user`, { updateDetails, image: imageUrl }, { timeout: 10000, });
-        toast.success(imageResponse.data.message);
-        toast.success(response.data.message);
-        setEditing(false)
-        setNameEditing(false)
-        setPhoneEditing(false)
-        setEmailEditing(false)
-      }
-      else {
-        response = await axios.put(`${baseUrl}/user`, { updateDetails }, { timeout: 10000, });
-        toast.success(response.data.message);
-      }
-      logIn(response?.data.updatedUser!)
 
-    } catch (error: any) {
-      console.log(error)
-      toast.error(error.response.data.message);
-    }
-  }
   const handleEmailVerify = async () => {
     try {
-      const response = await axios.post(`${baseUrl}/verify`, { timeout: 10000, });
+      const response = await httpservice.post(`${baseUrl}/verify`, { timeout: 10000, });
       toast.success(response.data.message);
     } catch (error: any) {
       toast.error(error.response.data.message);
@@ -83,19 +34,9 @@ const UserProfile = () => {
   const handlePhoneVerify = async () => {
 
   }
-  const handleSaveAddress = async (addressData: addressType) => {
-    try {
-      const response = await axios.put(`${baseUrl}/user`, {address:addressData});
-      logIn(response?.data.updatedUser!)
-      toast.success(response.data.message);
-      setIsDialogOpen(false)
-    } catch (error: any) {
-      toast.error(error.response.data.message);
-    }
-  };
   const handleRoleChange = async (shopOwnerData: shopOwnerType) => {
     try {
-      const response = await axios.post(`${baseUrl}/shopowner`, shopOwnerData);
+      const response = await httpservice.post(`${baseUrl}/shopowner`, shopOwnerData);
       toast.success(response.data.message);
       setRoleEditing(false)
     } catch (error: any) {
@@ -108,7 +49,7 @@ const UserProfile = () => {
         return toast.error("Password and confirm password is different")
       }
       else {
-        const reponse = await axios.put(`${baseUrl}/changepassword`, passwordData);
+        const reponse = await httpservice.put(`${baseUrl}/changepassword`, passwordData);
         toast.success(reponse.data.message);
         setIsPasswordChange(false)
       }
@@ -116,96 +57,73 @@ const UserProfile = () => {
       toast.error(error.response.data.message);
     }
   };
-  const handleImageChange = (selectedImage: File | null) => {
-    setSelectedImage(selectedImage);
-    setEditing(true)
-  };
-  const { name, userName, address, email, phone, image, emailVerified, phoneVerified,role } = userAuthStore()
   return (
-    <div className='main flex flex-col md:flex-row gap-14 md:gap-4 items-center justify-center hideScrollBar w-full'>
-      <div className="profileImg w-full h-1/2 md:h-1/2 md:w-1/2 flex items-center justify-center">
-        <ImgContainer imgUrl={image!} alt={name!} edit={true} func={handleImageChange} type='profile' />
+    <div className='main flex items-center justify-center  flex-col md:flex-row'>
+      <div className="w-full md:w-1/2 flex items-center justify-center">
+        <ImgContainer imgUrl={userData?.image} type='profile' alt={userData?.name} />
       </div>
-      <div className="detailsContainer flex flex-col w-full h-1/2 md:h-full md:w-1/2 gap-[2vh]">
-        <div className='text-lg flex flex-col gap-[1.5vh]'>
-          <div className="details py-1 w-full flex justify-start gap-[4vw] px-4">
-            <p className='font-bold w-[20%]'>User name :</p>
-            <p className='w-[30%]'>{userName! || "user name"}</p>
+      <div className="flex gap-4 flex-col md:h-4/5 md:justify-center md:gap-4 md:w-1/2 w-full">
+        {extractedData && Object.entries(extractedData).map(([key, value]) => (
+          <div className="flex w-full justify-start items-center" key={key}>
+            <div className="w-1/3 capitalize font-bold">
+              {key === "createdAt" ? "Joined On" : key}
+            </div>
+            <div className="w-2/3 ">
+              {key === "user" ?
+                (value as any)?.name : key === "address" ?
+                  <div className="flex gap-2 flex-wrap">
+                    <p>{(value as any)?.street},</p>
+                    <p>{(value as any)?.landmark},</p>
+                    <p>{(value as any)?.city},</p>
+                    <p>{(value as any)?.pincode},</p>
+                    <p>{(value as any)?.state}</p>
+                  </div> :
+                  key === "email" ?
+                    <div className="flex gap-2 items-center">
+                      <p>{value as string}</p>
+                      {!userData?.emailVerified && <p className='text-blue-400 cursor-pointer' onClick={() => handleEmailVerify()}>verify</p>}
+                    </div> :
+                    key === "phone" ?
+                      <div className="flex gap-2 items-center">
+                        <p>{value as string}</p>
+                        {!userData?.phoneVerified && <p className='text-blue-400 cursor-pointer' onClick={() => handlePhoneVerify()}>verify</p>}
+                      </div> :
+                      key === "role" ?
+                        <div className="flex gap-2 items-center">
+                          <p>{value as string}</p>
+                          {userData?.role === "User" && <p className='text-blue-400 cursor-pointer' onClick={() => setRoleEditing(true)}>change</p>}
+                        </div> :
+                        key === "createdAt" ?
+                          formatDate((value as string).split('T')[0]) :
+                          !value ? "NaN" : value as string}
+            </div>
           </div>
-          {!nameEditing ? <div className="details py-1 w-full flex justify-start gap-[4vw] px-4">
-            <p className='font-bold w-[20%]'>Name :</p>
-            <p className='w-[30%] '>{name! || "name"}</p>
-            <EditIcon onClick={() => setNameEditing(true)} />
+        ))}
+        {(shopOwnerExtracedData && userData.role==="ShopOwner") && Object.entries(shopOwnerExtracedData).map(([key, value]) => (
+          <div className="flex w-full justify-start items-center" key={key}>
+            <div className="w-1/3 capitalize font-bold">
+              {key === "createdAt" ? "Joined On" : (key === "notVerified" && !value) ? "" : key}
+            </div>
+            <div className="w-2/3 ">
+              {
+                key === "createdAt" ?
+                  formatDate((value as string).split('T')[0]) :
+                  (key === "notVerified" && !value) ? "" :
+                    !value ? "NaN" : value as string}
+            </div>
           </div>
-            :
-            <div className="details  w-full flex justify-start gap-[4vw] px-4">
-              <p className='font-bold w-[20%]'>Name :</p>
-              <input type="name" name="name" id="name" onChange={(e) => { handleOnChangeUpdate(e) }} placeholder={name! || 'Enter Name'} required className='updateinput text-green-400' />
-              <CloseIcon onClick={() => setNameEditing(false)} />
-            </div>
-          }
-          {!emailEditing ? <div className="details py-1 w-full flex justify-start gap-[4vw] px-4">
-            <p className='font-bold w-[20%]'>Email :</p>
-            <div className="email w-[30%]  flex gap-2">
-              <p className=''>{email! || "email"}</p>
-              {!emailVerified ? <p className='text-red-400 font-bold italic cursor-pointer' onClick={() => handleEmailVerify()} >verify</p> : <p className='text-green-400'>verified</p>}
-            </div>
-            <EditIcon onClick={() => setEmailEditing(true)} />
-          </div>
-            :
-            <div className="details w-full flex justify-start gap-[4vw] px-4">
-              <p className='font-bold w-[20%]'>Email :</p>
-              <input type="email" name="email" id="email" onChange={(e) => { handleOnChangeUpdate(e) }} placeholder={email || 'Enter Email'} required className='updateinput' />
-              <CloseIcon onClick={() => setEmailEditing(false)} />
-            </div>
-          }
-          {!phoneEditing ? <div className="details py-1 w-full flex justify-start gap-[4vw] px-4">
-            <p className='font-bold w-[20%]'>Phone :</p>
-            <div className="phone w-[30%]  flex gap-2">
-              <p className=''>{phone || "Phone"}</p>
-              {!phoneVerified ? <p className='text-red-400 font-bold italic cursor-pointer' onClick={() => handlePhoneVerify()}>verify</p> : <p className='text-green-400'>verified</p>}
-            </div>
-            <EditIcon onClick={() => setPhoneEditing(true)} />
-          </div>
-            :
-            <div className="details w-full flex justify-start gap-[4vw] px-4">
-              <p className='font-bold w-[20%]'>Phone :</p>
-              <input type="phone" name="phone" id="phone" onChange={(e) => { handleOnChangeUpdate(e) }} placeholder={phone || 'Enter Phone Number'} required className='updateinput' />
-              <CloseIcon onClick={() => setPhoneEditing(false)} />
-            </div>
-          }
-          {!roleEditing && <div className="details py-1 w-full flex justify-start gap-[4vw] px-4">
-            <p className='font-bold w-[20%]'>Role :</p>
-            <div className="phone w-[30%]  flex gap-2">
-              <p className=''>{role || "role"}</p>
-            </div>
-            {role==="User" && <EditIcon onClick={() => setRoleEditing(true)}/>}
-          </div>}
-          {roleEditing && <FormDialog onClose={() => setRoleEditing(false)} onSave={handleRoleChange} data={shopOwnerFormData} image='/images/shop.png' title="Be a shopowner and serve IIITU Students" />}
-          {!isDialogOpen ? <div className="details py-1 w-full flex justify-start gap-[4vw] px-4">
-            <p className='font-bold w-[20%]'>Address :</p>
-            <div className="AddressDetails w-[30%] flex flex-col gap-2">
-              <p className=''>{address?.street || "Street"}</p>
-              <p className=''>{address?.landmark || "Landmark"}</p>
-              <p className=''>{address?.pincode || "Pincode"}</p>
-              <p className=''>{address?.city || "City"}</p>
-              <p className=''>{address?.state || "State"}</p>
-            </div>
-            <EditIcon onClick={() => setIsDialogOpen(true)} />
-          </div>
-            :
-            <FormDialog onClose={() => setIsDialogOpen(false)} onSave={handleSaveAddress} data={addressFormData} image='/images/address.png' title="Edit Address" />
-          }
-        </div>
-        {isPasswordChange && <FormDialog onClose={() => setIsPasswordChange(false)} onSave={handlePasswordChange} data={passwordChangeFormData} image='/images/forget-password.png' title="Change password" />}
-        <div className="buttons flex flex-col md:flex-row ">
-          <button className='btn' onClick={() => setIsPasswordChange(true)}>Change Password</button>
-          <button className='btn' onClick={() => handleSignout()}>Logout</button>
-          {(nameEditing || phoneEditing || emailEditing || isDialogOpen || editing) && <button className='btn' onClick={(e) => handleUpdate(e)} >Update</button>}
-        </div>
+        ))}
       </div>
+      {roleEditing && <FormDialog onClose={() => setRoleEditing(false)} onSave={handleRoleChange} data={shopOwnerFormData} image='/images/shop.png' title="Be a shopowner and serve IIITU Students" />}
+      {isPasswordChange && <FormDialog onClose={() => setIsPasswordChange(false)} onSave={handlePasswordChange} data={passwordChangeFormData} image='/images/forget-password.png' title="Change password" />}
+      {/* <div className="flex h-1/2 w-1/2" > */}
+        {userData.role !== "User" && <EditButton url={`/pages/edit/profile/${userData?.id!}`} />}
+        {userData.role !== "User" && <DeleteButton url={`/user`} />}
+        <button className='btn absolute bottom-3 right-28'>Logout</button>
+        <button className='btn absolute bottom-3 right-56'>Change Password</button>
+      {/* </div> */}
     </div>
-  );
-};
+  )
+}
 
-export default UserProfile;
+export default UserProfile

@@ -18,7 +18,6 @@ export const metadata: Metadata = {
 }
 
 axios.defaults.withCredentials = true;
-// axios.defaults.baseURL = "http://localhost:3000/api";
 export default function RootLayout({
   children,
 }: {

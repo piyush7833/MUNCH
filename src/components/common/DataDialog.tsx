@@ -24,21 +24,21 @@ const DataDialog = ({ data, onClose, type }: propsType) => {
  let editUrl:string | undefined;
   if (type === "products") {
     deleteUrl=(`product/${data.id}`);
-    editUrl=(`/product/${data.id}`);
+    editUrl=(`/pages/product/${data.id}`);
   }
   if (type === "shops") {
     verifyUrl=(`shop/${data.slug}`);
     deleteUrl=(`/shop/${data.slug}`);
-    editUrl=(`/shop/${data.slug}`);
+    editUrl=(`/pages/shop/${data.slug}`);
   }
   if (type === "shop-owners") {
     verifyUrl=(`shopowner`);
     deleteUrl=(`shopowner`);
-    editUrl=(`shopowner`);
+    editUrl=(`/pages/shopowner`);
   }
   if (type === "contacts") {
     deleteUrl=(`contact/${data.id}`);
-    editUrl=(`contact/${data.id}`);
+    editUrl=(`/pages/contact/${data.id}`);
   }
   const handleVerify = async () => {
     try {

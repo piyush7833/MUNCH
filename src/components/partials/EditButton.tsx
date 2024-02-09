@@ -1,13 +1,15 @@
 "use client"
 import React from 'react'
-import Link from 'next/link';
 import { Edit } from '@mui/icons-material'
+import { useRouter } from 'next/navigation';
+import { siteUrl } from '@/baseUrl';
 const EditButton = ({ url }: { url: string }) => {
+  const router =useRouter()
   return (
     <div>
-      <Link href={url} passHref className='bg-red-500 p-2 text-white rounded-full absolute bottom-3 right-16' >
+      <div onClick={()=>router.push(`${siteUrl}/${url}`)} className='bg-red-500 p-2 cursor-pointer text-white rounded-full absolute bottom-3 right-16' >
           <Edit />
-      </Link>
+      </div>
     </div>
   )
 }

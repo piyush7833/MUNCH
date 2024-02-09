@@ -4,15 +4,11 @@ import useSWR from 'swr';
 import ShopCard from '../shop/ShopCard';
 import { ResponseShopType } from '@/types/types';
 import { baseUrl } from '@/baseUrl';
+import { httpservice } from '@/utils/httpService';
 
 const fetcher = async (url:string) => {
-  const response = await fetch(url, {
-    headers: { 'Cache-Control': 'no-store' },
-  });
-  if (!response.ok) {
-    throw new Error('Failed to fetch data');
-  }
-  return response.json();
+  const response =await httpservice.get(url);
+  return response.data;
 };
 
 const Store = () => {

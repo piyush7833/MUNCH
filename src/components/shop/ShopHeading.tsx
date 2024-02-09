@@ -63,7 +63,7 @@ const ShopHeading = ({title,img,desc,address,userId,owner,totalProducts,slug}:pr
             </div>
         </div>
         {userId===id && <DeleteButton url={`${baseUrl}/shop/${slug}`} />}
-        {userId===id && <EditButton  url={`edit-shop/${slug}`} />}
+        {userId===id && <EditButton  url={`/pages/edit/shop/${slug}`} />}
     </div>
   )
 }

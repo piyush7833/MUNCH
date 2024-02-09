@@ -7,14 +7,13 @@ type CustomTableCellProps = {
   value: any;
   variant?: string;
   url?: string;
-  data?: any;
 };
 
 const handleVerify = () => {
   console.log("Verify");
 }
 
-const ColCell = ({ value, variant,url,data }: CustomTableCellProps) => {
+const ColCell = ({ value, variant,url }: CustomTableCellProps) => {
   const renderCellContent = () => {
     switch (variant) {
       case "address":

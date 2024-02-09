@@ -23,10 +23,10 @@ type propsType = {
 const ProductContainer = ({ img, id, title, price, edit, add, productType, shopSlug, shopUserId, desc }: propsType) => {
   let href;
   if (edit) {
-    href = `/edit-product/${id}`
+    href = `/pages/edit/product/${id}`
   }
   if (add) {
-    href = `/add-product/${shopSlug}`
+    href = `/pages/add/product/${shopSlug}`
   }
   else {
     href = `/product/${id}`
@@ -47,7 +47,7 @@ const ProductContainer = ({ img, id, title, price, edit, add, productType, shopS
         </div>
       </Link>
       {!add && <DeleteButton url={`${baseUrl}/product/${id}`} />}
-      {!add && <EditButton url={`/edit-product/${id}`} />}
+      {!add && <EditButton url={`/edit/product/${id}`} />}
     </div>
   )
 }

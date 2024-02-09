@@ -5,10 +5,6 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { useTheme } from "@/context/themeContext/ThemeContext";
 const ModeBtn = () => {
-    const [dark,setDark]=useState(true)
-    const handleMode=()=>{
-        setDark(!dark);
-    }
   const { toggleTheme, themeMode } = useTheme();
   return (
     <div className="cursor-pointer text-white">

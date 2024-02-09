@@ -46,12 +46,12 @@ const CustomTable = ({ data, keys, originalData, type }: propsType) => {
                   <ColCell
                     value={values[key] as any}
                     variant={key}
-                    url={`${key === "user" && `/profile/${values["user"].id}`}`}
-                    data={`${key === "verified" && values}`}
+                    url={`${key === "user" && `/pages/profile/${values["user"].id}`}`}
+
                   />
                 </td>
               ))}
-              <td className="cursor-pointer" onClick={() => handlePreviewIconClick(data[index])}><PreviewIcon /></td>
+              <td className="cursor-pointer" onClick={() => handlePreviewIconClick(originalData?.[index] || null)}><PreviewIcon /></td>
             </tr>
           ))}
         </tbody>

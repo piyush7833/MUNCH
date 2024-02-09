@@ -92,12 +92,12 @@ const Slider = () => {
                       {item.desc}
                     </div>
                    {item.id===0 || item.id===4?<div className={`flex w-1/3`}>
-                    <Link href='/auth'>
+                    <Link href='/pages/auth'>
                       <button className='btn'>
                         Login
                       </button>
                       </Link>
-                      <Link href='/auth'>
+                      <Link href='/pages/auth'>
                       <button className='btn'>
                         Signup
                       </button>

@@ -18,7 +18,7 @@ const Loader = ({message}:propsType) => {
   }, []);
 
   return (
-    <div className='main flex items-center justify-center  flex-col'>
+    <div className='main flex items-center justify-center flex-col'>
       <ImgContainer alt='loader' type='loader' imgUrl='/images/loader.gif'/>
       <p className='text-lg'>{message}
       <span>{dots}</span>

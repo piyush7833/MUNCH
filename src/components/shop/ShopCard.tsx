@@ -11,7 +11,7 @@ type propsType={
 const ShopCard = ({slug,id,title,desc,imgUrl}:propsType) => {
   return (
     <div>
-      <Link href={`/shops/${slug}`} className={`store-shop-container shadow-2xl group `} style={{backgroundImage:`url(${imgUrl})`}}>
+      <Link href={`/pages/shops/${slug}`} className={`store-shop-container shadow-2xl group `} style={{backgroundImage:`url(${imgUrl})`}}>
           <div className=''>
             <div className={`w-[45vw] sm:w-[25vw] overflow-clip flex flex-col items-center`}>
             <h1 className='store-shop-title p-2 group-hover:bg-black group-hover:bg-opacity-50 rounded-xl'>{title}</h1>

@@ -29,7 +29,7 @@ const Items = () => {
       <div className="item-wraper">
         {featuredProducts &&
           featuredProducts.map((item) => (
-            <Link href={`/product/${item.id}`} key={item.id}>
+            <Link href={`/pages/product/${item.id}`} key={item.id}>
               <div className="single-item group shadow-2xl" key={item.id}>
                 {item.img && (
                   <div className="single-imgContainer group-hover:scale-110 md:group-hover:scale-105">

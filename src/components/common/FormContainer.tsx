@@ -10,14 +10,18 @@ type propsType = {
   onSave: any;
   title: string;
   address?: formType[];
+  shopOwner?: formType[];
+  originalShopOwnerData?: any;
   additional?: boolean;
   originalData?: any;
   originalAddressData?: any;
-  originalAdditionalOptions?: any;
+  originalAdditionalOptions?: any[];
+
 };
-const FormContainer = ({ data, onSave, title, address, originalData, originalAddressData, additional, originalAdditionalOptions }: propsType) => {
-  const [formData, setFormData] = useState<any>();
+const FormContainer = ({ data, onSave, title, address, originalData, originalAddressData, additional, originalAdditionalOptions,shopOwner,originalShopOwnerData }: propsType) => {
+  const [formData, setFormData] = useState<any>(originalData || null);
   const [addressData, setAdressData] = useState<any>(originalAddressData || null);
+  const [shopOwnerData, setShopOwnerData] = useState<any>(originalShopOwnerData || null);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
   const [option, setOption] = useState<productOptionType>(
     {
@@ -37,15 +41,21 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
       ...addressData,
       [name]: e.target.value,
     });
-    console.log(addressData)
+  };
+  const handleShopOwnerChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>, name: string) => {
+    setShopOwnerData({
+      ...shopOwnerData,
+      [name]: e.target.value,
+    });
   };
 
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (addressData) {
+    if(shopOwnerData){
+      onSave(formData, addressData, shopOwnerData);
+    }
+    else if (addressData) {
       onSave(formData, addressData);
-      // setFormData(null);
-      // setAdressData(null);
     }
     else if (options.length > 0) {
       onSave(formData, options)
@@ -64,7 +74,6 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
     const updatedList = [...options];
     updatedList.splice(index, 1);
     setOptions(updatedList);
-    console.log(options)
   };
   return (
     <form className='form hideScrollBar flex flex-col gap-4 justify-center items-center' onSubmit={(e) => handleSave(e)}>
@@ -172,6 +181,57 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
           )}
         </div>
       ))}
+      {shopOwner && shopOwner?.map((field) => (
+        <div key={field.name} className="inputContainer">
+          <field.icon />
+          {field.type === "select" ? (
+            <div className="relative w-full">
+            <label
+              htmlFor={field.name}
+              className={`absolute transition-all duration-300 ${focusedInput === field.name || (originalShopOwnerData && originalShopOwnerData[field.name] ) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
+            >
+              {field.name}
+            </label>
+            <select
+              name={field.name}
+              id={field.name}
+              onChange={(e) => handleShopOwnerChange(e, field.name)}
+              required={field.required}
+              className="input"
+              disabled={field.editable === false}
+            >
+              <option value="" disabled selected>
+                {originalShopOwnerData && originalShopOwnerData[field.name] ? originalShopOwnerData[field.name] : field.placeholder}
+              </option>
+              {field.options?.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            </div>
+          ) : (
+            <div className="relative w-full">
+              <label
+                htmlFor={field.name}
+                className={`absolute transition-all duration-300 ${focusedInput === field.name || (originalShopOwnerData && originalShopOwnerData[field.name]) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
+              >
+                {field.name}
+              </label>
+            <input
+              type={field.type}
+              name={field.name}
+              id={field.name}
+              onChange={(e) => handleShopOwnerChange(e, field.name)}
+              placeholder={originalShopOwnerData && originalShopOwnerData[field.name] ? originalShopOwnerData[field.name] : field.placeholder}
+              required={field.required}
+              className="input"
+              disabled={field.editable === false}
+            />
+            </div>
+          )}
+        </div>
+      ))}
       {additional &&
         <div className='flex items-start flex-col'>
           <label htmlFor="option" className='font-bold'>Add Varities</label>
@@ -181,18 +241,18 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
             <button type="button" className='btn' disabled={option.title == null || option.additionalPrice == null || option.title == ""} onClick={() => setOptions((prev) => [...prev, option])}><AddIcon /></button>
           </div>
 
-          {options.length > 0 && <div className="flex justify-between font-bold">
+          {originalAdditionalOptions && <div className="flex justify-between font-bold gap-4">
             <p>Title</p>
             <p>Additional Price</p>
             <p></p>
           </div>}
-          {options.map((opt, index) => (
+          {originalAdditionalOptions && originalAdditionalOptions?.map((opt, index) => (
             <div
               key={index}
-              className="flex justify-between items-center gap-0"
+              className="flex justify-between items-center gap-4"
             >
               <p className=''>{opt.title}</p>
-              <p className=""> + Rs {opt.additionalPrice}</p>
+              <p className="">  Rs {opt.additionalPrice}</p>
               <button type="button" className='btn' onClick={() => handleRemoveOption(index)}><DeleteIcon /></button>
             </div>
           ))}

@@ -70,6 +70,28 @@ export type fullUserType = {
   phoneVerified: Date | null,
   activeSession: boolean,
   image: string | null,
+  ShopOwner?:JSON | null
+}
+export type responseUserType = {
+  name: string | null,
+  userName: string | null,
+  createdAt: string | null,
+  email?: string | null,
+  phone?: string | null,
+  role: string | null,
+  id: string | null,
+  address: addressType,
+  emailVerified: Date | null,
+  phoneVerified: Date | null,
+  activeSession: boolean,
+  image: string | null,
+  shopOwner?:responseShopOwnerType[] | null
+  shops?:ResponseShopType[]
+}
+export type editUserType = {
+  name?: string | null,
+  email?: string | null,
+  phone?: string | null,
 }
 
 export type addressType = {
@@ -85,11 +107,11 @@ export type passwordChangeType = {
   confirm_password: string
 }
 export type shopOwnerType = {
-  panCard: string,
-  bankAccount: string,
+  panCard?: string,
+  bankAccount?: string,
   GSTIN ?: string,
-  aadhar: string,
-  IFSC: string,
+  aadhar?: string,
+  IFSC?: string,
 }
 export type responseShopOwnerType = {
   panCard: string,

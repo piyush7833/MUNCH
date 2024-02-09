@@ -243,6 +243,48 @@ export const shopOwnerFormData:formType[]=[
         required:true
     },
 ]
+export const editshopOwnerFormData:formType[]=[
+    {
+        type:"text",
+        name:"panCard",
+        id:"panCard",
+        placeholder:"Enter pan card number.",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"aadhar",
+        id:"aadhar",
+        placeholder:"Enter aadhar number.",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"bankAccount",
+        id:"bankAccount",
+        placeholder:"Enter bank accout number.",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"IFSC",
+        id:"IFSC",
+        placeholder:"Enter IFSC number of bank.",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"GSTIN",
+        id:"GSTIN",
+        placeholder:"Enter GSTIN number (optional).",
+        icon: StreetviewIcon,
+        required:false
+    },
+]
 export const addShopFormData:formType[]=[
     {
         type:"text",
@@ -401,4 +443,31 @@ export const unVerifyForm:formType[]=[
         icon: StreetviewIcon,
         required:false
     }
+]
+
+export const editUserForm:formType[]=[
+    {
+        type:"text",
+        name:"name",
+        id:"name",
+        placeholder:"Enter your name.",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"email",
+        id:"email",
+        placeholder:"Enter your email.",
+        icon: StreetviewIcon,
+        required:false
+    },
+    {
+        type:"text",
+        name:"phone",
+        id:"phone",
+        placeholder:"Enter your phone.",
+        icon: StreetviewIcon,
+        required:false
+    },
 ]

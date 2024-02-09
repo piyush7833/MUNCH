@@ -1,12 +1,8 @@
 "use client"
-import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { userAuthStore } from '@/utils/userStore'
-import axios from 'axios'
-import { baseUrl } from '@/baseUrl'
-import { toast } from 'react-toastify'
+
 const UserLinks = () => {
 
 
@@ -17,9 +13,9 @@ const UserLinks = () => {
   return (
     <div className='gap-4 flex-col lg:flex-row flex'>
       {(name !== null || userName !== null) ?
-        <Link href='/orders' className='hover:scale-105 hover:animate-bounce' >Orders</Link>
-        : <Link href='/auth' className='hover:scale-105 hover:animate-bounce' >Login</Link>}
-      {(name !== null || userName !== null) && <Link href='/profile' className='hover:scale-105 hover:animate-bounce'>{name?.split(" ")[0]}</Link>}
+        <Link href='/pages/orders' className='hover:scale-105 hover:animate-bounce' >Orders</Link>
+        : <Link href='/pages/auth' className='hover:scale-105 hover:animate-bounce' >Login</Link>}
+      {(name !== null || userName !== null) && <Link href='/pages/profile' className='hover:scale-105 hover:animate-bounce'>{name?.split(" ")[0]}</Link>}
     </div>
   )
 }

@@ -8,8 +8,8 @@ import ModeBtn from '../partials/ModeBtn';
 
 const links=[
     {id:1,title:"Home",url:"/"},
-    {id:2,title:"Shops",url:"/shops"},
-    {id:3,title:"Contact Us",url:"/contact"},
+    {id:2,title:"Shops",url:"/pages/shops"},
+    {id:3,title:"Contact Us",url:"/pages/contact"},
 ]
 const Menu = () => {
     const [open,SetOpen]=useState(false)

@@ -5,18 +5,18 @@ import { useRouter } from 'next/navigation';
 import { baseUrl } from '@/baseUrl';
 import { toast } from 'react-toastify';
 import { userAuthStore } from '@/utils/userStore';
-import axios from 'axios';
 import ConfirmDialog from '../common/ConfirmDialog';
+import { httpservice } from '@/utils/httpService';
 const DeleteButton = ({url}:{url:string}) => {
     const {userName,role}=userAuthStore()
     const [isConfirmOpen, setConfirmOpen] = useState(false);
     const router=useRouter()
-    if(!userName || role!=="ShopOwner"){
+    if(!userName || role==="User"){
         return 
     }
     const handleDelete=async()=>{
         try {
-            const response=await axios.delete(url)
+            const response=await httpservice.delete(url)
             toast.success(response.data.message);
             router.push('/')
         } catch (error:any) {
