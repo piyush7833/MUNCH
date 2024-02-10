@@ -4,7 +4,6 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
-  console.log(path)
   const isProtected = path === '/pages/profile' || path.startsWith('/pages/orders') || path==="/pages/contact" || path.startsWith("/pages/edit/profile")
   
   const isAdmin = path.startsWith('/pages/admin');
