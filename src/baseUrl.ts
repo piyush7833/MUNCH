@@ -1,3 +1,3 @@
 export const baseUrl='/api'
 
-export const siteUrl='http://localhost:3000'
+export const siteUrl='https://munch-akwu.onrender.com'
