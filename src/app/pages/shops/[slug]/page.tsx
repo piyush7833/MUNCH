@@ -1,5 +1,6 @@
 "use client"
 import { baseUrl } from '@/baseUrl';
+import Error from '@/components/common/Error';
 import Loader from '@/components/common/Loader';
 import ProductContainer from '@/components/product/ProductContainer';
 import ShopHeading from '@/components/shop/ShopHeading';
@@ -23,7 +24,9 @@ const ShopMenuPage = ({ params }: Props) => {
 
   if (error) {
     console.log(error)
-    return <div>Something went wrong</div>
+     return <div className="main flex items-center justify-center">
+    <Error message={error.response.data.message} />;
+</div>;
   }
   if (isLoading) {
     return <Loader message='Shops are coming at your doorsteps' />

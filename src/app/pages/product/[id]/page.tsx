@@ -1,5 +1,6 @@
 "use client"
 import { baseUrl } from '@/baseUrl';
+import Error from '@/components/common/Error';
 import ImgContainer from '@/components/common/ImgContainer';
 import Loader from '@/components/common/Loader';
 import DeleteButton from '@/components/partials/DeleteButton';
@@ -20,8 +21,10 @@ const Product =  ({ params }: { params: { id: string } }) => {
     const { role } = userAuthStore();
   
     if (error) {
-      return <div>Something went wrong</div>;
-    }
+      return <div className="main flex items-center justify-center">
+        <Error message={error.response.data.message}/>;
+      </div>
+  }
   
     if (isLoading) {
       return <Loader message='Delicious Food Coming Through' />;
@@ -38,8 +41,8 @@ const Product =  ({ params }: { params: { id: string } }) => {
           <p className='text-base'>{data.desc}</p>
           <Price product={data} />
         </div>
-        {role!=="User" && <EditButton url={`/pages/edit/product/${data.id}`} />}
-        {role!=="User" && <DeleteButton url={`/product/${data.id}`} />}
+        {/* {role!=="User" && <EditButton url={`/pages/edit/product/${data.id}`} />}
+        {role!=="User" && <DeleteButton url={`/product/${data.id}`} />} */}
       </div>
 
 

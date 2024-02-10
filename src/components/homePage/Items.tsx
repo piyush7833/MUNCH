@@ -6,6 +6,8 @@ import { ProductsType } from '@/types/types';
 import useSWR from 'swr';
 import { baseUrl } from '@/baseUrl';
 import { httpservice } from '@/utils/httpService';
+import ContainerLoader from '../common/ContainerLoader';
+import Error from '../common/Error';
 
 const fetcher = async (url:string) => {
   const response = await httpservice.get(url);
@@ -16,11 +18,16 @@ const fetcher = async (url:string) => {
 const Items = () => {
   const { data, error, isLoading } = useSWR(`${baseUrl}/product`, fetcher);
   if (error) {
-    return <p className='text-main'>Something went wrong</p>;
+    return <div className=" w-screen lg:h-[90vh] h-[60vh] flex">
+    <Error message={error.response.data.message}/>
+  </div>;
   }
 
   if (isLoading) {
-    return <p className='text-main'>Loading...</p>;
+    return <div className=" w-screen lg:h-[90vh] h-[60vh] flex">
+      <ContainerLoader message='MUNCH best food is here' />
+    </div>
+
   }
 
   const featuredProducts: ProductsType = data.products;

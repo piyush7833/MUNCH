@@ -7,6 +7,7 @@ import Loader from '@/components/common/Loader';
 import CustomTable from '@/components/common/Table/CustomTable';
 import { productType } from '@/app/api/product/type';
 import { httpservice } from '@/utils/httpService';
+import Error from '@/components/common/Error';
 
 const fetcher = async (url: string) => {
     try {
@@ -21,7 +22,9 @@ const fetcher = async (url: string) => {
 const Page = () => {
     const { data, error,isLoading } = useSWR(`${baseUrl}/product`, fetcher);
     if (error) {
-        return <p>Something went wrong</p>
+        return <div className="main flex items-center justify-center">
+           <Error message={error.response.data.message} />
+        </div>
     }
     if (isLoading) {
         return <Loader message='Delicious Food Coming Through' />; // You can show a loading indicator

@@ -68,6 +68,7 @@ export const PUT = async (req: NextRequest, { params }: { params: { slug: string
                 })
             }
             else if (notVerified) {
+                console.log("object")
                 shopOwner = await prisma.shop.update({
                     where: {
                         slug: slug

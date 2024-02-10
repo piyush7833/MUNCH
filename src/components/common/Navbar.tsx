@@ -26,7 +26,7 @@ const Navbar = () => {
                 {links.map(item => (
                     <Link key={item.id} href={item.url} className='hover:scale-105 hover:animate-bounce' >{item.title}</Link>
                 ))}
-                <Link href='./cart' className='hover:scale-105 hover:animate-bounce' ><CartIcon /></Link>
+                <Link href='/pages/cart' className='hover:scale-105 hover:animate-bounce' ><CartIcon /></Link>
                 <UserLinks/>
             </div>
             <div className='md:hidden'>

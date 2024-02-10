@@ -9,9 +9,10 @@ type propsType = {
   onSave: any;
   image:string;
   title:string;
+  loading?: boolean;
 };
 
-const FormDialog = ({ data, onClose, onSave,image,title }:propsType) => {
+const FormDialog = ({ data, onClose, onSave,image,title,loading }:propsType) => {
   const [formData, setFormData] = useState<any>();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>, name: string) => {
@@ -46,6 +47,7 @@ const FormDialog = ({ data, onClose, onSave,image,title }:propsType) => {
                 onChange={(e) => handleChange(e, field.name)}
                 required={field.required}
                 className="input"
+                disabled={field.editable === false || loading}
               >
                 <option value="" disabled selected>
                   {field.placeholder}
@@ -64,6 +66,7 @@ const FormDialog = ({ data, onClose, onSave,image,title }:propsType) => {
                 onChange={(e) => handleChange(e, field.name)}
                 placeholder={field.placeholder}
                 required={field.required}
+                disabled={field.editable === false || loading}
                 className="input"
               />
             )}

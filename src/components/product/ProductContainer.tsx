@@ -29,7 +29,7 @@ const ProductContainer = ({ img, id, title, price, edit, add, productType, shopS
     href = `/pages/add/product/${shopSlug}`
   }
   else {
-    href = `/product/${id}`
+    href = `/pages/product/${id}`
   }
   return (
     <div className="relative flex  h-fit w-[80%] sm:w-[33%] md:w-[45%] px-4 py-2 items-center rounded-md shadow-md hover:shadow-lg hover:shadow-main shadow-main justify-around">
@@ -46,8 +46,8 @@ const ProductContainer = ({ img, id, title, price, edit, add, productType, shopS
           <ImgContainer imgUrl={img} alt={title} type='product' />
         </div>
       </Link>
-      {!add && <DeleteButton url={`${baseUrl}/product/${id}`} />}
-      {!add && <EditButton url={`/edit/product/${id}`} />}
+      {!add && <DeleteButton url={`${baseUrl}/product/${id}`} userId={shopUserId} />}
+      {!add && <EditButton url={`/pages/edit/product/${id}`} userId={shopUserId}/>}
     </div>
   )
 }

@@ -1,6 +1,7 @@
 "use client"
 import { baseUrl } from '@/baseUrl'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
+import Error from '@/components/common/Error'
 import FormContainer from '@/components/common/FormContainer'
 import ImgContainer from '@/components/common/ImgContainer'
 import Loader from '@/components/common/Loader'
@@ -35,12 +36,14 @@ const  Page = ({params}:Props) => {
   const [userData, setUserData] = useState<editUserType>()
   const [addressData, setAddressData] = useState<addressType>()
   const [shopOwnerData, setShopOwnerData] = useState<shopOwnerType>()
+  const [loading,setLoading]=useState(false)
   const {logIn}=userAuthStore()
   const router = useRouter()
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       try {
           let imgUrl;
+          setLoading(true)
           if (selectedImage) {
               imgUrl = await handleUploadImage(selectedImage)
           }
@@ -48,9 +51,11 @@ const  Page = ({params}:Props) => {
           const response = await httpservice.put(`${baseUrl}/user`, {name: userData?.name, phone: userData?.phone, email: userData?.email, address: addressData,image: imgUrl})
           logIn(response.data.updatedUser)
           toast.success(response.data.message);
+          setLoading(false)
           router.push(`/pages/profile`)
       } catch (error: any) {
           console.log(error,"error")
+          setLoading(false)
           toast.error(error.response.data.message)
       }
   }
@@ -68,7 +73,9 @@ const  Page = ({params}:Props) => {
       }
   }
   if(error){
-    return <div>Something went wrong</div>
+    return <div className="main flex items-center justify-center">
+    <Error message={error.response.data.message}/>
+</div>
   }
   if(isLoading || !data){
     return <Loader message='Edit profile details easliy on munch' />
@@ -87,7 +94,9 @@ const  Page = ({params}:Props) => {
       <div className=" w-full h-1/2 md:h-1/2 md:w-1/2 flex items-center justify-center">
         <ImgContainer type='profile' alt='add image' edit={true} imgUrl={user?.image} func={handleImageChange} />
       </div>
-      <FormContainer onSave={handleSave} data={editUserForm} originalData={extractedUserData} address={editAddressFormData} originalAddressData={user.address} shopOwner={editshopOwnerFormData} originalShopOwnerData={user?.shopOwner?.[0]} title="Edit Product" />
+      {user?.role==="ShopOwner" ? 
+      <FormContainer onSave={handleSave} data={editUserForm} originalData={extractedUserData} address={editAddressFormData} originalAddressData={user.address} shopOwner={editshopOwnerFormData} originalShopOwnerData={user?.shopOwner?.[0]} title="Edit Product" loading={loading}/>:
+      <FormContainer onSave={handleSave} data={editUserForm} originalData={extractedUserData} address={editAddressFormData} originalAddressData={user.address} title="Edit Product" loading={loading}/>}
     </div>
     </div>
   )

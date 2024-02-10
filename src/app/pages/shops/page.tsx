@@ -7,8 +7,8 @@ import { toast } from 'react-toastify';
 import { baseUrl } from '@/baseUrl';
 import Loader from '@/components/common/Loader';
 import { userAuthStore } from '@/utils/userStore';
-import CustomTable from '@/components/common/Table/CustomTable';
 import { httpservice } from '@/utils/httpService';
+import Error from '@/components/common/Error';
 
 const fetcher = async (url: string) => {
   try {
@@ -24,7 +24,9 @@ const Page = () => {
   const {role}=userAuthStore()
   console.log(data)
   if (error) {
-    return <p>{error.response.data}</p>;
+    return <div className="main flex items-center justify-center">
+            <Error message={error.response.data.message} />;
+        </div>;
   }
   if (!data) {
     return <Loader message='Shops are coming at your doorstep' />; // You can show a loading indicator

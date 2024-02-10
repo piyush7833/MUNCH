@@ -7,8 +7,7 @@ import DeleteButton from '../partials/DeleteButton'
 import { httpservice } from '@/utils/httpService'
 import { baseUrl } from '@/baseUrl'
 import { toast } from 'react-toastify'
-import { passwordChangeType, responseShopOwnerType, shopOwnerType } from '@/types/types'
-import { format } from 'path'
+import { passwordChangeType, shopOwnerType } from '@/types/types'
 import { formatDate } from '@/utils/action'
 import { passwordChangeFormData, shopOwnerFormData } from '@/utils/formData'
 import FormDialog from '../common/FormDialog'
@@ -72,11 +71,11 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
               {key === "user" ?
                 (value as any)?.name : key === "address" ?
                   <div className="flex gap-2 flex-wrap">
-                    <p>{(value as any)?.street},</p>
-                    <p>{(value as any)?.landmark},</p>
-                    <p>{(value as any)?.city},</p>
-                    <p>{(value as any)?.pincode},</p>
-                    <p>{(value as any)?.state}</p>
+                    <p>{(value as any)?.street || "street"},</p>
+                    <p>{(value as any)?.landmark || "landmark"},</p>
+                    <p>{(value as any)?.city || "city"},</p>
+                    <p>{(value as any)?.pincode || "pincode"},</p>
+                    <p>{(value as any)?.state || "state"}</p>
                   </div> :
                   key === "email" ?
                     <div className="flex gap-2 items-center">
@@ -117,8 +116,8 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
       {roleEditing && <FormDialog onClose={() => setRoleEditing(false)} onSave={handleRoleChange} data={shopOwnerFormData} image='/images/shop.png' title="Be a shopowner and serve IIITU Students" />}
       {isPasswordChange && <FormDialog onClose={() => setIsPasswordChange(false)} onSave={handlePasswordChange} data={passwordChangeFormData} image='/images/forget-password.png' title="Change password" />}
       {/* <div className="flex h-1/2 w-1/2" > */}
-        {userData.role !== "User" && <EditButton url={`/pages/edit/profile/${userData?.id!}`} />}
-        {userData.role !== "User" && <DeleteButton url={`/user`} />}
+        {<EditButton url={`/pages/edit/profile/${userData?.id!}`} userId={userData?.id} />}
+        {<DeleteButton url={`/user`}  userId={userData?.id}  />}
         <button className='btn absolute bottom-3 right-28'>Logout</button>
         <button className='btn absolute bottom-3 right-56'>Change Password</button>
       {/* </div> */}

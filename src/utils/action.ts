@@ -25,3 +25,11 @@ export function formatDate(inputDate:string) {
         return null;
     }
 }
+
+
+export const findKeys = (arrayOfObjects: any[]): string[] => {
+  const keys = arrayOfObjects.reduce((acc, item) => {
+      return acc.concat(Object.keys(item));
+  }, []);
+  return Array.from(new Set(keys));
+}

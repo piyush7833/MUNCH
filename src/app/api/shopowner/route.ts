@@ -142,6 +142,7 @@ export const PUT = async (req: NextRequest) => {
                 })
             }
             else if (notVerified) {
+                console.log(notVerified)
                 await prisma.user.update({
                     where: {
                         id: shop_owner.userId
@@ -156,6 +157,7 @@ export const PUT = async (req: NextRequest) => {
                 })
             }
             else {
+                console.log("object")
                 shopOwner = await prisma.shopOwner.update({
                     where: {
                         id:id

@@ -8,9 +8,10 @@ type propsType = {
   keys: string[];
   originalData?: any[];
   type?: string;
+  handleUpdate?: () => void;
 };
 
-const CustomTable = ({ data, keys, originalData, type }: propsType) => {
+const CustomTable = ({ data, keys, originalData, type,handleUpdate }: propsType) => {
   const [selectedShopData, setSelectedShopData] = useState<any>(null);
 
   const handlePreviewIconClick = (shopData: any) => {
@@ -57,7 +58,7 @@ const CustomTable = ({ data, keys, originalData, type }: propsType) => {
         </tbody>
       </table>
       {selectedShopData && (
-        <DataDialog onClose={handleCloseDialog} data={selectedShopData} type={type} />
+        <DataDialog onClose={handleCloseDialog} handleUpdate={handleUpdate!} data={selectedShopData} type={type} />
       )}
     </div>
   );

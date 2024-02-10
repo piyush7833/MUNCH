@@ -16,10 +16,12 @@ const Page = () => {
   const [shopData, setShopData] = useState<shopType>();
   const [addressData, setAddressData] = useState<addressType>();
   const [isConfirmOpen, setConfirmOpen] = useState(false);
+  const [loading, setLoading] = useState(false)
   const router=useRouter()
   const handleSubmit = async () => {
     try {
       let imgUrl;
+      setLoading(true);
       if (selectedImage) {
         imgUrl = await handleUploadImage(selectedImage)
       }
@@ -27,9 +29,11 @@ const Page = () => {
       console.log("address",addressData)
       const response =await  httpservice.post(`${baseUrl}/shop`, { title:shopData?.title, desc:shopData?.desc, slug:shopData?.slug  ,address: addressData,img:imgUrl })
       toast.success(response.data.message);
+      setLoading(false);
       router.push(`/pages/shops/${response.data.newShop.slug}`)
     } catch (error:any) {
       toast.error(error.response.data.message)
+      setLoading(false);
     }
   }
   const handleSave = async (formDetails: shopType, addressDetails: addressType) => {
@@ -56,7 +60,7 @@ const Page = () => {
       <div className=" w-full h-1/2 md:h-1/2 md:w-1/2 flex items-center justify-center">
         <ImgContainer type='singleProduct' alt='add image' edit={true} func={handleImageChange} />
       </div>
-      <FormContainer onSave={handleSave} data={addShopFormData} address={addressFormData} title="Add shop" />
+      <FormContainer onSave={handleSave} data={addShopFormData} address={addressFormData} title="Add shop" loading={loading} />
     </div>
   )
 }

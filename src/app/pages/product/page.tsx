@@ -8,6 +8,7 @@ import { userAuthStore } from '@/utils/userStore';
 import ProductContainer from '@/components/product/ProductContainer';
 import { ProductType } from '@/types/types';
 import { httpservice } from '@/utils/httpService';
+import Error from '@/components/common/Error';
 
 const fetcher = async (url: string) => {
     try {
@@ -21,13 +22,15 @@ const fetcher = async (url: string) => {
 }
 
 const Page = () => {
-    const { data, error } = useSWR(`${baseUrl}/product`, fetcher);
-    const { role,id } = userAuthStore()
+    const { data, error, isLoading } = useSWR(`${baseUrl}/product`, fetcher);
+    const { role, id } = userAuthStore()
     console.log(data)
     if (error) {
-        return <p>Something went wrong</p>;
+        return <div className="main flex items-center justify-center">
+            <Error message={error.response.data.message} />;
+        </div>;
     }
-    if (!data) {
+    if (!data || isLoading) {
         return <Loader message='Delicious Food Coming Through' />; // You can show a loading indicator
     }
     const products: ProductType[] = data.products;
@@ -38,7 +41,7 @@ const Page = () => {
                     products.map((product: ProductType) => (
                         <ProductContainer key={product.id} img={product.img!} desc={product.desc!} id={product.id!} title={product.title!} />
                     ))}
-                {role==="ShopOwner" && <ProductContainer id='new' img='/images/add.webp' title='Add new' add={true} productType='Veg'/>}
+                {role === "ShopOwner" && <ProductContainer id='new' img='/images/add.webp' title='Add new' add={true} productType='Veg' />}
             </div>
         </div>
     )

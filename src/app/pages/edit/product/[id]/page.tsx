@@ -2,6 +2,7 @@
 import { productType } from '@/app/api/product/type'
 import { baseUrl } from '@/baseUrl'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
+import Error from '@/components/common/Error'
 import FormContainer from '@/components/common/FormContainer'
 import ImgContainer from '@/components/common/ImgContainer'
 import Loader from '@/components/common/Loader'
@@ -27,17 +28,21 @@ const  Page = ({params}:Props) => {
   const [productData, setProductData] = useState<productType>()
   const router = useRouter()
   const [options, setOptions] = useState<productOptionType[]>([])
+  const [loading,setLoading]=useState(false)
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       try {
           let imgUrl;
+          setLoading(true);
           if (selectedImage) {
               imgUrl = await handleUploadImage(selectedImage)
           }
           const response = await httpservice.put(`${baseUrl}/product/${params.id}`, {title:productData?.title,desc:productData?.desc,type:productData?.type,img:imgUrl,options, price:productData?.price})
           toast.success(response.data.message);
+          setLoading(false)
           router.push(`/pages/product/${response.data.updatedProduct.id}`)
       } catch (error: any) {
           console.log(error)
+          setLoading(false)
           toast.error(error.response.data.message)
       }
   }
@@ -54,7 +59,9 @@ const  Page = ({params}:Props) => {
       }
   }
   if(error){
-    return <div>Something went wrong</div>
+    return <div className="main flex items-center justify-center">
+        <Error message={error.response.data.message}/>
+    </div>
   }
   if(isLoading || !data){
     return <Loader message='Edit food details easliy on munch' />
@@ -73,7 +80,7 @@ console.log(data)
       <div className=" w-full h-1/2 md:h-1/2 md:w-1/2 flex items-center justify-center">
         <ImgContainer type='singleProduct' alt='add image' edit={true} imgUrl={data?.product?.img} func={handleImageChange} />
       </div>
-      {data && <FormContainer onSave={handleSave} data={editProductFormData} originalData={data?.product}  originalAdditionalOptions={data?.product?.options} additional={true} title="Edit Product" />}
+      {data && <FormContainer onSave={handleSave} data={editProductFormData} originalData={data?.product}  originalAdditionalOptions={data?.product?.options} additional={true} title="Edit Product" loading={loading} />}
     </div>
     </div>
   )

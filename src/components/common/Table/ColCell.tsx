@@ -35,11 +35,11 @@ const ColCell = ({ value, variant,url }: CustomTableCellProps) => {
       case "user":
         return <Link href={url!} className="">{value.name}</Link>
       case "createdAt":
-        return <p className="">{formatDate(value.split('T')[0])}</p>
+        return <p className="">{formatDate(value?.split('T')[0])}</p>
       case "userId":
         return 
       case "verified":
-        return <p className="">{value ?formatDate(value.split('T')[0]):"NaN"}</p>
+        return <p className="">{value ?formatDate(value?.split('T')[0]):"NaN"}</p>
       default:
         return <p className="">{value ? value:"NaN"}</p>;
     }

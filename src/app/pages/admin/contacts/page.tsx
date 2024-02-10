@@ -7,6 +7,7 @@ import Loader from '@/components/common/Loader';
 import CustomTable from '@/components/common/Table/CustomTable';
 import { ContactResponseType } from '@/types/types';
 import { httpservice } from '@/utils/httpService';
+import Error from '@/components/common/Error';
 
 const fetcher = async (url: string) => {
     try {
@@ -21,12 +22,13 @@ const fetcher = async (url: string) => {
 
 const Page = () => {
     const { data, error, isLoading } = useSWR(`${baseUrl}/contact`, fetcher);
-    console.log(data)
     if (error) {
-        return <p>Something went wrong</p>;
+        return <div className="main flex items-center justify-center">
+        <Error message={error.response.data.message} />
+      </div>
     }
     if (isLoading) {
-        return <Loader message='Delicious Food Coming Through' />; // You can show a loading indicator
+        return <Loader message='Contacts are imoortant to serve best' />; // You can show a loading indicator
     }
     const contacts:ContactResponseType[] = data.contacts;
     const findKeys = (arrayOfObjects: any[]): string[] => {

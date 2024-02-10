@@ -4,6 +4,8 @@ import { formType } from '@/utils/formData';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import React, { useState } from 'react'
+import Button from '../partials/Button';
+
 
 type propsType = {
   data: formType[];
@@ -16,9 +18,9 @@ type propsType = {
   originalData?: any;
   originalAddressData?: any;
   originalAdditionalOptions?: any[];
-
+  loading?: boolean;
 };
-const FormContainer = ({ data, onSave, title, address, originalData, originalAddressData, additional, originalAdditionalOptions,shopOwner,originalShopOwnerData }: propsType) => {
+const FormContainer = ({ data, onSave, title, address, originalData, originalAddressData, additional, originalAdditionalOptions,shopOwner,originalShopOwnerData,loading }: propsType) => {
   const [formData, setFormData] = useState<any>(originalData || null);
   const [addressData, setAdressData] = useState<any>(originalAddressData || null);
   const [shopOwnerData, setShopOwnerData] = useState<any>(originalShopOwnerData || null);
@@ -71,7 +73,9 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
   };
 
   const handleRemoveOption = (index: number) => {
+    console.log(index)
     const updatedList = [...options];
+    console.log(updatedList)
     updatedList.splice(index, 1);
     setOptions(updatedList);
   };
@@ -95,7 +99,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
               onChange={(e) => handleChange(e, field.name)}
               required={field.required}
               className="input"
-              disabled={field.editable === false}
+              disabled={field.editable === false || loading}
             >
               <option value="" disabled selected>
                 {originalData && originalData[field.name] ? originalData[field.name] : field.placeholder}
@@ -123,7 +127,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
                 placeholder={originalData && originalData[field.name] ? originalData[field.name] : field.placeholder}
                 required={field.required}
                 className="input"
-                disabled={field.editable === false}
+                disabled={field.editable === false || loading}
               />
             </div>
 
@@ -147,7 +151,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
               onChange={(e) => handleAddressChange(e, field.name)}
               required={field.required}
               className="input"
-              disabled={field.editable === false}
+              disabled={field.editable === false || loading}
             >
               <option value="" disabled selected>
                 {originalAddressData && originalAddressData[field.name] ? originalAddressData[field.name] : field.placeholder}
@@ -175,7 +179,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
               placeholder={originalAddressData && originalAddressData[field.name] ? originalAddressData[field.name] : field.placeholder}
               required={field.required}
               className="input"
-              disabled={field.editable === false}
+              disabled={field.editable === false || loading}
             />
             </div>
           )}
@@ -198,7 +202,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
               onChange={(e) => handleShopOwnerChange(e, field.name)}
               required={field.required}
               className="input"
-              disabled={field.editable === false}
+              disabled={field.editable === false || loading}
             >
               <option value="" disabled selected>
                 {originalShopOwnerData && originalShopOwnerData[field.name] ? originalShopOwnerData[field.name] : field.placeholder}
@@ -226,7 +230,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
               placeholder={originalShopOwnerData && originalShopOwnerData[field.name] ? originalShopOwnerData[field.name] : field.placeholder}
               required={field.required}
               className="input"
-              disabled={field.editable === false}
+              disabled={field.editable === false || loading}
             />
             </div>
           )}
@@ -236,9 +240,9 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
         <div className='flex items-start flex-col'>
           <label htmlFor="option" className='font-bold'>Add Varities</label>
           <div className="option flex gap-2 items-center">
-            <input className='text-base font-bold input' type='text' name='title' placeholder='Title' onChange={changeOption} />
-            <input className='text-base font-bold input' type='number' name="additionalPrice" placeholder='Additional Price' onChange={changeOption} />
-            <button type="button" className='btn' disabled={option.title == null || option.additionalPrice == null || option.title == ""} onClick={() => setOptions((prev) => [...prev, option])}><AddIcon /></button>
+            <input className='text-base font-bold input' type='text' disabled={loading} name='title' placeholder='Title' onChange={changeOption} />
+            <input className='text-base font-bold input' type='number' disabled={loading} name="additionalPrice" placeholder='Additional Price' onChange={changeOption} />
+            <button type="button"  className='btn' disabled={option.title == null || option.additionalPrice == null || option.title == "" || loading} onClick={() => setOptions((prev) => [...prev, option])}><AddIcon /></button>
           </div>
 
           {originalAdditionalOptions && <div className="flex justify-between font-bold gap-4">
@@ -246,7 +250,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
             <p>Additional Price</p>
             <p></p>
           </div>}
-          {originalAdditionalOptions && originalAdditionalOptions?.map((opt, index) => (
+          {options && options?.map((opt, index) => (
             <div
               key={index}
               className="flex justify-between items-center gap-4"
@@ -258,7 +262,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
           ))}
         </div>
       }
-      <button className='btn' >Submit</button>
+      <Button type='submit' text='Save' loading={loading} />
     </form>
   )
 }

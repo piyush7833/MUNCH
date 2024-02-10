@@ -4,8 +4,6 @@ import React, { useEffect } from 'react'
 import { userAuthStore } from '@/utils/userStore'
 
 const UserLinks = () => {
-
-
   useEffect(() => {
     userAuthStore.persist.rehydrate()
   }, [])

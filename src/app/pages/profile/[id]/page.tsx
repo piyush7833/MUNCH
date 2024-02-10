@@ -6,6 +6,8 @@ import useSWR from 'swr';
 import { httpservice } from '@/utils/httpService';
 import { baseUrl } from '@/baseUrl';
 import { responseShopOwnerType, responseUserType } from '@/types/types';
+import Error from '@/components/common/Error';
+import Loader from '@/components/common/Loader';
 
 const Profile = ({ params }: { params: { id: string } }) => {
   const fetcher = async (url:string) => {
@@ -15,10 +17,12 @@ const Profile = ({ params }: { params: { id: string } }) => {
   };
   const { data, error, isLoading } = useSWR(`${baseUrl}/user/${params.id}`, fetcher);
   if (error) {
-    return <div>Error loading user</div>;
+     return <div className="main flex items-center justify-center">
+    <Error message={error.response.data.message} />;
+</div>;
   }
   if (isLoading || !data) {
-    return <div>Loading...</div>;
+    return <Loader message='Visiting others profile'/>;
   }
   const user: responseUserType = data.user;
   const shopData = user.shops;
