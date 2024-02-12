@@ -23,7 +23,7 @@ const fetcher = async (url: string) => {
 
 const Page = () => {
     const { data, error, isLoading } = useSWR(`${baseUrl}/product`, fetcher);
-    const { role, id } = userAuthStore()
+    const { role } = userAuthStore()
     console.log(data)
     if (error) {
         return <div className="main flex items-center justify-center">
@@ -39,7 +39,7 @@ const Page = () => {
             <div className="products flex flex-wrap flex-grow justify-around gap-6">
                 {role !== "Admin" &&
                     products.map((product: ProductType) => (
-                        <ProductContainer key={product.id} img={product.img!} desc={product.desc!} id={product.id!} title={product.title!} />
+                        <ProductContainer key={product.id} img={product.img!} desc={product.desc!} id={product.id!} title={product.title!} price={product.price!}/>
                     ))}
                 {role === "ShopOwner" && <ProductContainer id='new' img='/images/add.webp' title='Add new' add={true} productType='Veg' />}
             </div>

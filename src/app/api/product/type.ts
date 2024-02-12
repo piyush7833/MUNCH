@@ -8,7 +8,7 @@ export type productType={
     img:string,
     price:Decimal,
     options:optionType[],
-    slug:string,
+    slug?:string,
     type:ProductType,
     status?:string
 }

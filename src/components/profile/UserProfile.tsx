@@ -11,6 +11,9 @@ import { passwordChangeType, shopOwnerType } from '@/types/types'
 import { formatDate } from '@/utils/action'
 import { passwordChangeFormData, shopOwnerFormData } from '@/utils/formData'
 import FormDialog from '../common/FormDialog'
+import tokenHelper from '@/utils/tokenHelper'
+import { useRouter } from 'next/navigation'
+import Button from '../partials/Button'
 
 type propsType = {
   extractedData?: any,
@@ -18,10 +21,11 @@ type propsType = {
   shopOwnerData?: any,
   shopOwnerExtracedData?: any
 }
-const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtracedData }: any) => {
+const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtracedData }: propsType) => {
   const [roleEditing, setRoleEditing] = useState(false);
   const [isPasswordChange, setIsPasswordChange] = useState(false);
-
+  const [logoutLoading, setLogoutLoading] = useState(false)
+  const [passwordChangeLoading, setPasswordChangeLoading] = useState(false)
   const handleEmailVerify = async () => {
     try {
       const response = await httpservice.post(`${baseUrl}/verify`, { timeout: 10000, });
@@ -44,27 +48,55 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
   };
   const handlePasswordChange = async (passwordData: passwordChangeType) => {
     try {
+      setPasswordChangeLoading(true)
       if (passwordData.confirm_password != passwordData.password) {
+        setPasswordChangeLoading(false)
         return toast.error("Password and confirm password is different")
       }
       else {
+        setPasswordChangeLoading(false)
         const reponse = await httpservice.put(`${baseUrl}/changepassword`, passwordData);
-        toast.success(reponse.data.message);
         setIsPasswordChange(false)
+        return toast.success(reponse.data.message);
       }
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      setPasswordChangeLoading(false)
+      return toast.error(error.response.data.message);
     }
   };
+  const { logOut, logIn } = userAuthStore()
+  const router = useRouter()
+  const handleSignout = async () => {
+    try {
+      setLogoutLoading(true)
+      console.log("object")
+      const response = await httpservice.post(`${baseUrl}/auth/logout`, {
+        headers: { 'Cache-Control': 'no-store' },
+      });
+      logOut(null)
+      tokenHelper.delete("Authorization")
+      tokenHelper.delete("Role")
+      toast.success(response.data.message);
+      setLogoutLoading(false)
+      router.push('/')
+    } catch (error: any) {
+      console.log("error ", error)
+      setLogoutLoading(false)
+      toast.error(error.response.data.message)
+    }
+  }
   return (
-    <div className='main flex items-center justify-center  flex-col md:flex-row'>
+    <div className="main flex items-center justify-center  flex-col ">
+
+    
+    <div className='h-full w-full flex items-center justify-center  flex-col md:flex-row '>
       <div className="w-full md:w-1/2 flex items-center justify-center">
         <ImgContainer imgUrl={userData?.image} type='profile' alt={userData?.name} />
       </div>
-      <div className="flex gap-4 flex-col md:h-4/5 md:justify-center md:gap-4 md:w-1/2 w-full">
+      <div className="flex gap-4 flex-col md:h-4/5 md:justify-center md:gap-4 md:w-1/2 w-full flex-wrap">
         {extractedData && Object.entries(extractedData).map(([key, value]) => (
-          <div className="flex w-full justify-start items-center" key={key}>
-            <div className="w-1/3 capitalize font-bold">
+          <div className="flex w-full justify-start items-center flex-wrap" key={key}>
+            <div className="w-1/3 capitalize font-bold flex-wrap">
               {key === "createdAt" ? "Joined On" : key}
             </div>
             <div className="w-2/3 ">
@@ -98,7 +130,7 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
             </div>
           </div>
         ))}
-        {(shopOwnerExtracedData && userData.role==="ShopOwner") && Object.entries(shopOwnerExtracedData).map(([key, value]) => (
+        {(shopOwnerExtracedData && userData.role === "ShopOwner") && Object.entries(shopOwnerExtracedData).map(([key, value]) => (
           <div className="flex w-full justify-start items-center" key={key}>
             <div className="w-1/3 capitalize font-bold">
               {key === "createdAt" ? "Joined On" : (key === "notVerified" && !value) ? "" : key}
@@ -115,12 +147,13 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
       </div>
       {roleEditing && <FormDialog onClose={() => setRoleEditing(false)} onSave={handleRoleChange} data={shopOwnerFormData} image='/images/shop.png' title="Be a shopowner and serve IIITU Students" />}
       {isPasswordChange && <FormDialog onClose={() => setIsPasswordChange(false)} onSave={handlePasswordChange} data={passwordChangeFormData} image='/images/forget-password.png' title="Change password" />}
-      {/* <div className="flex h-1/2 w-1/2" > */}
-        {<EditButton url={`/pages/edit/profile/${userData?.id!}`} userId={userData?.id} />}
-        {<DeleteButton url={`/user`}  userId={userData?.id}  />}
-        <button className='btn absolute bottom-3 right-28'>Logout</button>
-        <button className='btn absolute bottom-3 right-56'>Change Password</button>
-      {/* </div> */}
+    </div>
+    <div className="w-full max-h-fit flex flex-row gap-4 flex-wrap justify-end items-center">
+      <Button onClick={()=>handleSignout()} loading={logoutLoading} text="Logout" />
+      <Button onClick={() => setIsPasswordChange(true)} text='Change Password' loading={passwordChangeLoading}/>
+      <EditButton url={`/pages/edit/profile/${userData?.id!}`} userId={userData?.id} />
+      <DeleteButton url={`/user`} userId={userData?.id} />
+    </div>
     </div>
   )
 }

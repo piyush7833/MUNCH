@@ -1,6 +1,7 @@
 import { baseUrl } from "@/baseUrl";
 import { httpservice } from "./httpService";
 import { toast } from "react-toastify";
+import { formType } from "./formData";
 export function formatDate(inputDate:string) {
     const months = [
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -33,3 +34,65 @@ export const findKeys = (arrayOfObjects: any[]): string[] => {
   }, []);
   return Array.from(new Set(keys));
 }
+
+
+type FormData = {
+  [key: string]: string | number;
+};
+
+const validateFormField = (field: formType, value: string): string => {
+  if (field.required && !value) {
+    return `Please enter ${field.name}`;
+  }
+  if (field.actualType === 'email' && value) {
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(value)) {
+      return 'Please enter a valid email address';
+    }
+  }
+  if (field.actualType === 'number' && value) {
+    const numberRegex = /^[0-9]+$/;
+    if (!numberRegex.test(value)) {
+      return 'Please enter a valid number';
+    }
+  }
+  if (field.actualType === 'phone' && value) {
+    const numberRegex = /^[0-9]+$/;
+    if (!numberRegex.test(value) || value.length < 10 || value.length > 12) {
+      return 'Please enter a valid phone number';
+    }
+  }
+  if (field.actualType === 'aadhar' && value) {
+    const numberRegex = /^[0-9]+$/;
+    if (!numberRegex.test(value) || value.length !== 12) {
+      return 'Please enter a valid aadhar number';
+    }
+  }
+  if (field.actualType === 'text' && value) {
+    const textRegex = /^[a-zA-Z\s]*$/;
+    if (!textRegex.test(value)) {
+      return 'Please enter a valid text';
+    }
+  }
+  if (field.actualType === 'option' && value) {
+    return 'valid';
+  }
+  if (field.actualType === 'password' && value) {
+    const textRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-+])[A-Za-z\d!@#$%^&*()-+]{8,}$/;
+    if (!textRegex.test(value)) {
+      return 'Please enter a valid password';
+    }
+  }
+  return 'valid';
+};
+
+const validateForm = (formData: formType[], fieldId: string, fieldValue: string): string => {
+  const field = formData.find(field => field.id === fieldId);
+  if (field) {
+    return validateFormField(field, fieldValue);
+  }
+  return 'Field not found';
+};
+
+
+export default validateForm;

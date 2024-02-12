@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/utils/connect";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { registerType } from "../types";
+import { getUserType, registerType } from "../types";
 import { cookies } from 'next/headers'
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
@@ -68,39 +68,39 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     }
 }
 
-export const GET = async (req: NextRequest) => {
+export const Put = async (req: NextRequest) => {  //get user for validation
     try {
         // Perform GET logic here
-        const { userName, email, phone }: registerType = await req.json()
+        const { userName, email, phone }: getUserType = await req.json()
         const userN = await prisma.user.findUnique({ where: { userName }, });
         let userE = email && await prisma.user.findFirst({ where: { email } });
         let userP = phone && await prisma.user.findFirst({ where: { phone: phone ?? undefined }, });
         if (userE) {
             return NextResponse.json({
                 error: true,
-                status: 403,  // Internal Server Error
+                status: 200,  // Internal Server Error
                 message: "Email already exist",
-            }, { status: 403 });
+            }, { status: 200 });
         }
         if (userP) {
             return NextResponse.json({
                 error: true,
-                status: 403,  // Internal Server Error
+                status: 200,  // Internal Server Error
                 message: "Phone Number already exist",
-            }, { status: 403 });
+            }, { status: 200 });
         }
         if (userN) {
             return NextResponse.json({
                 error: true,
-                status: 403,  // Internal Server Error
-                message: "Enter unique user name",
-            }, { status: 403 });
+                status: 200,  // Internal Server Error
+                message: "user name already exist",
+            }, { status: 200 });
         }
         else {
             return NextResponse.json({
                 error: false,
                 status: 200,  // Internal Server Error
-                message: "Enter unique user name",
+                message: "Its unique",
             }), { status: 200 };
         }
     } catch (error) {

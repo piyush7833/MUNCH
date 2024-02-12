@@ -14,7 +14,7 @@ const EditButton = ({ url,userId }: { url: string, userId?:string }) => {
 
   return (
     <div>
-      <div onClick={()=>router.push(`${siteUrl}/${url}`)} className='bg-red-500 p-2 cursor-pointer text-white rounded-full absolute bottom-3 right-16' >
+      <div onClick={()=>router.push(`${siteUrl}/${url}`)} className='bg-red-500 p-2 cursor-pointer text-white rounded-full  ' >
           <Edit />
       </div>
     </div>

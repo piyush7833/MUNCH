@@ -2,6 +2,8 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { formType } from '@/utils/formData';
+import validateForm from '@/utils/action';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 type propsType = {
   data: formType[];
@@ -14,11 +16,16 @@ type propsType = {
 
 const FormDialog = ({ data, onClose, onSave,image,title,loading }:propsType) => {
   const [formData, setFormData] = useState<any>();
-
+  const [formError, setFormError] = useState<any>({});
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>, name: string) => {
     setFormData({
       ...formData,
       [name]: e.target.value,
+    });
+    const fieldErrors = validateForm(data, name, e.target.value);
+    setFormError({
+      ...formError,
+      [name]: fieldErrors !== 'valid' && fieldErrors,
     });
   };
 
@@ -38,9 +45,10 @@ const FormDialog = ({ data, onClose, onSave,image,title,loading }:propsType) => 
         <div className="flex justify-center flex-col items-center gap-4 h-2/3 w-full md:w-1/2 md:h-full">
           <h1 className="text-2xl sm:text-3xl font-bold text-center">{title}</h1>
           {data.map((field) => (
-            <div key={field.name} className="inputContainer">
-            <field.icon />
-            {field.type === "select" ? (
+        <div key={field.name} className="inputContainer">
+          <field.icon />
+          {field.type === "select" ? (
+            <div className="relative w-full flex items-center gap-2">
               <select
                 name={field.name}
                 id={field.name}
@@ -58,7 +66,17 @@ const FormDialog = ({ data, onClose, onSave,image,title,loading }:propsType) => 
                   </option>
                 ))}
               </select>
-            ) : (
+              {formError[field.name as keyof typeof formError] && (
+                <div className="relative group">
+                <ErrorOutlineIcon className='text-red-600 cursor-pointer' />
+                <div className="hidden group-hover:block absolute top-0 left-full bg-gray-200 p-2 rounded shadow-md text-xs">
+                  {formError[field.name as keyof typeof formError] }
+                </div>
+              </div>
+              )}
+            </div>
+          ) : (
+            <div className="relative w-full flex items-center gap-2">
               <input
                 type={field.type}
                 name={field.name}
@@ -66,12 +84,22 @@ const FormDialog = ({ data, onClose, onSave,image,title,loading }:propsType) => 
                 onChange={(e) => handleChange(e, field.name)}
                 placeholder={field.placeholder}
                 required={field.required}
-                disabled={field.editable === false || loading}
                 className="input"
+                disabled={field.editable === false || loading}
               />
-            )}
-          </div>
-          ))}
+              {formError[field.name as keyof typeof formError] && (
+                <div className="relative group">
+                <ErrorOutlineIcon className='text-red-600 cursor-pointer' />
+                <div className="hidden group-hover:block absolute top-0 left-full bg-gray-200 p-2 rounded shadow-md text-xs">
+                  {formError[field.name as keyof typeof formError] }
+                </div>
+              </div>
+              )}
+            </div>
+
+          )}
+        </div>
+      ))}
           <div className="mt-4 flex justify-end">
             <button type="submit" className="btn mr-2">
               Save

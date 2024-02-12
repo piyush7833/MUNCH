@@ -5,7 +5,7 @@ type propsType={
     type?:string,
     loading?:boolean,
     disabled?:boolean,
-    onClick?:()=>void
+    onClick?:()=>void,
 }
 const Button = ({text,type,loading,onClick,disabled}:propsType) => {
   return (

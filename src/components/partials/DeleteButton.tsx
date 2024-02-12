@@ -32,7 +32,7 @@ const DeleteButton = ({ url, userId }: { url: string, userId?: string }) => {
         title="Confirm Delete"
         message="Are you sure you want to delete?"
       />
-      <button className='bg-red-500 p-2 text-white rounded-full absolute bottom-3 right-4' onClick={() => setConfirmOpen(true)}><DeleteIcon /></button>
+      <button className='bg-red-500 p-2 text-white rounded-full ' onClick={() => setConfirmOpen(true)}><DeleteIcon /></button>
     </div>
   )
 }

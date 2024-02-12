@@ -153,7 +153,7 @@
 }
 
 .shopHeading{
-    @apply flex flex-col w-full h-fit bg-gray-300 shadow-lg md:flex-row justify-between
+    @apply flex flex-col w-full h-fit  md:flex-row justify-between
 }
 
 .single-productContainer{

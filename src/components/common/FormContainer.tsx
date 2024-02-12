@@ -1,10 +1,12 @@
-"use client"; 
+"use client";
 import { productOptionType } from '@/types/types';
 import { formType } from '@/utils/formData';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import React, { useState } from 'react'
 import Button from '../partials/Button';
+import validateForm from '@/utils/action';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 
 type propsType = {
@@ -20,10 +22,13 @@ type propsType = {
   originalAdditionalOptions?: any[];
   loading?: boolean;
 };
-const FormContainer = ({ data, onSave, title, address, originalData, originalAddressData, additional, originalAdditionalOptions,shopOwner,originalShopOwnerData,loading }: propsType) => {
+const FormContainer = ({ data, onSave, title, address, originalData, originalAddressData, additional, originalAdditionalOptions, shopOwner, originalShopOwnerData, loading }: propsType) => {
   const [formData, setFormData] = useState<any>(originalData || null);
   const [addressData, setAdressData] = useState<any>(originalAddressData || null);
   const [shopOwnerData, setShopOwnerData] = useState<any>(originalShopOwnerData || null);
+  const [addressError, setAddressError] = useState<object>({});
+  const [shopOwnerError, setShopOwnerError] = useState<object>({});
+  const [formError, setFormError] = useState<object>({});
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
   const [option, setOption] = useState<productOptionType>(
     {
@@ -37,11 +42,21 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
       ...formData,
       [name]: e.target.value,
     });
+    const fieldErrors = validateForm(data, name, e.target.value);
+    setFormError({
+      ...formError,
+      [name]: fieldErrors !== 'valid' && fieldErrors,
+    });
   };
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>, name: string) => {
     setAdressData({
       ...addressData,
       [name]: e.target.value,
+    });
+    const fieldErrors = validateForm(address!, name, e.target.value);
+    setAddressError({
+      ...addressError,
+      [name]: fieldErrors !== 'valid' && fieldErrors,
     });
   };
   const handleShopOwnerChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>, name: string) => {
@@ -49,11 +64,16 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
       ...shopOwnerData,
       [name]: e.target.value,
     });
+    const fieldErrors = validateForm(shopOwner!, name, e.target.value);
+    setShopOwnerError({
+      ...shopOwnerError,
+      [name]: fieldErrors !== 'valid' && fieldErrors,
+    });
   };
 
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(shopOwnerData){
+    if (shopOwnerData) {
       onSave(formData, addressData, shopOwnerData);
     }
     else if (addressData) {
@@ -73,9 +93,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
   };
 
   const handleRemoveOption = (index: number) => {
-    console.log(index)
     const updatedList = [...options];
-    console.log(updatedList)
     updatedList.splice(index, 1);
     setOptions(updatedList);
   };
@@ -86,36 +104,44 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
         <div key={field.name} className="inputContainer">
           <field.icon />
           {field.type === "select" ? (
-               <div className="relative w-full">
-               <label
-                 htmlFor={field.name}
-                 className={`absolute transition-all duration-300 ${focusedInput === field.name || ((originalData && originalData[field.name])) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
-               >
-                 {field.name}
-               </label>
-            <select
-              name={field.name}
-              id={field.name}
-              onChange={(e) => handleChange(e, field.name)}
-              required={field.required}
-              className="input"
-              disabled={field.editable === false || loading}
-            >
-              <option value="" disabled selected>
-                {originalData && originalData[field.name] ? originalData[field.name] : field.placeholder}
-              </option>
-              {field.options?.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            </div>
-          ) : (
-            <div className="relative w-full">
+            <div className="relative w-full flex items-center gap-2">
               <label
                 htmlFor={field.name}
-                className={`absolute transition-all duration-300 ${focusedInput === field.name || (originalData && originalData[field.name])  ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
+                className={`absolute transition-all duration-300 ${focusedInput === field.name || ((originalData && originalData[field.name])) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
+              >
+                {field.name}
+              </label>
+              <select
+                name={field.name}
+                id={field.name}
+                onChange={(e) => handleChange(e, field.name)}
+                required={field.required}
+                className="input"
+                disabled={field.editable === false || loading}
+              >
+                <option value="" disabled selected>
+                  {originalData && originalData[field.name] ? originalData[field.name] : field.placeholder}
+                </option>
+                {field.options?.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              {formError[field.name as keyof typeof formError] && (
+                <div className="relative group">
+                <ErrorOutlineIcon className='text-red-600 cursor-pointer' />
+                <div className="hidden group-hover:block absolute top-0 left-full bg-gray-200 p-2 rounded shadow-md text-xs">
+                  {formError[field.name as keyof typeof formError] }
+                </div>
+              </div>
+              )}
+            </div>
+          ) : (
+            <div className="relative w-full flex items-center gap-2">
+              <label
+                htmlFor={field.name}
+                className={`absolute transition-all duration-300 ${focusedInput === field.name || (originalData && originalData[field.name]) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
               >
                 {field.name}
               </label>
@@ -129,6 +155,14 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
                 className="input"
                 disabled={field.editable === false || loading}
               />
+              {formError[field.name as keyof typeof formError] && (
+                <div className="relative group">
+                <ErrorOutlineIcon className='text-red-600 cursor-pointer' />
+                <div className="hidden group-hover:block absolute top-0 left-full bg-gray-200 p-2 rounded shadow-md text-xs">
+                  {formError[field.name as keyof typeof formError] }
+                </div>
+              </div>
+              )}
             </div>
 
           )}
@@ -138,49 +172,66 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
         <div key={field.name} className="inputContainer">
           <field.icon />
           {field.type === "select" ? (
-            <div className="relative w-full">
-            <label
-              htmlFor={field.name}
-              className={`absolute transition-all duration-300 ${focusedInput === field.name || (originalAddressData && originalAddressData[field.name] ) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
-            >
-              {field.name}
-            </label>
-            <select
-              name={field.name}
-              id={field.name}
-              onChange={(e) => handleAddressChange(e, field.name)}
-              required={field.required}
-              className="input"
-              disabled={field.editable === false || loading}
-            >
-              <option value="" disabled selected>
-                {originalAddressData && originalAddressData[field.name] ? originalAddressData[field.name] : field.placeholder}
-              </option>
-              {field.options?.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            </div>
-          ) : (
-            <div className="relative w-full">
+            <div className="relative w-full flex items-center gap-2">
               <label
                 htmlFor={field.name}
                 className={`absolute transition-all duration-300 ${focusedInput === field.name || (originalAddressData && originalAddressData[field.name]) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
               >
                 {field.name}
               </label>
-            <input
-              type={field.type}
-              name={field.name}
-              id={field.name}
-              onChange={(e) => handleAddressChange(e, field.name)}
-              placeholder={originalAddressData && originalAddressData[field.name] ? originalAddressData[field.name] : field.placeholder}
-              required={field.required}
-              className="input"
-              disabled={field.editable === false || loading}
-            />
+              <select
+                name={field.name}
+                id={field.name}
+                onChange={(e) => handleAddressChange(e, field.name)}
+                required={field.required}
+                className="input"
+                disabled={field.editable === false || loading}
+              >
+                <option value="" disabled selected>
+                  {originalAddressData && originalAddressData[field.name] ? originalAddressData[field.name] : field.placeholder}
+                </option>
+                {field.options?.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              {addressError[field.name as keyof typeof addressError] && (
+                <div className="relative group">
+                <ErrorOutlineIcon className='text-red-600 cursor-pointer' />
+                <div className="hidden group-hover:block absolute top-0 left-full bg-gray-200 p-2 rounded shadow-md text-xs">
+                  {addressError[field.name as keyof typeof addressError] }
+                </div>
+              </div>
+              )}
+
+            </div>
+          ) : (
+            <div className="relative w-full flex items-center gap-2">
+              <label
+                htmlFor={field.name}
+                className={`absolute transition-all duration-300 ${focusedInput === field.name || (originalAddressData && originalAddressData[field.name]) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
+              >
+                {field.name}
+              </label>
+              <input
+                type={field.type}
+                name={field.name}
+                id={field.name}
+                onChange={(e) => handleAddressChange(e, field.name)}
+                placeholder={originalAddressData && originalAddressData[field.name] ? originalAddressData[field.name] : field.placeholder}
+                required={field.required}
+                className="input"
+                disabled={field.editable === false || loading}
+              />
+              {addressError[field.name as keyof typeof addressError] && (
+                <div className="relative group">
+                <ErrorOutlineIcon className='text-red-600 cursor-pointer' />
+                <div className="hidden group-hover:block absolute top-0 left-full bg-gray-200 p-2 rounded shadow-md text-xs">
+                  {addressError[field.name as keyof typeof addressError] }
+                </div>
+              </div>
+              )}
             </div>
           )}
         </div>
@@ -189,49 +240,65 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
         <div key={field.name} className="inputContainer">
           <field.icon />
           {field.type === "select" ? (
-            <div className="relative w-full">
-            <label
-              htmlFor={field.name}
-              className={`absolute transition-all duration-300 ${focusedInput === field.name || (originalShopOwnerData && originalShopOwnerData[field.name] ) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
-            >
-              {field.name}
-            </label>
-            <select
-              name={field.name}
-              id={field.name}
-              onChange={(e) => handleShopOwnerChange(e, field.name)}
-              required={field.required}
-              className="input"
-              disabled={field.editable === false || loading}
-            >
-              <option value="" disabled selected>
-                {originalShopOwnerData && originalShopOwnerData[field.name] ? originalShopOwnerData[field.name] : field.placeholder}
-              </option>
-              {field.options?.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            </div>
-          ) : (
-            <div className="relative w-full">
+            <div className="relative w-full flex items-center gap-2">
               <label
                 htmlFor={field.name}
                 className={`absolute transition-all duration-300 ${focusedInput === field.name || (originalShopOwnerData && originalShopOwnerData[field.name]) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
               >
                 {field.name}
               </label>
-            <input
-              type={field.type}
-              name={field.name}
-              id={field.name}
-              onChange={(e) => handleShopOwnerChange(e, field.name)}
-              placeholder={originalShopOwnerData && originalShopOwnerData[field.name] ? originalShopOwnerData[field.name] : field.placeholder}
-              required={field.required}
-              className="input"
-              disabled={field.editable === false || loading}
-            />
+              <select
+                name={field.name}
+                id={field.name}
+                onChange={(e) => handleShopOwnerChange(e, field.name)}
+                required={field.required}
+                className="input"
+                disabled={field.editable === false || loading}
+              >
+                <option value="" disabled selected>
+                  {originalShopOwnerData && originalShopOwnerData[field.name] ? originalShopOwnerData[field.name] : field.placeholder}
+                </option>
+                {field.options?.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              {shopOwnerError[field.name as keyof typeof shopOwnerError] && (
+                <div className="relative group">
+                <ErrorOutlineIcon className='text-red-600 cursor-pointer' />
+                <div className="hidden group-hover:block absolute top-0 left-full bg-gray-200 p-2 rounded shadow-md text-xs">
+                  {shopOwnerError[field.name as keyof typeof shopOwnerError] }
+                </div>
+              </div>
+              )}
+            </div>
+          ) : (
+            <div className="relative w-full flex items-center gap-2">
+              <label
+                htmlFor={field.name}
+                className={`absolute transition-all duration-300 ${focusedInput === field.name || (originalShopOwnerData && originalShopOwnerData[field.name]) ? 'flex top-0 bottom-0 right-14 items-center text-sm text-blue-500 capitalize' : 'hidden'}`}
+              >
+                {field.name}
+              </label>
+              <input
+                type={field.type}
+                name={field.name}
+                id={field.name}
+                onChange={(e) => handleShopOwnerChange(e, field.name)}
+                placeholder={originalShopOwnerData && originalShopOwnerData[field.name] ? originalShopOwnerData[field.name] : field.placeholder}
+                required={field.required}
+                className="input"
+                disabled={field.editable === false || loading}
+              />
+              {shopOwnerError[field.name as keyof typeof shopOwnerError] && (
+                <div className="relative group">
+                <ErrorOutlineIcon className='text-red-600 cursor-pointer' />
+                <div className="hidden group-hover:block absolute top-0 left-full bg-gray-200 p-2 rounded shadow-md text-xs">
+                  {shopOwnerError[field.name as keyof typeof shopOwnerError] }
+                </div>
+              </div>
+              )}
             </div>
           )}
         </div>
@@ -242,7 +309,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
           <div className="option flex gap-2 items-center">
             <input className='text-base font-bold input' type='text' disabled={loading} name='title' placeholder='Title' onChange={changeOption} />
             <input className='text-base font-bold input' type='number' disabled={loading} name="additionalPrice" placeholder='Additional Price' onChange={changeOption} />
-            <button type="button"  className='btn' disabled={option.title == null || option.additionalPrice == null || option.title == "" || loading} onClick={() => setOptions((prev) => [...prev, option])}><AddIcon /></button>
+            <button type="button" className='btn' disabled={option.title == null || option.additionalPrice == null || option.title == "" || loading} onClick={() => setOptions((prev) => [...prev, option])}><AddIcon /></button>
           </div>
 
           {originalAdditionalOptions && <div className="flex justify-between font-bold gap-4">
@@ -262,7 +329,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
           ))}
         </div>
       }
-      <Button type='submit' text='Save' loading={loading} />
+      <Button type='submit' text='Save' loading={loading} disabled={Object.keys(formError).length <=0 || Object.values(formError).some((error) => error !== false) || Object.values(shopOwnerError).some((error) => error !== false) || Object.values(addressError).some((error) => error !== false)  }/>
     </form>
   )
 }
