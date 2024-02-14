@@ -13,7 +13,6 @@ import { getMessaging, getToken } from "firebase/messaging";
 import 'firebase/auth';
 import app from './firebase'
 import admin from 'firebase-admin';
-import FCM from 'fcm-node';
 import axios from "axios";
 dotenv.config();
 
@@ -108,51 +107,3 @@ export const getUserDetails = async (req: any) => {
 };
 
 
-export const sendNotifications = async ({ tokens, title, text, image, link }: any) => {
-  try {
-      const serverKey = process.env.SERVER_KEY;
-      const fcm = new FCM(serverKey);
-      const messaging=admin.messaging();
-      const notificationPromises = tokens.map((token: string) => {
-          const message = {
-              notification: {
-                  title: title,
-                  body: text,
-                  sound: 'default',
-                  image: image,
-              },
-              webpush: {
-                  fcmOptions: {
-                      link: link,
-                  },
-              },
-              to: token,
-          };
-
-          return new Promise((resolve, reject) => {
-              fcm.send(message, (err: any, response: any) => {
-                  if (err) {
-                      reject(err);
-                  } else {
-                      resolve(response);
-                  }
-              });
-          });
-      });
-
-      // Wait for all notifications to be sent and handle responses
-      const responses = await Promise.all(notificationPromises);
-      return NextResponse.json({
-        error: false,
-        message: "Notifications sent successfully",
-        status: 200
-      }, { status: 200 })
-      
-  } catch (error) {
-      return NextResponse.json({
-        error: true,
-        message: "Notifications failed to send",
-        status: 500
-      }, { status: 500 })
-  }
-};

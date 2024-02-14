@@ -1,7 +1,6 @@
 import { prisma } from "@/utils/connect";
 import { NextRequest, NextResponse } from "next/server";
-import { sendNotifications } from "../utils/action";
-
+import {sendNotifications} from "../utils/notification";
 export const POST = async (req: NextRequest) => {
     try {
         let {title,text,image,name,role,recievers,link}=await req.json();
