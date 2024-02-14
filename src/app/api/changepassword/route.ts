@@ -44,7 +44,7 @@ try {
     return NextResponse.json({
         error:true,
         message:"Something went wrong",
-        status:404
+        status:500
     })
 }
 }

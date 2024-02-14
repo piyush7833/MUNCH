@@ -20,6 +20,7 @@ const adminLinks = [
   { id: 4, title: "Owners", url: "/pages/admin/shop-owners" },
   { id: 5, title: "Orders", url: "/pages/admin/orders" },
   { id: 6, title: "Contact Us", url: "/pages/admin/contact" },
+  { id: 7, title: "Notification", url: "/pages/admin/notification" },
 ];
 const ownerLinks = [
   { id: 1, title: "Add Shop", url: "/pages/add/shop" },

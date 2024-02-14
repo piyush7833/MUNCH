@@ -68,7 +68,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     }
 }
 
-export const Put = async (req: NextRequest) => {  //get user for validation
+export const PUT = async (req: NextRequest) => {  //get user for validation
     try {
         // Perform GET logic here
         const { userName, email, phone }: getUserType = await req.json()

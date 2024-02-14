@@ -664,3 +664,52 @@ export const signupFormData:formType[]=[
         actualType:"password"
     },
 ]
+export const notificationFormData:formType[]=[
+    {
+        type:"text",
+        name:"title",
+        id:"title",
+        placeholder:"Enter your title of notification.",
+        icon: StreetviewIcon,
+        required:true,
+        actualType:"text"
+    },
+    {
+        type:"text",
+        name:"text",
+        id:"text",
+        placeholder:"Enter message of notification.",
+        icon: StreetviewIcon,
+        required:true,
+        actualType:"rexr"
+    },
+    {
+        type:"text",
+        name:"name",
+        id:"name",
+        placeholder:"Enter name of notification (optional).",
+        icon: StreetviewIcon,
+        required:false,
+        actualType:"phone"
+    },
+    {
+        type:"select",
+        name:"role",
+        id:"role",
+        placeholder:"Select role of reciever.",
+        icon: StreetviewIcon,
+        required:false,
+        actualType:"option",
+        options:["All","User","ShopOwner","Admin"]
+    },
+    {
+        type:"select",
+        name:"recievers",
+        id:"recievers",
+        placeholder:"Select recievers of notficattion.",
+        icon: StreetviewIcon,
+        required:true,
+        actualType:"option",
+        options:["All"]
+    },
+]

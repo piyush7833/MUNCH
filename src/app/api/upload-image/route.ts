@@ -1,7 +1,6 @@
 import { getStorage, ref,uploadBytes, getDownloadURL } from 'firebase/storage';
 import { NextRequest, NextResponse } from 'next/server';
 import app from '../utils/firebase'
-import { prisma } from '@/utils/connect';
 const storage = getStorage(app);
 const storageRef = ref(storage, 'images'); // You may adjust the storage path as needed
 
@@ -27,6 +26,7 @@ export const POST = async (req: NextRequest) => {
   try {
     const data = await req.formData();
     const type=data.get('type')
+    console.log(type)
     const files: File[] | null  = data.getAll('file') as unknown as File[];
     if (!files) {
       return NextResponse.json({
@@ -52,7 +52,7 @@ export const POST = async (req: NextRequest) => {
       { status: 200 }
     );
   } catch (error) {
-    console.error(error);
+    console.log("error",error);
     return NextResponse.json(
       {
         error: true,

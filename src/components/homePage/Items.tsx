@@ -30,7 +30,7 @@ const Items = () => {
 
   }
 
-  const featuredProducts: ProductsType = data.products;
+  const featuredProducts: ProductsType = data?.products;
   return (
     <div className="overflow-x-auto hideScrollBar cursor-pointer">
       <div className="item-wraper">

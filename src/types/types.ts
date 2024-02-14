@@ -179,3 +179,12 @@ export type ContactResponseType = {
   user?: JSON;
   shop?: JSON;
 };
+
+export type NotificationType = {
+  title: string;
+  text: string;
+  name?: string;
+  role?: string;
+  recievers?: string[];
+  link?: string;
+};

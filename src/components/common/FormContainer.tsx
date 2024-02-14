@@ -21,8 +21,9 @@ type propsType = {
   originalAddressData?: any;
   originalAdditionalOptions?: any[];
   loading?: boolean;
+  extraFunction?: any;
 };
-const FormContainer = ({ data, onSave, title, address, originalData, originalAddressData, additional, originalAdditionalOptions, shopOwner, originalShopOwnerData, loading }: propsType) => {
+const FormContainer = ({ data, onSave, title, address, originalData, originalAddressData, additional, originalAdditionalOptions, shopOwner, originalShopOwnerData, loading, extraFunction }: propsType) => {
   const [formData, setFormData] = useState<any>(originalData || null);
   const [addressData, setAdressData] = useState<any>(originalAddressData || null);
   const [shopOwnerData, setShopOwnerData] = useState<any>(originalShopOwnerData || null);
@@ -42,6 +43,10 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
       ...formData,
       [name]: e.target.value,
     });
+    if(name==="role"){
+      console.log(e.target.value)
+      extraFunction(e.target.value)
+    }
     const fieldErrors = validateForm(data, name, e.target.value);
     setFormError({
       ...formError,

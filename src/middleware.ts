@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
 
   const role = request.cookies.get('role')?.value || '';
   if (isProtected && !token) {
-    return NextResponse.redirect(new URL('/auth', request.nextUrl))
+    return NextResponse.redirect(new URL('/pages/auth', request.nextUrl))
   }
 
   if (isShopOwner && (role === "User"  || !token || !role)) {

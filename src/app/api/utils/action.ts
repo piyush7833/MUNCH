@@ -4,21 +4,19 @@ import { prisma } from "@/utils/connect";
 import nodemailer, { createTransport } from 'nodemailer';
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import crypto from 'crypto'
 import { error } from "console";
 import firebase from 'firebase/app';
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { getMessaging, getToken } from "firebase/messaging";
-
 import 'firebase/auth';
 import app from './firebase'
+import admin from 'firebase-admin';
+import FCM from 'fcm-node';
+import axios from "axios";
 dotenv.config();
 
-const auth = getAuth(app);
-// const messaging = getMessaging(app);
-
-// getToken(messaging, {vapidKey: "BOeFzYK5Z2sjxRK8NkVR4NZv_RAz4-HdcKSi2PiPpfrB7Y8MA5euE9JtMbz4sIaiY_W64RLx5RLMHroothJlBxA"});
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -63,7 +61,7 @@ export const sendEmail = async (email: string, subject: string, htmlContent: any
   }
 }
 
-export const genrateToken = async (id: string,type:any) => {
+export const genrateToken = async (id: string, type: any) => {
   try {
     const token = await prisma.verificationToken.create({
       data: {
@@ -77,13 +75,13 @@ export const genrateToken = async (id: string,type:any) => {
     return null;
   }
 }
-export const sendMessage = async (phoneNumber:string) => {
+export const sendMessage = async (phoneNumber: string) => {
 };
 
 export const getUserDetails = async (req: any) => {
   try {
     const token = req.cookies.get("token")?.value || '';
-    const token2=req?.headers?.authorization
+    const token2 = req?.headers?.authorization
     console.log(token2)
     // console.log(token)
     if (!token) {
@@ -110,6 +108,51 @@ export const getUserDetails = async (req: any) => {
 };
 
 
-export const sendNotifications=async()=>{
+export const sendNotifications = async ({ tokens, title, text, image, link }: any) => {
+  try {
+      const serverKey = process.env.SERVER_KEY;
+      const fcm = new FCM(serverKey);
+      const messaging=admin.messaging();
+      const notificationPromises = tokens.map((token: string) => {
+          const message = {
+              notification: {
+                  title: title,
+                  body: text,
+                  sound: 'default',
+                  image: image,
+              },
+              webpush: {
+                  fcmOptions: {
+                      link: link,
+                  },
+              },
+              to: token,
+          };
 
-}
+          return new Promise((resolve, reject) => {
+              fcm.send(message, (err: any, response: any) => {
+                  if (err) {
+                      reject(err);
+                  } else {
+                      resolve(response);
+                  }
+              });
+          });
+      });
+
+      // Wait for all notifications to be sent and handle responses
+      const responses = await Promise.all(notificationPromises);
+      return NextResponse.json({
+        error: false,
+        message: "Notifications sent successfully",
+        status: 200
+      }, { status: 200 })
+      
+  } catch (error) {
+      return NextResponse.json({
+        error: true,
+        message: "Notifications failed to send",
+        status: 500
+      }, { status: 500 })
+  }
+};

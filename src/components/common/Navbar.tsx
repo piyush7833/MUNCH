@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import CartIcon from '../partials/CartIcon';
@@ -9,6 +9,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import Menu from './Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import { userAuthStore } from '@/utils/userStore';
+import { toast } from 'react-toastify';
+import { getMessaging, getToken } from 'firebase/messaging';
+import app from '@/app/api/utils/firebase';
 
 const links = [
     { id: 1, title: "Home", url: "/" },
@@ -18,10 +21,13 @@ const links = [
 ];
 const adminLinks = [
     { id: 2, title: "Shops", url: "/pages/admin/shops" },
-    { id: 3, title: "Products", url: "/pages/admin/product" },
+    { id: 3, title: "Products", url: "/pages/admin/products" },
     { id: 4, title: "Owners", url: "/pages/admin/shop-owners" },
     { id: 5, title: "Orders", url: "/pages/admin/orders" },
     { id: 6, title: "Contact Us", url: "/pages/admin/contact" },
+    { id: 7, title: "Notification", url: "/pages/admin/notification" },
+    { id: 8, title: "Add Shop", url: "/pages/add/shop" },
+    { id: 9, title: "Add Product", url: "/pages/add/product" },
 ];
 const ownerLinks = [
     { id: 1, title: "Add Shop", url: "/pages/add/shop" },
@@ -29,6 +35,26 @@ const ownerLinks = [
 ];
 
 const Navbar = () => {
+    const requestPermission = async () => {
+        const messaging = getMessaging(app);
+        const permission = await Notification.requestPermission();
+        try {     
+            if(permission === "granted"){
+                const token = await getToken(messaging, {vapidKey: "BIiWeWMjEC1Mw3-s_5vEWkAt8LW3xAFKpVMhfL6KxKGU1dMwuXnx__mrOmTz5v0JuIAYSZAZoD_2cbwnAYw-C3U"});
+                toast.success(token);
+                console.log(token)
+            }
+            else{
+                toast.warning("Notification permission denied");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        requestPermission();
+        console.log("Navbar rendered");
+    }, []);
     const [open, SetOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [showSearchInput, setShowSearchInput] = useState(false);
@@ -77,19 +103,19 @@ const Navbar = () => {
                 <ModeBtn />
                 <Link href='/pages/cart' className='hover:scale-105 hover:animate-bounce' ><CartIcon /></Link>
                 
-            <div className="relative">
+            <div className="relative z-10">
                 <MenuIcon onClick={() => SetOpen(!open)} className='cursor-pointer text-white' />
-                {open && <div className="absolute w-40 right-0 top-8 border flex flex-col  shadow-md p-2 rounded-md bg-red-500 border-red-600">
+                {open && <div className="absolute w-40 right-0 top-8 border flex flex-col h-auto  shadow-md p-2 rounded-md bg-red-500 border-red-600">
                     {links.map(item => (
-                        <Link key={item.id} href={item.url} className='hover:scale-105 hover:animate-bounce block'onClick={()=>{SetOpen(false)}} >{item.title}</Link>
+                        <Link key={item.id} href={item.url} className='hover:scale-105 hover:animate-bounce cursor-pointer'onClick={()=>{SetOpen(false)}} >{item.title}</Link>
                     ))}
                     {role === "ShopOwner" && ownerLinks.map(item => (
                         <Link key={item.id}
-                            href={item.url} className='hover:scale-105 hover:animate-bounce block' onClick={()=>{SetOpen(false)}} >{item.title}</Link>
+                            href={item.url} className='hover:scale-105 hover:animate-bounce cursor-pointer' onClick={()=>{SetOpen(false)}} >{item.title}</Link>
                     ))}
                     {role === "Admin" && adminLinks.map(item => (
                         <Link key={item.id}
-                            href={item.url} className='hover:scale-105 hover:animate-bounce block'onClick={()=>{SetOpen(false)}} >{item.title}</Link>
+                            href={item.url} className='hover:scale-105 hover:animate-bounce cursor-pointer'onClick={()=>{SetOpen(false)}} >{item.title}</Link>
                     ))}
                     <UserLinks />
                 </div>}

@@ -22,6 +22,10 @@ enum userRole {
   ShopOwner
   User
 }
+enum themeType {
+  light
+  dark
+}
 
 model User {
   id                String              @id @default(cuid())
@@ -41,6 +45,8 @@ model User {
   reviews           Review[]
   softDelete        Boolean             @default(false)
   address           Json?
+  notificationIds   String[]
+  theme             themeType?            @default(light)
   verificationToken verificationToken[]
   contact           contact[]
 }
@@ -195,6 +201,7 @@ model contact {
   shopId    String? //reference from user
   subject   String
   message   String
+  reply     String?
   user      User     @relation(fields: [userId], references: [id])
   shop      Shop?    @relation(fields: [shopId], references: [id])
 }

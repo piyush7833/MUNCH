@@ -1,9 +1,40 @@
-// "use server"
-
 import { NextRequest, NextResponse } from "next/server";
 import { getUserDetails } from "../utils/action";
 import { prisma } from "@/utils/connect";
-import { cookies } from 'next/headers'
+
+export const POST = async (req: NextRequest) => {
+    try {
+        const { role} = await req.json();
+        const loggedInUser=await getUserDetails(req);
+        if(loggedInUser==null){
+            return NextResponse.json({
+                error: true,
+                message: "Login first to view users",
+                status: 403
+            }, { status: 403 })
+        }
+        if(loggedInUser.role!=="Admin"){
+            return NextResponse.json({
+                error: true,
+                message: "Only admin can view users",
+                status: 403
+            }, { status: 403 })
+        }
+        const user = await prisma.user.findMany({where:role==="All"?{}:{role}});
+        return NextResponse.json({
+            error: false,
+            message: "User created successfully",
+            status: 200,
+            user
+        }, { status: 200 })
+    } catch (error) {
+        return NextResponse.json({
+            error: true,
+            message: "Something went wrong",
+            status: 500
+        }, { status: 500 })
+    }
+}
 
 export const PUT = async (req: NextRequest) => {
     try {
@@ -104,6 +135,7 @@ export const GET = async (req: NextRequest) => {
         }, { status: 404 })
     }
 }
+
 export const DELETE = async (req: NextRequest) => {
     try {
         const user = await getUserDetails(req);

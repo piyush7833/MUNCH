@@ -21,8 +21,9 @@ export function formatDate(inputDate:string) {
         formData.append('type', "single");
         const imageResponse = await httpservice.post(`${baseUrl}/upload-image`, formData)
         return imageResponse.data.imgUrls;
-    } catch (error) {
-        toast.error("Image upload failed")
+    } catch (error:any) {
+        console.log(error)
+        toast.error("Failed to upload image")
         return null;
     }
 }
