@@ -3,11 +3,8 @@ import { baseUrl } from '@/baseUrl';
 import Error from '@/components/common/Error';
 import ImgContainer from '@/components/common/ImgContainer';
 import Loader from '@/components/common/Loader';
-import DeleteButton from '@/components/partials/DeleteButton';
-import EditButton from '@/components/partials/EditButton';
 import Price from '@/components/product/Price'
 import { httpservice } from '@/utils/httpService';
-import { userAuthStore } from '@/utils/userStore';
 import useSWR from 'swr';
 
 
@@ -18,7 +15,6 @@ const Product =  ({ params }: { params: { id: string } }) => {
     return response.data.product;
   };
     const { data, error, isLoading } = useSWR(`${baseUrl}/product/${params.id}`, fetcher);
-    const { role } = userAuthStore();
   
     if (error) {
       return <div className="main flex items-center justify-center">
@@ -41,8 +37,6 @@ const Product =  ({ params }: { params: { id: string } }) => {
           <p className='text-base'>{data.desc}</p>
           <Price product={data} />
         </div>
-        {/* {role!=="User" && <EditButton url={`/pages/edit/product/${data.id}`} />}
-        {role!=="User" && <DeleteButton url={`/product/${data.id}`} />} */}
       </div>
 
 

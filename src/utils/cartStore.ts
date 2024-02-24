@@ -6,7 +6,8 @@ const INITIAL_STATE={
     products:[],
     totalItems:0,
     totalPrice:0,
-    itemQuantity:0
+    itemQuantity:0,
+    shopId:""
 }
 
 const CheckSameItem=(item1:CartItemType,item2:CartItemType)=>{
@@ -21,6 +22,7 @@ export const userCartStore=create(persist<CartType & ActionTypes>((set,get)=>({
     products:INITIAL_STATE.products,
     totalItems:INITIAL_STATE.totalItems,
     totalPrice:INITIAL_STATE.totalPrice,
+    shopId:INITIAL_STATE.shopId,
     addToCart(item){
         const products=get().products;
         const productInState=products.find(product=>CheckSameItem(product,item))
@@ -34,14 +36,16 @@ export const userCartStore=create(persist<CartType & ActionTypes>((set,get)=>({
             set((state)=>({
                 products:updatedProduct,  //logic need to be more clear and refined
                 totalItems:state.totalItems+item.quantity,
-                totalPrice:state.totalPrice+ item.price
+                totalPrice:state.totalPrice+ item.price,
+                shopId:item.shopId
             }));
         }
         else{
             set((state)=>({
                 products:[...state.products,item],  //logic need to be more clear and refined
                 totalItems:state.totalItems+item.quantity,
-                totalPrice:state.totalPrice+ item.price
+                totalPrice:state.totalPrice+ item.price,
+                shopId:item.shopId
             }));
         }
     },
@@ -55,4 +59,7 @@ export const userCartStore=create(persist<CartType & ActionTypes>((set,get)=>({
             totalPrice:state.totalPrice - item.price
         }));
     },
+    removeAllFromcart() {
+        set(INITIAL_STATE)
+    }
 }),{name:"cart",skipHydration:true}))  //we need to skip hydration to prevent hydration error as in the beginning nextjs is trying to change component type as we are using client side component

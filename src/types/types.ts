@@ -26,6 +26,7 @@ export type CartItemType = {
   price: number;
   optionTitle?: string;
   quantity: number;
+  shopId?: string;
 };
 
 export type OrderProductType = {
@@ -44,6 +45,7 @@ export type CartType = {
   products: CartItemType[];
   totalItems: number;
   totalPrice: number;
+  shopId: string;
 };
 
 
@@ -51,7 +53,8 @@ export type CartType = {
 
 export type ActionTypes = {
   addToCart: (item: CartItemType) => void,
-  removeFromCart: (item: CartItemType) => void
+  removeFromCart: (item: CartItemType) => void,
+  removeAllFromcart: () => void
 }
 export type userActionTypes = {
   logIn: (user: fullUserType) => void,
@@ -70,7 +73,7 @@ export type fullUserType = {
   phoneVerified: Date | null,
   activeSession: boolean,
   image: string | null,
-  ShopOwner?:JSON | null
+  ShopOwner?: JSON | null
 }
 export type responseUserType = {
   name: string | null,
@@ -85,8 +88,8 @@ export type responseUserType = {
   phoneVerified: Date | null,
   activeSession: boolean,
   image: string | null,
-  shopOwner?:responseShopOwnerType[] | null
-  shops?:ResponseShopType[]
+  shopOwner?: responseShopOwnerType[] | null
+  shops?: ResponseShopType[]
 }
 export type editUserType = {
   name?: string | null,
@@ -109,21 +112,21 @@ export type passwordChangeType = {
 export type shopOwnerType = {
   panCard?: string,
   bankAccount?: string,
-  GSTIN ?: string,
+  GSTIN?: string,
   aadhar?: string,
   IFSC?: string,
 }
 export type responseShopOwnerType = {
   panCard: string,
   bankAccount: string,
-  GSTIN ?: string,
+  GSTIN?: string,
   aadhar: string,
   IFSC: string,
   id: string,
   createdAt: Date,
   verified: Date | null,
   notVerified: string | null,
-  user ?: JSON
+  user?: JSON
   userId: string
 }
 
@@ -156,11 +159,12 @@ export type ProductType = {
   review?: { userName: string, comment: string }[];
   price: number;
   options?: productOptionType[];
+  shopId: string;
 };
 
-export type productOptionType={
-    title: string | null,
-    additionalPrice: number | null
+export type productOptionType = {
+  title: string | null,
+  additionalPrice: number | null
 }
 
 export type ContactType = {
@@ -188,3 +192,23 @@ export type NotificationType = {
   recievers?: string[];
   link?: string;
 };
+
+export type OrderResponseType = {
+  id: string;
+  createdAt: string;
+  totalPrice: string;
+  couponPrice: string;
+  taxes: string;
+  delieveryFee: string;
+  platformFee: string;
+  paymentId: string;
+  status: string;
+  userId: string;
+  shopId: string;
+  user: JSON;
+  shop: JSON;
+  address ?: null | addressType; // Assuming address can be null or any other type
+  payMode: string;
+  softDelete: boolean;
+  products :JSON[]
+}

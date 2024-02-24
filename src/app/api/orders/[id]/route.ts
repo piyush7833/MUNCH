@@ -13,7 +13,7 @@ export const GET = async (req: NextRequest,{ params }: { params: { id: string } 
           status: 403
         }, { status: 403 })
       }
-      const order=await prisma.order.findUnique({where:{id,softDelete:false}})
+      const order=await prisma.order.findUnique({where:{id,softDelete:false}, include:{products: { include: { product: true } }, user:true, payment:true, reviews:true}})
       return NextResponse.json({
         error: false,
         message: "Order fetched successfully",
@@ -29,7 +29,8 @@ export const GET = async (req: NextRequest,{ params }: { params: { id: string } 
       }, { status: 500 })
     }
   }
-export const PUT = async (req: NextRequest,{ params }: { params: { id: string } }) => {  //get particular order
+
+export const PUT = async (req: NextRequest,{ params }: { params: { id: string } }) => {  //update particular order
     try {
     const {status}=await req.json()
       const user=await getUserDetails(req);
@@ -42,10 +43,17 @@ export const PUT = async (req: NextRequest,{ params }: { params: { id: string } 
         }, { status: 403 })
       }
       const order=await prisma.order.findUnique({where:{id,softDelete:false}})
-      const updatedOrder=await prisma.order.update({where:{id},data:{status}})
+      if(!order){
+        return NextResponse.json({
+          error: true,
+          message: "Order not found",
+          status: 404
+        }, { status: 404 })
+      }
+      const updatedOrder=await prisma.order.update({where:{id},data:{ status: status}})
       return NextResponse.json({
         error: false,
-        message: "Order fetched successfully",
+        message: "Order status updated successfully",
         status: 200,
         updatedOrder
       }, { status: 200 })

@@ -60,8 +60,15 @@ import { shopType } from "./types";
 export const POST=async(req:NextRequest)=>{  //add shop
     try {
         const {title,desc,img,slug,address}:shopType=await req.json()
-        // console.log("data",await req.json());
+        const shop=await prisma.shop.findFirst({where:{slug}});
         const user=await getUserDetails(req);
+        if(shop){
+            return NextResponse.json({
+                error:true,
+                message:"Shop with this slug already exist. Please enter unique slug.",
+                status:403
+            },{status:403})
+        }
         if(user==null){
             return NextResponse.json({
                 error:true,
@@ -70,7 +77,6 @@ export const POST=async(req:NextRequest)=>{  //add shop
             },{status:403})
         }
         const userId=user.id;
-        const updateUserRole=await prisma.user.update({where:{id:userId},data:{role:"ShopOwner"}})
         const newShop = await prisma.shop.create({
             data: {
                 title,
@@ -86,7 +92,6 @@ export const POST=async(req:NextRequest)=>{  //add shop
             message:"Shop Created Successfully",
             status:201,
             newShop,
-            updateUserRole
         },{status:201})
     } catch (error) {
         console.log(error)

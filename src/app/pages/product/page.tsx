@@ -24,7 +24,6 @@ const fetcher = async (url: string) => {
 const Page = () => {
     const { data, error, isLoading } = useSWR(`${baseUrl}/product`, fetcher);
     const { role } = userAuthStore()
-    console.log(data)
     if (error) {
         return <div className="main flex items-center justify-center">
             <Error message={error.response.data.message} />;

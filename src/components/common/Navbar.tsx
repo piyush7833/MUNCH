@@ -12,6 +12,7 @@ import { userAuthStore } from '@/utils/userStore';
 import { toast } from 'react-toastify';
 import { getMessaging, getToken } from 'firebase/messaging';
 import app from '@/app/api/utils/firebase';
+import ImgContainer from './ImgContainer';
 
 const links = [
     { id: 1, title: "Home", url: "/" },
@@ -20,11 +21,12 @@ const links = [
     { id: 4, title: "Contact Us", url: "/pages/contact" },
 ];
 const adminLinks = [
+    { id: 1, title: "Home", url: "/" },
     { id: 2, title: "Shops", url: "/pages/admin/shops" },
     { id: 3, title: "Products", url: "/pages/admin/products" },
     { id: 4, title: "Owners", url: "/pages/admin/shop-owners" },
     { id: 5, title: "Orders", url: "/pages/admin/orders" },
-    { id: 6, title: "Contact Us", url: "/pages/admin/contact" },
+    { id: 6, title: "Contact Us", url: "/pages/admin/contacts" },
     { id: 7, title: "Notification", url: "/pages/admin/notification" },
     { id: 8, title: "Add Shop", url: "/pages/add/shop" },
     { id: 9, title: "Add Product", url: "/pages/add/product" },
@@ -76,7 +78,7 @@ const Navbar = () => {
         <div className='bg-red-500 p-4 h-fit  flex items-center justify-between border-b-2 border-b-red-600 '>
             <div>
                 <Link href='/'>
-                    <Image src={"/images/logo.png"} alt='logo' className='h-fit  w-20' width={10} height={10} />
+                    <ImgContainer imgUrl='/images/logo.png' alt='logo' type="logo" />
                 </Link>
             </div>
             <div className='hidden md:flex gap-4 text-white text-lg items-center flex-wrap justify-end'>
@@ -101,12 +103,12 @@ const Navbar = () => {
                     </button>
                 )}
                 <ModeBtn />
-                <Link href='/pages/cart' className='hover:scale-105 hover:animate-bounce' ><CartIcon /></Link>
+                {role==="User" &&<Link href='/pages/cart' className='hover:scale-105 hover:animate-bounce' ><CartIcon /></Link>}
                 
             <div className="relative z-10">
-                <MenuIcon onClick={() => SetOpen(!open)} className='cursor-pointer text-white' />
+                <MenuIcon onClick={(e) => {e.preventDefault(); SetOpen(!open);}} className='cursor-pointer text-white' />
                 {open && <div className="absolute w-40 right-0 top-8 border flex flex-col h-auto  shadow-md p-2 rounded-md bg-red-500 border-red-600">
-                    {links.map(item => (
+                    {role !== "Admin" && links.map(item => (
                         <Link key={item.id} href={item.url} className='hover:scale-105 hover:animate-bounce cursor-pointer'onClick={()=>{SetOpen(false)}} >{item.title}</Link>
                     ))}
                     {role === "ShopOwner" && ownerLinks.map(item => (

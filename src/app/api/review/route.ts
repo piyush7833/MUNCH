@@ -34,7 +34,7 @@ export const POST = async (req: NextRequest) => {  //add reviews of product
     try {
         const { productId, rating, comment, orderId }: addReview = await req.json();
         const product = await prisma.product.findUnique({ where: { id: productId,softDelete:false } })
-        const order=await prisma.order.findUnique({where:{id:orderId}})
+        const order=await prisma.order.findUnique({where:{id:orderId,status:"Delievered", softDelete:false}})
         const user = await getUserDetails(req);
         if (!user) {
             return NextResponse.json({
@@ -57,7 +57,14 @@ export const POST = async (req: NextRequest) => {  //add reviews of product
                 status: 404
             }, { status: 404 })
         }
-        if ((!comment && !rating) || !rating) {  //if their is comment then rating is must
+        if(user?.id!==order.userId){
+            return NextResponse.json({
+                error: true,
+                message: "You can add review for your order only",
+                status: 403
+            }, { status: 403 })
+        }
+        if ((!comment && !rating) || !rating) {  //if there is comment then rating is must
             return NextResponse.json({
                 error: true,
                 message: "Enter rating to submit review.",
@@ -66,7 +73,7 @@ export const POST = async (req: NextRequest) => {  //add reviews of product
         }
         let updatedReview;
         if(comment && user){
-            updatedReview=await prisma.review.create({data:{productId, userId:user?.id,comment,rating}})
+            updatedReview=await prisma.review.create({data:{productId, userId:user?.id,comment,rating, orderId: orderId}})
         }
         return NextResponse.json({
             error: false,

@@ -3,26 +3,43 @@ import { ProductType } from "@/types/types";
 import { userCartStore } from "@/utils/cartStore";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import ConfirmDialog from "../common/ConfirmDialog";
+import { userAuthStore } from "@/utils/userStore";
 const Price = ({ product }: { product: ProductType }) => {
   const [selected, setSelected] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(product.price);
-  const { addToCart } = userCartStore();
-  const handleCart=()=>{
+  const [isConfirmOpen, setConfirmOpen] = useState(false);
+  const { addToCart, removeAllFromcart,shopId } = userCartStore();
+  const { role } = userAuthStore()
+
+  const handleCart = () => {
+    console.log(shopId)
+    console.log(product.shopId)
+    if ((shopId) !== "" && shopId !== product.shopId) {
+      // return toast.error("You can't add product from different shop")
+      setConfirmOpen(true)
+      return;
+    }
     addToCart({
       id: product.id.toString(),
       title: product.title,
       img: product.img,
       price: totalPrice,
+      shopId: product.shopId,
       ...(product.options?.length && { optionTitle: product.options[selected].title! }),
       quantity: quantity,
     })
-    toast.success(`${product.options?.length && product.options[selected].title} ${product.title} added to cart successfully`)
+    if (product.options?.length! >0) {
+      toast.success(`${quantity} ${product.title} ${product.options![selected].title} added to cart`)
+    } else {
+      toast.success(`${quantity} ${product.title} added to cart`)
+    }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     userCartStore.persist.rehydrate()
-  },[])
+  }, [])
   useEffect(() => {
     if (product.options?.length) {
       setTotalPrice(
@@ -35,9 +52,32 @@ const Price = ({ product }: { product: ProductType }) => {
       );
     }
   }, [product, quantity, selected])
-
+  const handleSubmit = () => {
+    removeAllFromcart()
+    addToCart({
+      id: product.id.toString(),
+      title: product.title,
+      img: product.img,
+      price: totalPrice,
+      shopId: product.shopId,
+      ...(product.options?.length && { optionTitle: product.options[selected].title! }),
+      quantity: quantity,
+    })
+    if (product.options?.length! >0) {
+      toast.success(`${quantity} ${product.title} ${product.options![selected].title} added to cart`)
+    } else {
+      toast.success(`${quantity} ${product.title} added to cart`)
+    }
+  }
   return (
     <div className="flex flex-col gap-4">
+      <ConfirmDialog
+        isOpen={isConfirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleSubmit}
+        title="Remove all products from cart"
+        message="You can not add products from different shop. Do you want to remove all products from cart and this product?"
+      />
       {totalPrice && <h2 className="font-bold text-xl">Rs {totalPrice}</h2>}
       <div className="flex gap-4 flex-wrap text-black">
         {product.options?.map((option, index) => (
@@ -54,7 +94,7 @@ const Price = ({ product }: { product: ProductType }) => {
           </button>
         ))}
       </div>
-      <div className="flex  flex-wrap">
+      {role==="User" && <div className="flex  flex-wrap">
         {/* Quantity */}
         <div className="flex justify-between w-auto px-4 py-2 ring-1 ring-main items-center">
           <span>Quantity</span>
@@ -67,8 +107,8 @@ const Price = ({ product }: { product: ProductType }) => {
           </div>
         </div>
         {/* cart btn */}
-        <button className="btn" onClick={()=>handleCart()}>Add to cart</button>
-      </div>
+        <button className="btn" onClick={() => handleCart()}>Add to cart</button>
+      </div>}
     </div>
   )
 }

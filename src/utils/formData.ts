@@ -7,48 +7,48 @@ import { SvgIconTypeMap } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { httpservice } from './httpService';
 import { baseUrl } from '@/baseUrl';
-export type formType={
-    type:string,
-    name:string,
-    id:string,
-    placeholder:string,
-    required:boolean,
-    icon:OverridableComponent<SvgIconTypeMap<{}, "svg">> | any
+export type formType = {
+    type: string,
+    name: string,
+    id: string,
+    placeholder: string,
+    required: boolean,
+    icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> | any
     options?: string[];
-    editable?:boolean;
-    actualType?:string;
-    onChange?:(e:React.ChangeEvent<HTMLInputElement>)=>void;
-    value?:string;
-    error?:string;
+    editable?: boolean;
+    actualType?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    value?: string;
+    error?: string;
 }
-export const addressFormData:formType[]=[
+export const addressFormData: formType[] = [
     {
-        type:"text",
-        name:"street",
-        id:"street",
-        placeholder:"Enter street",
+        type: "text",
+        name: "street",
+        id: "street",
+        placeholder: "Enter street",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"text"
+        required: true,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"landmark",
-        id:"landmark",
-        placeholder:"Enter landmark",
-        icon:NearMeIcon,
-        required:true,
-        actualType:"text"
+        type: "text",
+        name: "landmark",
+        id: "landmark",
+        placeholder: "Enter landmark",
+        icon: NearMeIcon,
+        required: true,
+        actualType: "text"
     },
     {
-        type:"select",
-        name:"state",
-        id:"state",
-        placeholder:"Enter state",
-        icon:HolidayVillageIcon,
-        required:true,
-        actualType:"option",
-        options:[
+        type: "select",
+        name: "state",
+        id: "state",
+        placeholder: "Enter state",
+        icon: HolidayVillageIcon,
+        required: true,
+        actualType: "option",
+        options: [
             "Andaman and Nicobar Islands",
             "Andhra Pradesh",
             "Arunachal Pradesh",
@@ -84,56 +84,56 @@ export const addressFormData:formType[]=[
             "Uttar Pradesh",
             "Uttarakhand",
             "West Bengal"
-          ] 
+        ]
     },
     {
-        type:"text",
-        name:"city",
-        id:"city",
-        placeholder:"Enter city",
-        icon:LocationCityIcon,
-        required:true,
-        actualType:"text"
+        type: "text",
+        name: "city",
+        id: "city",
+        placeholder: "Enter city",
+        icon: LocationCityIcon,
+        required: true,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"pincode",
-        id:"pincode",
-        placeholder:"Enter pincode",
-        icon:PinIcon,
-        required:true,
-        actualType:"number"
+        type: "text",
+        name: "pincode",
+        id: "pincode",
+        placeholder: "Enter pincode",
+        icon: PinIcon,
+        required: true,
+        actualType: "number"
     },
- 
+
 ]
-export const editAddressFormData:formType[]=[
+export const editAddressFormData: formType[] = [
     {
-        type:"text",
-        name:"street",
-        id:"street",
-        placeholder:"Enter street",
+        type: "text",
+        name: "street",
+        id: "street",
+        placeholder: "Enter street",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"text"
+        required: false,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"landmark",
-        id:"landmark",
-        placeholder:"Enter landmark",
-        icon:NearMeIcon,
-        required:false,
-        actualType:"text"
+        type: "text",
+        name: "landmark",
+        id: "landmark",
+        placeholder: "Enter landmark",
+        icon: NearMeIcon,
+        required: false,
+        actualType: "text"
     },
     {
-        type:"select",
-        name:"state",
-        id:"state",
-        placeholder:"Enter state",
-        icon:HolidayVillageIcon,
-        required:false,
-        actualType:"option",
-        options:[
+        type: "select",
+        name: "state",
+        id: "state",
+        placeholder: "Enter state",
+        icon: HolidayVillageIcon,
+        required: false,
+        actualType: "option",
+        options: [
             "Andaman and Nicobar Islands",
             "Andhra Pradesh",
             "Arunachal Pradesh",
@@ -169,547 +169,587 @@ export const editAddressFormData:formType[]=[
             "Uttar Pradesh",
             "Uttarakhand",
             "West Bengal"
-          ] 
+        ]
     },
     {
-        type:"text",
-        name:"city",
-        id:"city",
-        placeholder:"Enter city",
-        icon:LocationCityIcon,
-        required:false,
-        actualType:"text"
+        type: "text",
+        name: "city",
+        id: "city",
+        placeholder: "Enter city",
+        icon: LocationCityIcon,
+        required: false,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"pincode",
-        id:"pincode",
-        placeholder:"Enter pincode",
-        icon:PinIcon,
-        required:false,
-        actualType:"number"
+        type: "text",
+        name: "pincode",
+        id: "pincode",
+        placeholder: "Enter pincode",
+        icon: PinIcon,
+        required: false,
+        actualType: "number"
     },
- 
+
 ]
-export const passwordChangeFormData:formType[]=[
+export const passwordChangeFormData: formType[] = [
     {
-        type:"password",
-        name:"current_password",
-        id:"current_password",
-        placeholder:"Enter current password",
+        type: "password",
+        name: "current_password",
+        id: "current_password",
+        placeholder: "Enter current password",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"password"
+        required: true,
+        actualType: "password"
     },
     {
-        type:"password",
-        name:"password",
-        id:"password",
-        placeholder:"Enter password",
+        type: "password",
+        name: "password",
+        id: "password",
+        placeholder: "Enter password",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"password"
+        required: true,
+        actualType: "password"
     },
     {
-        type:"password",
-        name:"confirm_password",
-        id:"confirm_password",
-        placeholder:"Confirm password",
+        type: "password",
+        name: "confirm_password",
+        id: "confirm_password",
+        placeholder: "Confirm password",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"password"
-    },
-]
-export const shopOwnerFormData:formType[]=[
-    {
-        type:"text",
-        name:"panCard",
-        id:"panCard",
-        placeholder:"Enter pan card number.",
-        icon: StreetviewIcon,
-        required:true,
-        actualType:"pancard"
-    },
-    {
-        type:"text",
-        name:"aadhar",
-        id:"aadhar",
-        placeholder:"Enter aadhar number.",
-        icon: StreetviewIcon,
-        required:true,
-        actualType:"aadhar"
-    },
-    {
-        type:"text",
-        name:"bankAccount",
-        id:"bankAccount",
-        placeholder:"Enter bank accout number.",
-        icon: StreetviewIcon,
-        required:true,
-        actualType:"number"
-    },
-    {
-        type:"text",
-        name:"IFSC",
-        id:"IFSC",
-        placeholder:"Enter IFSC number of bank.",
-        icon: StreetviewIcon,
-        required:true,
-        actualType:"text"
-    },
-    {
-        type:"text",
-        name:"GSTIN",
-        id:"GSTIN",
-        placeholder:"Enter GSTIN number (optional).",
-        icon: StreetviewIcon,
-        required:true,
-        actualType:"text"
+        required: true,
+        actualType: "password"
     },
 ]
-export const editshopOwnerFormData:formType[]=[
+export const shopOwnerFormData: formType[] = [
     {
-        type:"text",
-        name:"panCard",
-        id:"panCard",
-        placeholder:"Enter pan card number.",
+        type: "text",
+        name: "panCard",
+        id: "panCard",
+        placeholder: "Enter pan card number.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"pancard"
+        required: true,
+        actualType: "pancard"
     },
     {
-        type:"text",
-        name:"aadhar",
-        id:"aadhar",
-        placeholder:"Enter aadhar number.",
+        type: "text",
+        name: "aadhar",
+        id: "aadhar",
+        placeholder: "Enter aadhar number.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"aadhar"
+        required: true,
+        actualType: "aadhar"
     },
     {
-        type:"text",
-        name:"bankAccount",
-        id:"bankAccount",
-        placeholder:"Enter bank accout number.",
+        type: "text",
+        name: "bankAccount",
+        id: "bankAccount",
+        placeholder: "Enter bank accout number.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"number"
+        required: true,
+        actualType: "number"
     },
     {
-        type:"text",
-        name:"IFSC",
-        id:"IFSC",
-        placeholder:"Enter IFSC number of bank.",
+        type: "text",
+        name: "IFSC",
+        id: "IFSC",
+        placeholder: "Enter IFSC number of bank.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"text"
+        required: true,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"GSTIN",
-        id:"GSTIN",
-        placeholder:"Enter GSTIN number (optional).",
+        type: "text",
+        name: "GSTIN",
+        id: "GSTIN",
+        placeholder: "Enter GSTIN number (optional).",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"text"
+        required: true,
+        actualType: "text"
     },
 ]
-export const addShopFormData:formType[]=[
+export const editshopOwnerFormData: formType[] = [
     {
-        type:"text",
-        name:"title",
-        id:"title",
-        placeholder:"Enter name of shop.",
+        type: "text",
+        name: "panCard",
+        id: "panCard",
+        placeholder: "Enter pan card number.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"text"
+        required: false,
+        actualType: "pancard"
     },
     {
-        type:"text",
-        name:"desc",
-        id:"desc",
-        placeholder:"Enter description of shop.",
+        type: "text",
+        name: "aadhar",
+        id: "aadhar",
+        placeholder: "Enter aadhar number.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"text"
+        required: false,
+        actualType: "aadhar"
     },
     {
-        type:"text",
-        name:"slug",
-        id:"slug",
-        placeholder:"Enter unique identifier for your shop.",
+        type: "text",
+        name: "bankAccount",
+        id: "bankAccount",
+        placeholder: "Enter bank accout number.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"text"
+        required: false,
+        actualType: "number"
+    },
+    {
+        type: "text",
+        name: "IFSC",
+        id: "IFSC",
+        placeholder: "Enter IFSC number of bank.",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "text"
+    },
+    {
+        type: "text",
+        name: "GSTIN",
+        id: "GSTIN",
+        placeholder: "Enter GSTIN number (optional).",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "text"
+    },
+]
+export const addShopFormData: formType[] = [
+    {
+        type: "text",
+        name: "title",
+        id: "title",
+        placeholder: "Enter name of shop.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "text"
+    },
+    {
+        type: "text",
+        name: "desc",
+        id: "desc",
+        placeholder: "Enter description of shop.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "text"
+    },
+    {
+        type: "text",
+        name: "slug",
+        id: "slug",
+        placeholder: "Enter unique identifier for your shop.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "text"
     }
 ]
-export const editShopFormData:formType[]=[
+export const editShopFormData: formType[] = [
     {
-        type:"text",
-        name:"title",
-        id:"title",
-        placeholder:"Enter name of shop.",
+        type: "text",
+        name: "title",
+        id: "title",
+        placeholder: "Enter name of shop.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"text"
+        required: false,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"desc",
-        id:"desc",
-        placeholder:"Enter description of shop.",
+        type: "text",
+        name: "desc",
+        id: "desc",
+        placeholder: "Enter description of shop.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"text"
+        required: false,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"slug",
-        id:"slug",
-        placeholder:"Enter unique identifier for your shop.",
+        type: "text",
+        name: "slug",
+        id: "slug",
+        placeholder: "Enter unique identifier for your shop.",
         icon: StreetviewIcon,
-        required:false,
-        editable:false,
-        actualType:"text"
+        required: false,
+        editable: false,
+        actualType: "text"
     }
 ]
-const userShops=async()=>{
+const userShops = async () => {
     try {
-        const shops=await httpservice.get(`${baseUrl}/shop`);
+        const shops = await httpservice.get(`${baseUrl}/shop`);
         return shops.data;
     } catch (error) {
         return []
     }
 }
 
-export const addProductWithShopFormData:formType[]=[
+export const addProductWithShopFormData: formType[] = [
     {
-        type:"select",
-        name:"slug",
-        id:"slug",
-        placeholder:"Select shop slug in which you want to add product.",
+        type: "select",
+        name: "slug",
+        id: "slug",
+        placeholder: "Select shop slug in which you want to add product.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"option",
-        options:[]
+        required: true,
+        actualType: "option",
+        options: []
     },
     {
-        type:"text",
-        name:"title",
-        id:"title",
-        placeholder:"Enter name of product.",
+        type: "text",
+        name: "title",
+        id: "title",
+        placeholder: "Enter name of product.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"text"
+        required: true,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"desc",
-        id:"desc",
-        placeholder:"Enter description of product.",
+        type: "text",
+        name: "desc",
+        id: "desc",
+        placeholder: "Enter description of product.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"text"
+        required: true,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"price",
-        id:"price",
-        placeholder:"Enter price of product.",
+        type: "text",
+        name: "price",
+        id: "price",
+        placeholder: "Enter price of product.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"number"
+        required: true,
+        actualType: "number"
     },
     {
-        type:"select",
-        name:"type",
-        id:"type",
-        placeholder:"Enter type of product (Veg, Non-Veg).",
+        type: "select",
+        name: "type",
+        id: "type",
+        placeholder: "Enter type of product (Veg, Non-Veg).",
         icon: StreetviewIcon,
-        required:true,
-        options:["Veg" , "Non_Veg"],
-        actualType:"option"
+        required: true,
+        options: ["Veg", "Non_Veg"],
+        actualType: "option"
     }
 ]
-export const addProductFormData:formType[]=[
+export const addProductFormData: formType[] = [
     {
-        type:"text",
-        name:"title",
-        id:"title",
-        placeholder:"Enter name of product.",
+        type: "text",
+        name: "title",
+        id: "title",
+        placeholder: "Enter name of product.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"text"
+        required: true,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"desc",
-        id:"desc",
-        placeholder:"Enter description of product.",
+        type: "text",
+        name: "desc",
+        id: "desc",
+        placeholder: "Enter description of product.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"text"
+        required: true,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"price",
-        id:"price",
-        placeholder:"Enter price of product.",
+        type: "text",
+        name: "price",
+        id: "price",
+        placeholder: "Enter price of product.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"number"
+        required: true,
+        actualType: "number"
     },
     {
-        type:"select",
-        name:"type",
-        id:"type",
-        placeholder:"Enter type of product (Veg, Non-Veg).",
+        type: "select",
+        name: "type",
+        id: "type",
+        placeholder: "Enter type of product (Veg, Non-Veg).",
         icon: StreetviewIcon,
-        required:true,
-        options:["Veg" , "Non_Veg"],
-        actualType:"option"
+        required: true,
+        options: ["Veg", "Non_Veg"],
+        actualType: "option"
     }
 ]
-export const editProductFormData:formType[]=[
+export const editProductFormData: formType[] = [
     {
-        type:"text",
-        name:"title",
-        id:"title",
-        placeholder:"Enter name of product.",
+        type: "text",
+        name: "title",
+        id: "title",
+        placeholder: "Enter name of product.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"text"
+        required: false,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"desc",
-        id:"desc",
-        placeholder:"Enter description of product.",
+        type: "text",
+        name: "desc",
+        id: "desc",
+        placeholder: "Enter description of product.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"text"
+        required: false,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"price",
-        id:"price",
-        placeholder:"Enter price of product.",
+        type: "text",
+        name: "price",
+        id: "price",
+        placeholder: "Enter price of product.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"number"
+        required: false,
+        actualType: "number"
     },
     {
-        type:"select",
-        name:"type",
-        id:"type",
-        placeholder:"Enter type of product (Veg, Non-Veg).",
+        type: "select",
+        name: "type",
+        id: "type",
+        placeholder: "Enter type of product (Veg, Non-Veg).",
         icon: StreetviewIcon,
-        required:false,
-        options:["Veg" , "Non_Veg"],
-        actualType:"option"
+        required: false,
+        options: ["Veg", "Non_Veg"],
+        actualType: "option"
     }
 ]
-export const contactForm:formType[]=[
+export const contactForm: formType[] = [
     {
-        type:"text",
-        name:"subject",
-        id:"subject",
-        placeholder:"Enter subject.",
+        type: "text",
+        name: "subject",
+        id: "subject",
+        placeholder: "Enter subject.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"text"
+        required: false,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"message",
-        id:"message",
-        placeholder:"Enter message",
+        type: "text",
+        name: "message",
+        id: "message",
+        placeholder: "Enter message",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"text"
+        required: false,
+        actualType: "text"
     },
     {
-        type:"select",
-        name:"shopId",
-        id:"shopId",
-        placeholder:"Select shop if querry is related to particular shop (optional)",
+        type: "select",
+        name: "shopId",
+        id: "shopId",
+        placeholder: "Select shop if querry is related to particular shop (optional)",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"option"
+        required: false,
+        actualType: "option"
     }
 ]
-export const unVerifyForm:formType[]=[
+export const unVerifyForm: formType[] = [
     {
-        type:"text",
-        name:"notVerified",
-        id:"notVerified",
-        placeholder:"Enter reason to not verify.",
+        type: "text",
+        name: "notVerified",
+        id: "notVerified",
+        placeholder: "Enter reason to not verify.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"text"
+        required: false,
+        actualType: "text"
     }
 ]
 
-export const editUserForm:formType[]=[
+export const editUserForm: formType[] = [
     {
-        type:"text",
-        name:"name",
-        id:"name",
-        placeholder:"Enter your name.",
+        type: "text",
+        name: "name",
+        id: "name",
+        placeholder: "Enter your name.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"text"
+        required: false,
+        actualType: "text"
     },
     {
-        type:"text",
-        name:"email",
-        id:"email",
-        placeholder:"Enter your email.",
+        type: "text",
+        name: "email",
+        id: "email",
+        placeholder: "Enter your email.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"email"
+        required: false,
+        actualType: "email"
     },
     {
-        type:"text",
-        name:"phone",
-        id:"phone",
-        placeholder:"Enter your phone.",
+        type: "text",
+        name: "phone",
+        id: "phone",
+        placeholder: "Enter your phone.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"phone"
-    },
-]
-export const logInFormData:formType[]=[
-    {
-        type:"text",
-        name:"userName",
-        id:"userName",
-        placeholder:"Enter your user name.",
-        icon: StreetviewIcon,
-        required:false,
-        actualType:"userName"
-    },
-    {
-        type:"text",
-        name:"email",
-        id:"email",
-        placeholder:"Enter your email.",
-        icon: StreetviewIcon,
-        required:false,
-        actualType:"email"
-    },
-    {
-        type:"text",
-        name:"phone",
-        id:"phone",
-        placeholder:"Enter your phone.",
-        icon: StreetviewIcon,
-        required:false,
-        actualType:"phone"
-    },
-    {
-        type:"password",
-        name:"password",
-        id:"password",
-        placeholder:"Enter your password.",
-        icon: StreetviewIcon,
-        required:true,
-        actualType:"password"
+        required: false,
+        actualType: "phone"
     },
 ]
-export const signupFormData:formType[]=[
+export const logInFormData: formType[] = [
     {
-        type:"text",
-        name:"userName",
-        id:"userName",
-        placeholder:"Enter your user name.",
+        type: "text",
+        name: "userName",
+        id: "userName",
+        placeholder: "Enter your user name.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"userName"
+        required: false,
+        actualType: "userName"
     },
     {
-        type:"text",
-        name:"name",
-        id:"name",
-        placeholder:"Enter your name.",
+        type: "text",
+        name: "email",
+        id: "email",
+        placeholder: "Enter your email.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"rexr"
+        required: false,
+        actualType: "email"
     },
     {
-        type:"text",
-        name:"email",
-        id:"email",
-        placeholder:"Enter your email.",
+        type: "text",
+        name: "phone",
+        id: "phone",
+        placeholder: "Enter your phone.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"email"
+        required: false,
+        actualType: "phone"
     },
     {
-        type:"text",
-        name:"phone",
-        id:"phone",
-        placeholder:"Enter your phone.",
+        type: "password",
+        name: "password",
+        id: "password",
+        placeholder: "Enter your password.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"phone"
-    },
-    {
-        type:"password",
-        name:"password",
-        id:"password",
-        placeholder:"Enter your password.",
-        icon: StreetviewIcon,
-        required:true,
-        actualType:"password"
+        required: true,
+        actualType: "password"
     },
 ]
-export const notificationFormData:formType[]=[
+export const signupFormData: formType[] = [
     {
-        type:"text",
-        name:"title",
-        id:"title",
-        placeholder:"Enter your title of notification.",
+        type: "text",
+        name: "userName",
+        id: "userName",
+        placeholder: "Enter your user name.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"text"
+        required: true,
+        actualType: "userName"
     },
     {
-        type:"text",
-        name:"text",
-        id:"text",
-        placeholder:"Enter message of notification.",
+        type: "text",
+        name: "name",
+        id: "name",
+        placeholder: "Enter your name.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"rexr"
+        required: true,
+        actualType: "rexr"
     },
     {
-        type:"text",
-        name:"name",
-        id:"name",
-        placeholder:"Enter name of notification (optional).",
+        type: "text",
+        name: "email",
+        id: "email",
+        placeholder: "Enter your email.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"phone"
+        required: false,
+        actualType: "email"
     },
     {
-        type:"select",
-        name:"role",
-        id:"role",
-        placeholder:"Select role of reciever.",
+        type: "text",
+        name: "phone",
+        id: "phone",
+        placeholder: "Enter your phone.",
         icon: StreetviewIcon,
-        required:false,
-        actualType:"option",
-        options:["All","User","ShopOwner","Admin"]
+        required: false,
+        actualType: "phone"
     },
     {
-        type:"select",
-        name:"recievers",
-        id:"recievers",
-        placeholder:"Select recievers of notficattion.",
+        type: "password",
+        name: "password",
+        id: "password",
+        placeholder: "Enter your password.",
         icon: StreetviewIcon,
-        required:true,
-        actualType:"option",
-        options:["All"]
+        required: true,
+        actualType: "password"
     },
+]
+export const notificationFormData: formType[] = [
+    {
+        type: "text",
+        name: "title",
+        id: "title",
+        placeholder: "Enter your title of notification.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "text"
+    },
+    {
+        type: "text",
+        name: "text",
+        id: "text",
+        placeholder: "Enter message of notification.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "rexr"
+    },
+    {
+        type: "text",
+        name: "name",
+        id: "name",
+        placeholder: "Enter name of notification (optional).",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "phone"
+    },
+    {
+        type: "select",
+        name: "role",
+        id: "role",
+        placeholder: "Select role of reciever.",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "option",
+        options: ["All", "User", "ShopOwner", "Admin"]
+    },
+    {
+        type: "select",
+        name: "recievers",
+        id: "recievers",
+        placeholder: "Select recievers of notficattion.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "option",
+        options: ["All"]
+    },
+]
+export const statusForm: formType[] = [
+    {
+        type: "select",
+        name: "status",
+        id: "status",
+        placeholder: "Update status.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "option",
+        options: ["Processing",
+            "Accepted",
+            "Cooking",
+            "Prepared",
+            "Out",
+            "Delievered",
+            "Completed",
+            "Cancelled",
+            "Failed"],
+    },
+]
+export const reviewForm: formType[] = [
+    {
+        type: "number",
+        name: "rating",
+        id: "rating",
+        placeholder: "Select rating",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "rating",
+    },
+    {
+        type: "text",
+        name: "comment",
+        id: "comment",
+        placeholder: "Enter comment.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "comment",
+    }
 ]

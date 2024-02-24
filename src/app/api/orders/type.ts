@@ -1,6 +1,7 @@
 import { PayMode } from "@prisma/client";
 
 export type OrderType ={
+    userId: string,
     totalPrice: number,
     productDetails:ProductDetails[],
     couponPrice: number,
@@ -10,13 +11,13 @@ export type OrderType ={
     shopId: string,
     address: string,
     payMode: PayMode,
+    paymentId: string,
   }
 export type ProductDetails={
-    productId: string,
+    id: string,
     price: number,
     option: string,
     quantity: number,
-    orderId: string,
 }
 export type OrderProduct= {
     id: string,
@@ -27,7 +28,7 @@ export type OrderProduct= {
     orderId: string,
   } 
 export type CreateOrderProductInput ={
-    productId: string,
+    id: string,
     price: number,
     option: string,
     quantity: number,

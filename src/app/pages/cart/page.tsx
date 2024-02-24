@@ -1,15 +1,99 @@
 "use client"
 import { userCartStore } from '@/utils/cartStore'
+import { httpservice } from '@/utils/httpService'
 import Image from 'next/image'
-import React,{useEffect} from 'react'
-
-
+import React, { use, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
+import { userAuthStore } from '@/utils/userStore'
+import { baseUrl } from '@/baseUrl'
+import Button from '@/components/partials/Button'
+import FormDialog from '@/components/common/FormDialog'
+import { editAddressFormData } from '@/utils/formData'
+import { addressType } from '@/types/types'
+import { useRouter } from 'next/navigation'
 const Cart = () => {
-  const { products, totalItems, totalPrice, removeFromCart } = userCartStore()
-  const serviceCharge = totalPrice > 100 ?  1 : totalPrice * 0.01;
-  useEffect(()=>{
+  const {name, email, phone, address } = userAuthStore()
+  const { products, totalItems, totalPrice, removeFromCart, removeAllFromcart } = userCartStore()
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const serviceCharge = totalPrice > 100 ? 1 : totalPrice * 0.01;
+  useEffect(() => {
     userCartStore.persist.rehydrate()
-  },[])
+  }, [])
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const checkOutHandler = async (addressData: addressType) => {
+    try {
+      setOpen(false)
+      const response = await httpservice.put('/api/payment', { name: "test", amount: totalPrice + serviceCharge })
+      const order = response.data.data
+      const options = {
+        key: 'rzp_test_XHRQnmYoYqPxcT', // Replace with your Razorpay API key
+        amount: order.amount_due * 100, // Amount is expected in paise
+        currency: 'INR',
+        name: 'MUNCH',
+        description: 'Payment for Order',
+        image: 'https://firebasestorage.googleapis.com/v0/b/munch-396608.appspot.com/o/utils%2Flogo.png?alt=media&token=6e5eec03-1f03-4f60-8e9d-6bb933ee710a',
+        order_id: order.id,
+        handler: async function (response: any) {
+          try {
+            const payment = await httpservice.post(`${baseUrl}/payment`,
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              });
+            toast.success(payment.data.message);
+            const order = await httpservice.post(`${baseUrl}/orders`, {
+              totalPrice: totalPrice + serviceCharge,
+              productDetails: products,
+              couponPrice: 0,
+              taxes: 0,
+              delieveryFee: 0,
+              platformFee: serviceCharge,
+              shopId: products[0].shopId,
+              address: addressData,
+              payMode: "Online",
+              paymentId: payment.data.data.id
+            });
+            toast.success(order.data.message);
+            removeAllFromcart()
+            router.push(`/pages/orders/${order.data.newOrder.id}`)
+          } catch (error: any) {
+            setLoading(false)
+            toast.error(error.response.data.message);
+          }
+        },
+        prefill: {
+          name: name,
+          email: email,
+          contact: phone
+        },
+        notes: {
+          address: address,
+        },
+        theme: {
+          color: '#F37254',
+        },
+      };
+
+      const razorpayInstance = new (window as any).Razorpay(options);
+      razorpayInstance.open();
+    } catch (error: any) {
+      toast.error(error.response.data.message)
+      console.log(error)
+    }
+  }
   return (
     <div className='h-[calc(100vh-9rem)] md:h-[calc(100vh-5.5rem)] flex flex-col text-main lg:flex-row'>
 
@@ -29,9 +113,9 @@ const Cart = () => {
             <div className="">
               <h2 className='font-bold'>Rs {item.price}</h2>
             </div>
-              <span className='text-red text-2xl cursor-pointer' onClick={() => removeFromCart(item)} >X</span>
+            <span className='text-red text-2xl cursor-pointer' onClick={() => removeFromCart(item)} >X</span>
           </div>))}
-  
+
 
       </div>
 
@@ -54,7 +138,8 @@ const Cart = () => {
           <span className=''>Total</span>
           <span>{totalPrice + serviceCharge} </span>
         </div>
-        <button className='btn self-end'>CheckOut</button>
+        <Button text='CheckOut' loading={loading} onClick={() => {setOpen(true); setLoading(true)}} />
+        {open && <FormDialog onClose={() => setOpen(false)} onSave={checkOutHandler} data={editAddressFormData} image='/images/address.png' title="Add Delievery address if it's a delivery" />}
       </div>
     </div>
   )

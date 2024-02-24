@@ -13,6 +13,10 @@ const handleVerify = () => {
   console.log("Verify");
 }
 
+const handleStatusChange=()=>{
+  console.log("Status Change")
+}
+
 const ColCell = ({ value, variant,url }: CustomTableCellProps) => {
   const renderCellContent = () => {
     switch (variant) {
@@ -27,17 +31,24 @@ const ColCell = ({ value, variant,url }: CustomTableCellProps) => {
           </div>
         );
       case "id":
-        return 
+        return <Link href={url!} className="">{value}</Link>
       case "img":
         return <div className=" flex items-center w-full justify-center ">
           <ImgContainer imgUrl={value} alt="product" type="product" />
         </div>
       case "user":
-        return <Link href={url!} className="">{value.name}</Link>
+        return <Link href={url!} className="">{value?.name}</Link>
+      case "shop":
+        return <Link href={url!} className="">{value?.title}</Link>
       case "createdAt":
         return <p className="">{formatDate(value?.split('T')[0])}</p>
-      case "userId":
-        return 
+      case "products":
+        return (value as JSON[]).map((item: any) => ( // Explicitly type 'item' as 'any'
+        <div key={item.id} className="flex gap-2 flex-wrap items-center justify-center">
+          <span>{item.product.title}</span>
+          <span>{item.option}</span>
+        </div>
+      ))
       case "verified":
         return <p className="">{value ?formatDate(value?.split('T')[0]):"NaN"}</p>
       default:

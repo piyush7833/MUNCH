@@ -47,8 +47,7 @@ const CustomTable = ({ data, keys, originalData, type,handleUpdate }: propsType)
                   <ColCell
                     value={values[key] as any}
                     variant={key}
-                    url={`${key === "user" && `/pages/profile/${values["user"].id}`}`}
-
+                    url={`${key === "user" && `/pages/profile/${values["user"]?.id}` || (key === "id" && type==="orders") && `/pages/${type}/${values["id"]}` || key==="shop" && `/pages/shops/${values["shop"]?.slug}` || null}`}
                   />
                 </td>
               ))}

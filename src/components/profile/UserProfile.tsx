@@ -1,6 +1,6 @@
 "use client"
 import { userAuthStore } from '@/utils/userStore'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ImgContainer from '../common/ImgContainer'
 import EditButton from '../partials/EditButton'
 import DeleteButton from '../partials/DeleteButton'
@@ -26,6 +26,10 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
   const [isPasswordChange, setIsPasswordChange] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false)
   const [passwordChangeLoading, setPasswordChangeLoading] = useState(false)
+  useEffect(() => {
+    userAuthStore.persist.rehydrate()
+  }, [])
+  const {id } = userAuthStore()
   const handleEmailVerify = async () => {
     try {
       const response = await httpservice.post(`${baseUrl}/verify`, { timeout: 10000, });
@@ -149,8 +153,8 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
       {isPasswordChange && <FormDialog onClose={() => setIsPasswordChange(false)} onSave={handlePasswordChange} data={passwordChangeFormData} image='/images/forget-password.png' title="Change password" />}
     </div>
     <div className="w-full max-h-fit flex flex-row gap-4 flex-wrap justify-end items-center">
-      <Button onClick={()=>handleSignout()} loading={logoutLoading} text="Logout" />
-      <Button onClick={() => setIsPasswordChange(true)} text='Change Password' loading={passwordChangeLoading}/>
+      {id ===userData.id && <Button onClick={()=>handleSignout()} loading={logoutLoading} text="Logout" />}
+      {id===userData.id && <Button onClick={() => setIsPasswordChange(true)} text='Change Password' loading={passwordChangeLoading}/>}
       <EditButton url={`/pages/edit/profile/${userData?.id!}`} userId={userData?.id} />
       <DeleteButton url={`/user`} userId={userData?.id} />
     </div>

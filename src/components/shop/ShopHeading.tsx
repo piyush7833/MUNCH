@@ -20,7 +20,7 @@ type propsType={
 const ShopHeading = ({title,img,desc,address,userId,owner,totalProducts,slug}:propsType) => {
     const {id}=userAuthStore()
   return (
-    <div className="flex flex-col max-h-fit w-full bg-gray-300 shadow-lg">
+    <div className="flex flex-col h-fit w-full bg-gray-300 shadow-lg">
     <div className='shopHeading relative gap-5 p-4'>
         <div className="img w-full flex items-center justify-center md:w-1/5 max-h-fit">
       <ImgContainer imgUrl={img} alt={title} type="heading"/>

@@ -5,23 +5,24 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// datasource db {
-//   provider = "postgresql"
-//   url      = env("DATABASE_URL")
-//   // directUrl = env("POSTGRES_URL_NON_POOLING") 
-// }
-
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // directUrl = env("POSTGRES_URL_NON_POOLING") 
 }
+
+// datasource db {
+//   provider  = "postgresql"
+//   url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+//   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+// }
 
 enum userRole {
   Admin
   ShopOwner
   User
 }
+
 enum themeType {
   light
   dark
@@ -46,9 +47,10 @@ model User {
   softDelete        Boolean             @default(false)
   address           Json?
   notificationIds   String[]
-  theme             themeType?            @default(light)
+  theme             themeType?          @default(light) // Default theme
   verificationToken verificationToken[]
   contact           contact[]
+  orders            Order[]
 }
 
 model ShopOwner {
@@ -72,22 +74,22 @@ enum ShopStatus {
 }
 
 model Shop {
-  id         String     @id @default(cuid())
-  userId     String //reference to userId
-  createdAt  DateTime   @default(now())
-  title      String
-  desc       String
-  img        String?
-  slug       String     @unique
-  verified   DateTime? // If verified by admin
-  notVerified String?   
-  address    Json
-  user       User       @relation(fields: [userId], references: [id])
-  products   Product[]
-  orders     Order[]
-  status     ShopStatus @default(Open)
-  softDelete Boolean    @default(false)
-  contact    contact[]
+  id          String     @id @default(cuid())
+  userId      String //reference to userId
+  createdAt   DateTime   @default(now())
+  title       String
+  desc        String
+  img         String?
+  slug        String     @unique
+  verified    DateTime? // If verified by admin
+  notVerified String?
+  address     Json
+  user        User       @relation(fields: [userId], references: [id])
+  products    Product[]
+  orders      Order[]
+  status      ShopStatus @default(Open)
+  softDelete  Boolean    @default(false)
+  contact     contact[]
 }
 
 enum OrderStatus {
@@ -106,6 +108,7 @@ enum PayMode {
   UPI
   Card
   Net_Banking
+  Online
   COD
 }
 
@@ -117,12 +120,16 @@ model Order {
   taxes        Decimal
   delieveryFee Decimal
   platformFee  Decimal
+  paymentId    String
   status       OrderStatus    @default(Processing)
   userId       String
   shopId       String // Reference from shop
   shop         Shop           @relation(fields: [shopId], references: [id])
+  user         User           @relation(fields: [userId], references: [id])
+  payment      PaymentDetails @relation(fields: [paymentId], references: [id])
   products     OrderProduct[]
-  address      String
+  reviews      Review[]
+  address      Json?
   payMode      PayMode
   softDelete   Boolean        @default(false)
 }
@@ -133,9 +140,21 @@ model OrderProduct {
   price     Decimal
   option    String
   quantity  Decimal
-  order     Order   @relation(fields: [orderId], references: [id])
   orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
+}
+
+model PaymentDetails {
+  id                  String   @id @default(cuid())
+  createdAt           DateTime @default(now())
+  orderId             String   @unique
+  name                String
+  amount              Decimal
+  razorpay_payment_id String?
+  razorpay_order_id   String?
+  razorpay_signature  String?
+  order               Order[]
 }
 
 enum ProductStatus {
@@ -172,10 +191,12 @@ model Review {
   createdAt  DateTime @default(now())
   productId  String //reference from product
   userId     String //reference from user
+  orderId    String
   comment    String?
   rating     Decimal
   user       User     @relation(fields: [userId], references: [id])
   product    Product  @relation(fields: [productId], references: [id])
+  order     Order    @relation(fields: [orderId], references: [id])
   softDelete Boolean  @default(false)
 }
 

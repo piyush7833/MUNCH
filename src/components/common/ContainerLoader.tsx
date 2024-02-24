@@ -16,7 +16,7 @@ const ContainerLoader = ({ message }: { message?: string }) => {
 
   return (
     <div className="relative w-full h-full">
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
         <ImgContainer alt="loader" type="loader" imgUrl="/images/loader.gif" />
         <p className="text-lg">{message}
           <span>{dots}</span>
