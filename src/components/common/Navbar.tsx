@@ -133,7 +133,7 @@ const Navbar = () => {
                 
             <div className="relative z-10">
                 <MenuIcon onClick={(e) => {e.preventDefault(); SetOpen(!open);}} className='cursor-pointer text-white' />
-                {open && <div className="absolute w-40 right-0 top-8 border flex flex-col h-auto  shadow-md p-2 rounded-md bg-red-500 border-red-600">
+                {open && <div className="absolute w-fit right-0 top-8 border flex flex-col h-auto  shadow-md p-2 rounded-md bg-red-500 border-red-600">
                     {role !== "Admin" && links.map(item => (
                         <Link key={item.id} href={item.url} className='hover:scale-105 hover:animate-bounce cursor-pointer'onClick={()=>{SetOpen(false)}} >{item.title}</Link>
                     ))}
