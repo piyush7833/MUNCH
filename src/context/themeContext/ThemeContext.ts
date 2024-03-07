@@ -1,7 +1,8 @@
 "use client"
-import React,{ createContext, useContext, useState, ReactNode } from 'react';
-
-export type ThemeMode = 'light' | 'dark';
+import { useMediaQuery } from '@mui/material';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+export type ThemeMode = 'dark' | 'light';
 
 interface ThemeContextType {
   toggleTheme: () => void;
@@ -21,24 +22,41 @@ export const useTheme = () => {
 interface ThemeProviderProps {
   children: ReactNode;
 }
- 
-// export let themeClass:string;
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>('light');
-  
-  const toggleTheme = () => {
-    setThemeMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-  };
-  const themeClass = themeMode === 'dark' ? 'dark ' : 'light';
 
+// export let themeClass:string;
+function getActiveTheme(themeMode: 'light' | 'dark') {
+  return themeMode === 'light' ? 'light' : 'dark';
+}
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+  const userSystemThemePreferenceDark = useMediaQuery('(prefers-color-scheme: dark)');
+  const [cookieTheme, setCookieTheme] = useCookies(["theme-preference"]);
+  const defaultInitialTheme = userSystemThemePreferenceDark ? 'dark' : 'light';
+
+  const [activeTheme, setActiveTheme] = useState(defaultInitialTheme);
+  const preferredTheme = cookieTheme && cookieTheme["theme-preference"] ? cookieTheme["theme-preference"] : defaultInitialTheme;
+  const [selectedTheme, setSelectedTheme] = useState<'light' | 'dark'>(preferredTheme);
+
+  const toggleTheme: React.MouseEventHandler<HTMLAnchorElement> = () => {
+    const desiredTheme = selectedTheme === 'light' ? 'dark' : 'light';
+    setSelectedTheme(desiredTheme);
+    setCookieTheme("theme-preference", desiredTheme);
+  };
+
+  useEffect(() => {
+    setSelectedTheme(preferredTheme);
+  }, [preferredTheme]);
+
+  useEffect(() => {
+    setActiveTheme(getActiveTheme(selectedTheme))
+  }, [selectedTheme]);
   
-  const contextValue = {
-    toggleTheme,
-    themeMode,
+  const contextValue: ThemeContextType = {
+    toggleTheme: toggleTheme as () => void,
+    themeMode: activeTheme === 'light' ? 'light' : 'dark',
   };
 
   // Create the Provider using React.createElement  //as using provider we are facing error
-  return React.createElement('div', { className: themeClass }, [
+  return React.createElement('div', { className: activeTheme }, [
     React.createElement(ThemeContext.Provider, { value: contextValue }, children)
   ]);
 };

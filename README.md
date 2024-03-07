@@ -1,34 +1,121 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# M.U.N.C.H. (Mobile Utility for Nourishing Campus Hunger)
 
-## Getting Started
+MUNCH: A pioneering web app tailored for college students, MUNCH redefines campus dining. Seamlessly order delicious meals from your hostel, customize your preferences, and enjoy hassle-free transactions. Real-time tracking, dietary accommodations, and record maintenance ensure a delightful experience. Explore the future of food convenience!
 
-First, run the development server:
+## Deployed Link
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+https://crop-connect-lime.vercel.app/
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Dual Interfaces**: M.U.N.C.H. provides separate interfaces for consumers and shop owners, accessible through the profile page and auth page.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Seller Side
 
-## Learn More
+2. **Shop Management**: ShopOwners can easily add shop, including images, description, slug(unique identifier) etc. which can be edited and deleted further.
 
-To learn more about Next.js, take a look at the following resources:
+2. **Product Management**: ShopOwners can easily add products, including images, description, type, product options (e.g. small, medium, large) etc. which can be edited and deleted further.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Order Management**: Sellers have access to a dashboard displaying order requests, including order location coordinates on a map.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+4. **Analytics**: ShopOwners can browse through analytics exclusively from them like best selling product by quantity and value, product sales graph by value and by quantity, shop sales graph by value and quantity, best seller product of a shop and all shops by value and quantity.
 
-## Deploy on Vercel
+### Consumer Side
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. **User-Friendly Consumer Interface**: Consumers can browse offer, featured products, shops on homepage and users can also browse through all products, shops and apply filter and search there.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+6. **Detailed Product Dashboard**: Product details, including product type, product option, are displayed prominently. Users can add products to their cart directly from the dashboard.
+
+7. **Review System**: Users can leave reviews for products, enhancing transparency and trust after ordering the product from orders page.
+
+8. **Contact Form**: A contact form allows users to inquire about products, shops directly, with answered queries becoming part of the FAQ section.
+
+9. **Dynamic Cart Functionality**: Users can manage product quantities in the cart, with limitations that a person can order from only one shop at once.
+
+10. **Seamless Checkout**: The checkout process allows users to review orders, including delivery charges, select delivery locations, and place orders securely.
+
+11. **Analytics**: Best selling product over all the products and particular category or food e.g.(veg, biryani) to get best out of money you spent.
+
+## Technologies Used
+
+- Docker
+- Prisma
+- PostresSql
+- NodeJS
+- ExpressJS
+- NextJS
+- Zustand
+- Tailwind CSS
+- Recharts (for charts and graphs)
+- Firebase (for image storage)
+- Leaflet (for map)
+- Other supporting technologies
+
+## Installation
+
+To run M.U.N.C.H. locally, ensure you have NodeJS and Docker installed. Follow these steps:
+
+1. **Clone the repository**:
+    ```bash
+    git clone <repository-url>
+    cd munch
+    ```
+2. Prerequisites
+
+- Docker
+- Node.js
+- npm or yarn
+
+3. **Project Setup**:
+    - Create a `.env` file in the root directory of the Frontend folder.
+    - Add the following environment variables to the `.env` file:
+        ```bash
+
+        BASEEURL :- "http://localhost:3000",
+        JWT :- "Your JWTS secret key"
+
+        <!-- Database setup -->
+        DATABASE_URL:- " Your PostgresSql database url",
+        POSTRGRES_DB :- "Your PostgresSql database name",
+        POSTRGRES_USER :- "Your PostgresSql database user",
+        POSTRGRES_PASSWORD :- "Your PostgresSql database password",
+
+        <!-- Email setup -->
+        HOST:- "Your email host",
+        PORT:- "Your email port",
+        SERVICE:- "Your email service",
+        USER:- "Your email user",
+        PASS:- "Your email password",
+
+        <!-- Firebase setup -->
+        SERVER_KEY :- "Your firebase server key",
+
+        <!-- Razorpay Setup -->
+        RAZORPAY_KEY_ID :- "Your razorpay key id (test key)",
+        RAZORPAY_KEY_SECRET :- "Your razorpaye key secret (test key)"
+        ```
+
+
+
+    - To run app :-
+        ```bash
+        # Install dependencies
+        npm install
+        # Run the docker
+        cd src
+        cd docker
+        # Set up the database
+        npx prisma migrate dev
+        docker-compose up -d
+        # Run the app
+        npm run dev
+        ```
+
+By following these steps, you'll have the M.U.N.C.H. application running locally on your machine. Adjust configurations as needed for your development environment.
+
+## Contribution
+
+M.U.N.C.H. welcomes contributions from the community. Feel free to open issues or submit pull requests to help improve the platform.
+
+
+**If you find this project helpful, we'd appreciate it if you could give it a star ⭐.**

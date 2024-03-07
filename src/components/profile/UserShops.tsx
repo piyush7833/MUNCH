@@ -13,7 +13,7 @@ const UserShops = ({ shops,userId }: propsType) => {
   const {id}=userAuthStore();
   return (
     <div className="">
-      <h1 className='text-4xl px-4'>Your Shops</h1>
+      <h1 className='text-4xl px-4'>Shops</h1>
       <div className='store-container hideScrollBar'>
         {shops?.map((shop: any) => (
           <ShopCard key={shop.id} imgUrl={shop.img} slug={shop.slug} desc={shop.desc} id={shop.id} title={shop.title} />

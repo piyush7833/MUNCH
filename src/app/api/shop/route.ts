@@ -1,4 +1,4 @@
-// "use server"
+
 
 import { NextRequest, NextResponse } from "next/server"
 import { getUserDetails } from "../utils/action"

@@ -50,7 +50,7 @@
     @apply w-max flex
 }
 .single-item{
-    @apply w-screen md:w-[50vw] lg:w-[33vw] lg:h-[90vh] h-[60vh] flex flex-col items-center justify-around text-justify p-4 hover:bg-slate-600 hover:text-white transition-all duration-300 rounded-2xl
+    @apply w-screen md:w-[50vw] lg:w-[33vw] lg:h-[90vh] h-[60vh] flex flex-col items-center justify-around text-justify p-4 dark:hover:bg-slate-600 hover:bg-gray-200 transition-all duration-300 rounded-2xl
 }
 .single-imgContainer{
     @apply flex-1 relative w-full duration-300 items-center justify-center
@@ -142,6 +142,12 @@
 
 .main{
     @apply  min-h-[calc(100vh-9rem)] md:min-h-[calc(100vh-5.5rem)] p-4  text-main 
+}
+.graph{
+    @apply h-fit w-full text-main flex items-center justify-center flex-wrap gap-4
+}
+.singleGraph{
+    @apply  h-[calc(50vh-4.5rem)] md:h-[calc(50vh-2.25rem)]
 }
 
 .single-product-imgContainer{

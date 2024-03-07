@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import CartIcon from '../partials/CartIcon';
 import ModeBtn from '../partials/ModeBtn';
 import UserLinks from './UserLinks';
@@ -13,6 +12,9 @@ import { toast } from 'react-toastify';
 import { getMessaging, getToken } from 'firebase/messaging';
 import app from '@/app/api/utils/firebase';
 import ImgContainer from './ImgContainer';
+import { httpservice } from '@/utils/httpService';
+import { baseUrl } from '@/baseUrl';
+import SearchDialog from './SearchDialog';
 
 const links = [
     { id: 1, title: "Home", url: "/" },
@@ -37,26 +39,38 @@ const ownerLinks = [
 ];
 
 const Navbar = () => {
+    useEffect(() => {
+        userAuthStore.persist.rehydrate()
+      }, [])
+      const {userName, notificationIds,logIn } = userAuthStore()
+    useEffect(() => {
+        userName && requestPermission();
+    }, [userName]);
+    const [isSearchDialogOpen,setSearchDialogOpen]=useState(false);
+    const [searchData,setSearchData]=useState({owners:[],products:[],shops:[]});
     const requestPermission = async () => {
         const messaging = getMessaging(app);
         const permission = await Notification.requestPermission();
         try {     
             if(permission === "granted"){
+                let response=null;
                 const token = await getToken(messaging, {vapidKey: "BIiWeWMjEC1Mw3-s_5vEWkAt8LW3xAFKpVMhfL6KxKGU1dMwuXnx__mrOmTz5v0JuIAYSZAZoD_2cbwnAYw-C3U"});
-                toast.success(token);
-                console.log(token)
+                response= !notificationIds.includes(token) ? await httpservice.put(`${baseUrl}/user`,{notificationId:token}):null;
+                if(response!==null){
+                    logIn(response.data.updatedUser)
+                    toast.success("Notification permission granted");
+                }
             }
             else{
                 toast.warning("Notification permission denied");
             }
-        } catch (error) {
-            console.log(error);
+        } catch (error:any) {
+            console.log(error,"Error in getting notification permission");
+            toast.error(error.toString());
         }
     }
-    useEffect(() => {
-        requestPermission();
-        console.log("Navbar rendered");
-    }, []);
+
+
     const [open, SetOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [showSearchInput, setShowSearchInput] = useState(false);
@@ -69,9 +83,21 @@ const Navbar = () => {
         setSearchQuery(e.target.value);
     };
 
-    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSearch = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Searching for:", searchQuery);
+        try {
+            const response=await httpservice.put(`${baseUrl}/search`,{query:searchQuery});
+            setSearchData({
+                owners:response.data.shopOwners,
+                products:response.data.products,
+                shops:response.data.shops
+            });
+            setSearchDialogOpen(true)
+            console.log(response,"Search response")
+        } catch (error) {
+            toast.error("Error in searching");
+        }
     };
 
     return (
@@ -86,7 +112,7 @@ const Navbar = () => {
                     <form className="relative" onSubmit={(e) => handleSearch(e)}>
                         <input
                             type="text"
-                            placeholder="Search Products"
+                            placeholder="Search"
                             value={searchQuery}
                             onChange={(e) => handleSearchInputChange(e)}
                             className="px-3 py-1 text-black rounded-md border-gray-400 focus:outline-none focus:border-gray-600"
@@ -126,7 +152,7 @@ const Navbar = () => {
             <div className='md:hidden'>
                 <Menu />
             </div>
-
+        {isSearchDialogOpen && <SearchDialog onClose={()=>setSearchDialogOpen(false)} data={searchData} />}
         </div>
     );
 };

@@ -24,6 +24,7 @@ export const POST = async (req: NextRequest) => {
             recievers= await prisma.user.findUnique({where:{userName:recievers}});
             recievers=recievers.notificationIds;
         }
+        console.log(recievers)
         return await sendNotifications({tokens:recievers,title,text,name,image,link});
     } catch (error) {
         console.log(error,"error2");

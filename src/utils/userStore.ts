@@ -17,7 +17,8 @@ const INITIAL_STATE = {
     phoneVerified: null,
     activeSession: false,
     image: null,
-    ShopOwner:null
+    ShopOwner:null,
+    notificationIds:[],
 }
 
 export const userAuthStore = create(persist<fullUserType & userActionTypes>((set, get) => ({
@@ -33,6 +34,7 @@ export const userAuthStore = create(persist<fullUserType & userActionTypes>((set
     activeSession: INITIAL_STATE.activeSession,
     image: INITIAL_STATE.image,
     ShopOwner:INITIAL_STATE.ShopOwner,
+    notificationIds:INITIAL_STATE.notificationIds,
 
     logIn(user: fullUserType) {
         set(() => ({
@@ -47,7 +49,8 @@ export const userAuthStore = create(persist<fullUserType & userActionTypes>((set
             phoneVerified:user.phoneVerified,
             activeSession:user.activeSession,
             image:user.image,
-            ShopOwner:user.ShopOwner
+            ShopOwner:user.ShopOwner,
+            notificationIds:user.notificationIds
         }));
     },
     logOut(user: null) {
@@ -62,7 +65,8 @@ export const userAuthStore = create(persist<fullUserType & userActionTypes>((set
             phoneVerified:null,
             activeSession:false,
             image:null,
-            shopOwner:null
+            shopOwner:null,
+            notificationIds:[]
         }))
     },
 }), { name: "user", skipHydration: true }))  //we need to skip hydration to prevent hydration error as in the beginning nextjs is trying to change component type as we are using client side component

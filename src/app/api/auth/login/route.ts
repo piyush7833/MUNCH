@@ -1,4 +1,4 @@
-// "use server"
+
 import { NextRequest, NextResponse } from "next/server";
 import { signinType } from "../types";
 import { prisma } from "@/utils/connect";

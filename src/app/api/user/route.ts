@@ -4,23 +4,23 @@ import { prisma } from "@/utils/connect";
 
 export const POST = async (req: NextRequest) => {
     try {
-        const { role} = await req.json();
-        const loggedInUser=await getUserDetails(req);
-        if(loggedInUser==null){
+        const { role } = await req.json();
+        const loggedInUser = await getUserDetails(req);
+        if (loggedInUser == null) {
             return NextResponse.json({
                 error: true,
                 message: "Login first to view users",
                 status: 403
             }, { status: 403 })
         }
-        if(loggedInUser.role!=="Admin"){
+        if (loggedInUser.role !== "Admin") {
             return NextResponse.json({
                 error: true,
                 message: "Only admin can view users",
                 status: 403
             }, { status: 403 })
         }
-        const user = await prisma.user.findMany({where:role==="All"?{}:{role}});
+        const user = await prisma.user.findMany({ where: role === "All" ? {} : { role } });
         return NextResponse.json({
             error: false,
             message: "User created successfully",
@@ -38,8 +38,7 @@ export const POST = async (req: NextRequest) => {
 
 export const PUT = async (req: NextRequest) => {
     try {
-        console.log("hello")
-        var { name, phone, email, image, address }: updateForm = await req.json();
+        var { name, phone, email, image, address, notificationId }: updateForm = await req.json();
         const user = await getUserDetails(req);
         if (user == null) {
             return NextResponse.json({
@@ -54,6 +53,11 @@ export const PUT = async (req: NextRequest) => {
         if (email) {
             await prisma.user.update({ where: { id: user.id }, data: { emailVerified: null } })
         }
+        if (notificationId) {
+            if (!user.notificationIds.includes(notificationId)) {
+                await prisma.user.update({ where: { id: user.id }, data: { notificationIds: { push: notificationId } } })
+            }
+        }
         const updatedUser = await prisma.user.update({
             where: {
                 id: user.id
@@ -63,11 +67,11 @@ export const PUT = async (req: NextRequest) => {
             }
         })
         let msg;
-        if(user.role==="ShopOwner"){
-            msg="Your details updated successfully and need to be verified by admin till then your shops will not be visible to users"
+        if (user.role === "ShopOwner") {
+            msg = "Your details updated successfully and need to be verified by admin till then your shops will not be visible to users"
         }
-        else{
-            msg="User updated successfully"
+        else {
+            msg = "User updated successfully"
         }
         return NextResponse.json({
             error: false,

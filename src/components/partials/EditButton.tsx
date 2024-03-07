@@ -2,7 +2,7 @@
 import React from 'react'
 import { Edit } from '@mui/icons-material'
 import { useRouter } from 'next/navigation';
-import { siteUrl } from '@/baseUrl';
+import { siteUrl, testUrl } from '@/baseUrl';
 import { userAuthStore } from '@/utils/userStore';
 const EditButton = ({ url,userId }: { url: string, userId?:string }) => {
   const router =useRouter()
@@ -14,7 +14,7 @@ const EditButton = ({ url,userId }: { url: string, userId?:string }) => {
 
   return (
     <div>
-      <div onClick={()=>router.push(`${siteUrl}/${url}`)} className='bg-red-500 p-2 cursor-pointer text-white rounded-full  ' >
+      <div onClick={()=>router.push(`${testUrl}/${url}`)} className='bg-red-500 p-2 cursor-pointer text-white rounded-full  ' >
           <Edit />
       </div>
     </div>

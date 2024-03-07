@@ -39,7 +39,7 @@ const Items = () => {
             <Link href={`/pages/product/${item.id}`} key={item.id}>
               <div className="single-item group shadow-2xl" key={item.id}>
                 {item.img && (
-                  <div className="single-imgContainer group-hover:scale-110 md:group-hover:scale-105">
+                  <div className="single-imgContainer dark:group-hover:scale-110 md:group-hover:scale-105">
                     <Image src={item.img} alt={item.title} fill className="object-contain" />
                   </div>
                 )}

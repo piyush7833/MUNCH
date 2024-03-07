@@ -97,3 +97,24 @@ const validateForm = (formData: formType[], fieldId: string, fieldValue: string)
 
 
 export default validateForm;
+
+export const formatStats = (stats: any[]) => {
+  let totalEarnings = 0;
+  let bestSellerProductAllShops : any|null = null;
+  if(stats?.length>0){
+      stats.forEach((shop: any) => {
+          totalEarnings += shop.totalEarnings;
+          const ownerBestSellerProduct=shop.bestSellerProduct;
+          if(!bestSellerProductAllShops || (ownerBestSellerProduct && (ownerBestSellerProduct.quantity > bestSellerProductAllShops.quantity|| ownerBestSellerProduct.price > bestSellerProductAllShops.price))){
+              bestSellerProductAllShops=ownerBestSellerProduct;
+          }
+      });
+  }
+  return {totalEarnings,bestSellerProductAllShops};
+};
+
+export const filterStats = (stats: any, selectedShop: string | null) => {
+  const filteredProductGraphData = selectedShop ? stats?.shopStats[selectedShop]?.productGraphData : stats?.productGraphData;
+  return filteredProductGraphData;
+}
+

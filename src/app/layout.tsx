@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 import Notifications from '../components/common/Notifications'
 import Footer from '../components/common/Footer'
 import { ThemeProvider } from '@/context/themeContext/ThemeContext'
+
 import QuerryProvider from '@/components/common/QuerryProvider'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';

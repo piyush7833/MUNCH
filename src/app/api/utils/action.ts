@@ -1,4 +1,4 @@
-// "use server";
+;
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/utils/connect";
 import nodemailer, { createTransport } from 'nodemailer';

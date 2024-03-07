@@ -60,7 +60,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
     <div>
       <div className='main gap-4 hideScrollBar'>
         <UserProfile userData={userData} extractedData={extractedUserData} shopOwnerData={shopOwnerData} shopOwnerExtracedData={shopOwnerExtracedData}/>
-        {userData.role==="shopOwner" && <UserShops shops={shopData} userId={params.id}/>}
+        {userData.role==="ShopOwner" && <UserShops shops={shopData} userId={params.id}/>}
       </div>
     </div>
   );

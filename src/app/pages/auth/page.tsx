@@ -17,6 +17,8 @@ import Button from '@/components/partials/Button';
 import validateForm from '@/utils/action';
 import { formType, logInFormData, signupFormData } from '@/utils/formData';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { getMessaging, getToken } from 'firebase/messaging';
+import app from '@/app/api/utils/firebase';
 
 const InputField = ({ icon, type, name, value, placeholder, onChange, error, required , id}: formType) => {
   return (
@@ -82,6 +84,24 @@ const Auth = () => {
     setSignupData({ ...signupData, [name]: value });
   }
 
+  const requestPermission = async () => {
+    const messaging = getMessaging(app);
+    const permission = await Notification.requestPermission();
+    try {     
+        if(permission === "granted"){
+            const token = await getToken(messaging, {vapidKey: "BIiWeWMjEC1Mw3-s_5vEWkAt8LW3xAFKpVMhfL6KxKGU1dMwuXnx__mrOmTz5v0JuIAYSZAZoD_2cbwnAYw-C3U"});
+            toast.success(token);
+            console.log(token)
+        }
+        else{
+            toast.warning("Notification permission denied");
+        }
+    } catch (error) {
+        toast.error("Error in getting notification permission");
+        console.log(error);
+    }
+}
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
@@ -94,6 +114,7 @@ const Auth = () => {
       tokenHelper.create("role", response.data.user.role);
       setSigninLoading(false);
       toast.success(response.data.message);
+      await requestPermission();
       router.push('/');
     } catch (error: any) {
       console.log(error);
@@ -117,6 +138,7 @@ const Auth = () => {
         tokenHelper.create("role", "User");
         toast.success(response.data.message);
         setSignupLoading(false);
+        await requestPermission();
         router.push('/');
       }
     } catch (error: any) {

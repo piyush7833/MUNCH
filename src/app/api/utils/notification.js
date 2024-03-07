@@ -1,9 +1,11 @@
 import FCM from 'fcm-node';
+import { NextResponse } from 'next/server';
 
-export const sendNotifications = async (tokens, title, text, image, link ) => {
+export const sendNotifications = async ({tokens, title, text, image, link,name} ) => {
     try {
         const serverKey = process.env.SERVER_KEY;
         const fcm = new FCM(serverKey);
+        console.log(tokens,"tokens")
         const notificationPromises = tokens.map((token) => {
             const message = {
                 notification: {
@@ -40,6 +42,7 @@ export const sendNotifications = async (tokens, title, text, image, link ) => {
         }, { status: 200 })
         
     } catch (error) {
+        console.log(error)
         return NextResponse.json({
           error: true,
           message: "Notifications failed to send",

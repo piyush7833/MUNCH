@@ -4,6 +4,7 @@ type updateForm={
     phone?:string,
     image?:string,
     address?:string,
+    notificationId?:string
 }
 type shopOwnerForm={
     panCard:string,

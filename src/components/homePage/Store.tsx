@@ -20,7 +20,7 @@ const Store = () => {
   if (error) {
     return <div className="w-screen  h-[30vh] sm:h-[30vh] md:h-[60vh]">
     <Error message={error.response.data.message}/>
-  </div>;;
+  </div>;
   }
 
   if (!data) {

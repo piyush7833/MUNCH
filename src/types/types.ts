@@ -73,7 +73,8 @@ export type fullUserType = {
   phoneVerified: Date | null,
   activeSession: boolean,
   image: string | null,
-  ShopOwner?: JSON | null
+  ShopOwner?: JSON | null,
+  notificationIds: string[]
 }
 export type responseUserType = {
   name: string | null,
