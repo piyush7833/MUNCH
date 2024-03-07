@@ -4,7 +4,7 @@ MUNCH: A pioneering web app tailored for college students, MUNCH redefines campu
 
 ## Deployed Link
 
-https://crop-connect-lime.vercel.app/
+https://munch-akwu.onrender.com/
 
 ## Features
 
