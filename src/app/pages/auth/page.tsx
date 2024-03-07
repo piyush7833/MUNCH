@@ -84,23 +84,6 @@ const Auth = () => {
     setSignupData({ ...signupData, [name]: value });
   }
 
-  const requestPermission = async () => {
-    const messaging = getMessaging(app);
-    const permission = await Notification.requestPermission();
-    try {     
-        if(permission === "granted"){
-            const token = await getToken(messaging, {vapidKey: "BIiWeWMjEC1Mw3-s_5vEWkAt8LW3xAFKpVMhfL6KxKGU1dMwuXnx__mrOmTz5v0JuIAYSZAZoD_2cbwnAYw-C3U"});
-            toast.success(token);
-            console.log(token)
-        }
-        else{
-            toast.warning("Notification permission denied");
-        }
-    } catch (error) {
-        toast.error("Error in getting notification permission");
-        console.log(error);
-    }
-}
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -114,7 +97,6 @@ const Auth = () => {
       tokenHelper.create("role", response.data.user.role);
       setSigninLoading(false);
       toast.success(response.data.message);
-      await requestPermission();
       router.push('/');
     } catch (error: any) {
       console.log(error);
@@ -138,7 +120,6 @@ const Auth = () => {
         tokenHelper.create("role", "User");
         toast.success(response.data.message);
         setSignupLoading(false);
-        await requestPermission();
         router.push('/');
       }
     } catch (error: any) {
