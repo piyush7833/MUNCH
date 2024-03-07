@@ -4,7 +4,7 @@ MUNCH: A pioneering web app tailored for college students, MUNCH redefines campu
 
 ## Deployed Link
 
-https://munch-akwu.onrender.com/
+https://munchh.vercel.app/
 
 ## Features
 

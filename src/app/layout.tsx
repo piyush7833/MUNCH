@@ -5,7 +5,8 @@ import { Inter } from 'next/font/google'
 import Notifications from '../components/common/Notifications'
 import Footer from '../components/common/Footer'
 import { ThemeProvider } from '@/context/themeContext/ThemeContext'
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
 import QuerryProvider from '@/components/common/QuerryProvider'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -34,6 +35,8 @@ export default function RootLayout({
               {children}
               <Footer />
               <ToastContainer position='bottom-right' theme='dark' autoClose={3000}/>
+              <Analytics/>
+              <SpeedInsights/>
             </ThemeProvider>
           </QuerryProvider>
       </body>
