@@ -41,31 +41,31 @@ const ownerLinks = [
 const Navbar = () => {
     useEffect(() => {
         userAuthStore.persist.rehydrate()
-      }, [])
-      const {userName, notificationIds,logIn } = userAuthStore()
+    }, [])
+    const { userName, notificationIds, logIn } = userAuthStore()
     useEffect(() => {
         userName && requestPermission();
     }, [userName]);
-    const [isSearchDialogOpen,setSearchDialogOpen]=useState(false);
-    const [searchData,setSearchData]=useState({owners:[],products:[],shops:[]});
+    const [isSearchDialogOpen, setSearchDialogOpen] = useState(false);
+    const [searchData, setSearchData] = useState({ owners: [], products: [], shops: [] });
     const requestPermission = async () => {
         const messaging = getMessaging(app);
         const permission = await Notification.requestPermission();
-        try {     
-            if(permission === "granted"){
-                let response=null;
-                const token = await getToken(messaging, {vapidKey: "BIiWeWMjEC1Mw3-s_5vEWkAt8LW3xAFKpVMhfL6KxKGU1dMwuXnx__mrOmTz5v0JuIAYSZAZoD_2cbwnAYw-C3U"});
-                response= !notificationIds.includes(token) ? await httpservice.put(`${baseUrl}/user`,{notificationId:token}):null;
-                if(response!==null){
+        try {
+            if (permission === "granted") {
+                let response = null;
+                const token = await getToken(messaging, { vapidKey: "BIiWeWMjEC1Mw3-s_5vEWkAt8LW3xAFKpVMhfL6KxKGU1dMwuXnx__mrOmTz5v0JuIAYSZAZoD_2cbwnAYw-C3U" });
+                response = !notificationIds.includes(token) ? await httpservice.put(`${baseUrl}/user`, { notificationId: token }) : null;
+                if (response !== null) {
                     logIn(response.data.updatedUser)
                     toast.success("Notification permission granted");
                 }
             }
-            else{
+            else {
                 toast.warning("Notification permission denied");
             }
-        } catch (error:any) {
-            console.log(error,"Error in getting notification permission");
+        } catch (error: any) {
+            console.log(error, "Error in getting notification permission");
             toast.error(error.toString());
         }
     }
@@ -83,18 +83,18 @@ const Navbar = () => {
         setSearchQuery(e.target.value);
     };
 
-    const handleSearch = async(e: React.FormEvent<HTMLFormElement>) => {
+    const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Searching for:", searchQuery);
         try {
-            const response=await httpservice.put(`${baseUrl}/search`,{query:searchQuery});
+            const response = await httpservice.put(`${baseUrl}/search`, { query: searchQuery });
             setSearchData({
-                owners:response.data.shopOwners,
-                products:response.data.products,
-                shops:response.data.shops
+                owners: response.data.shopOwners,
+                products: response.data.products,
+                shops: response.data.shops
             });
             setSearchDialogOpen(true)
-            console.log(response,"Search response")
+            console.log(response, "Search response")
         } catch (error) {
             toast.error("Error in searching");
         }
@@ -129,30 +129,37 @@ const Navbar = () => {
                     </button>
                 )}
                 <ModeBtn />
-                {role==="User" &&<Link href='/pages/cart' className='hover:scale-105 hover:animate-bounce' ><CartIcon /></Link>}
-                
-            <div className="relative z-10">
-                <MenuIcon onClick={(e) => {e.preventDefault(); SetOpen(!open);}} className='cursor-pointer text-white' />
-                {open && <div className="absolute w-fit right-0 top-8 border flex flex-col h-auto  shadow-md p-2 rounded-md bg-red-500 border-red-600">
-                    {role !== "Admin" && links.map(item => (
-                        <Link key={item.id} href={item.url} className='hover:scale-105 hover:animate-bounce cursor-pointer'onClick={()=>{SetOpen(false)}} >{item.title}</Link>
-                    ))}
-                    {role === "ShopOwner" && ownerLinks.map(item => (
-                        <Link key={item.id}
-                            href={item.url} className='hover:scale-105 hover:animate-bounce cursor-pointer' onClick={()=>{SetOpen(false)}} >{item.title}</Link>
-                    ))}
-                    {role === "Admin" && adminLinks.map(item => (
-                        <Link key={item.id}
-                            href={item.url} className='hover:scale-105 hover:animate-bounce cursor-pointer'onClick={()=>{SetOpen(false)}} >{item.title}</Link>
-                    ))}
-                    <UserLinks />
-                </div>}
-            </div>
+                {role === "User" && <Link href='/pages/cart' className='hover:scale-105 hover:animate-bounce' ><CartIcon /></Link>}
+
+                <div className="relative z-10">
+                    <MenuIcon onClick={(e) => { e.preventDefault(); SetOpen(!open); }} className='cursor-pointer text-white' />
+                    {open && <div className="absolute min-w-fit w-44 right-0 top-8 border flex flex-col h-auto  shadow-md p-2 rounded-md bg-red-500 border-red-600">
+                        {role !== "Admin" && links.map(item => (
+                            <Link key={item.id}
+                                href={item.url} className='hover:scale-105 hover:animate-bounce cursor-pointer'>
+                                <p onClick={() => { SetOpen(false) }} >{item.title}</p>
+                            </Link>
+                        ))}
+                        {role === "ShopOwner" && ownerLinks.map(item => (
+                            <Link key={item.id}
+                                href={item.url} className='hover:scale-105 hover:animate-bounce cursor-pointer'>
+                                <p onClick={() => { SetOpen(false) }} >{item.title}</p>
+                            </Link>
+                        ))}
+                        {role === "Admin" && adminLinks.map(item => (
+                            <Link key={item.id}
+                                href={item.url} className='hover:scale-105 hover:animate-bounce cursor-pointer'>
+                                <p onClick={() => { SetOpen(false) }} >{item.title}</p>
+                            </Link>
+                        ))}
+                        <UserLinks onClick={()=>SetOpen(false)}/>
+                    </div>}
+                </div>
             </div>
             <div className='md:hidden'>
                 <Menu />
             </div>
-        {isSearchDialogOpen && <SearchDialog onClose={()=>setSearchDialogOpen(false)} data={searchData} />}
+            {isSearchDialogOpen && <SearchDialog onClose={() => setSearchDialogOpen(false)} data={searchData} />}
         </div>
     );
 };

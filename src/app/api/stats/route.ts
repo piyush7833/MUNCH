@@ -289,6 +289,9 @@ export const GET = async (req: NextRequest) => {
         });
       });
     }
+    if(user.role==="User"){
+      
+    }
     return NextResponse.json({
       error: false,
       data: { finalData, combinedStatsData: combineStats(Object.values(finalData)),adminData: adminData },

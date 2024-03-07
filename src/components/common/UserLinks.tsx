@@ -2,8 +2,10 @@
 import Link from 'next/link'
 import React, { useEffect } from 'react'
 import { userAuthStore } from '@/utils/userStore'
-
-const UserLinks = () => {
+type propsType = {
+  onClick?: () => void
+}
+const UserLinks = ({ onClick }: propsType) => {
   useEffect(() => {
     userAuthStore.persist.rehydrate()
   }, [])
@@ -11,9 +13,21 @@ const UserLinks = () => {
   return (
     <div className='flex-col  flex'>
       {(name !== null || userName !== null) ?
-        <Link href='/pages/orders' className='hover:scale-105 hover:animate-bounce ' >Orders</Link>
-        : <Link href='/pages/auth' className='hover:scale-105 hover:animate-bounce ' >Login</Link>}
-      {(name !== null || userName !== null) && <Link href='/pages/profile' className='hover:scale-105 hover:animate-bounce '>{name?.split(" ")[0]}</Link>}
+        <Link href='/pages/orders' className='hover:scale-105 hover:animate-bounce ' >
+          <p onClick={onClick} >
+            Orders
+          </p>
+        </Link>
+        : <Link href='/pages/auth' className='hover:scale-105 hover:animate-bounce ' >
+          <p onClick={onClick} >
+            Login
+          </p>
+        </Link>}
+      {(name !== null || userName !== null) && <Link href='/pages/profile' className='hover:scale-105 hover:animate-bounce '>
+        <p onClick={onClick} >
+          {name?.split(" ")[0]}
+        </p>
+      </Link>}
     </div>
   )
 }

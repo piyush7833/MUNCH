@@ -83,7 +83,7 @@ const Menu = () => {
             href={item.url} className='hover:scale-105 hover:animate-bounce' onClick={() => SetOpen(false)} >{item.title}</Link>
         ))}
         <Link href='/cart' onClick={() => SetOpen(false)}><CartIcon /></Link>
-        <UserLinks />
+        <UserLinks onClick={() => SetOpen(false)} />
         
       </div>}
     </div>
