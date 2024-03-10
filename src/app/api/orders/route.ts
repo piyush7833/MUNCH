@@ -67,6 +67,7 @@ export const POST = async (req: NextRequest) => {
     })
 
     let orderProducts = [];
+    console.log(productDetails)
     for (let i = 0; i < productDetails.length; i++) {
       const orderProduct = await createOrderProduct({ productDetails: productDetails[i], orderId: newOrder.id });
       if(orderProduct.success===false){
@@ -184,7 +185,7 @@ export const PUT = async (req: NextRequest) => {  //get all order of particular 
 
 const createOrderProduct = async ({productDetails,orderId}:{productDetails:any, orderId:string}) => {
   try {
-    const { id, price, option, quantity }: CreateOrderProductInput=productDetails;
+    const { id, price, optionTitle, quantity }: CreateOrderProductInput=productDetails;
     const order=await prisma.order.findUnique({where:{id:orderId}})
     if(!order){
       return {
@@ -196,7 +197,7 @@ const createOrderProduct = async ({productDetails,orderId}:{productDetails:any, 
       data: {
         productId:id,
         price,
-        option: option || "NaN",
+        option: optionTitle || "NaN",
         quantity,
         orderId,
       },

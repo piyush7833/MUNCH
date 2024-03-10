@@ -16,7 +16,7 @@ export type OrderType ={
 export type ProductDetails={
     id: string,
     price: number,
-    option: string,
+    optionTitle: string,
     quantity: number,
 }
 export type OrderProduct= {
@@ -30,7 +30,7 @@ export type OrderProduct= {
 export type CreateOrderProductInput ={
     id: string,
     price: number,
-    option: string,
+    optionTitle: string,
     quantity: number,
     orderId: string,
   }  

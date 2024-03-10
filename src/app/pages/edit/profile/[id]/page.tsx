@@ -11,7 +11,7 @@ import { editAddressFormData, editUserForm, editshopOwnerFormData } from '@/util
 import { httpservice } from '@/utils/httpService'
 import { userAuthStore } from '@/utils/userStore'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
 type Props = {
@@ -22,6 +22,9 @@ const Page = ({ params }: Props) => {
     const response = await httpservice.get(url);
     return response.data;
   };
+  useEffect(() => {
+    userAuthStore.persist.rehydrate()
+  }, [])
   const { data, error, isLoading } = useSWR(`${baseUrl}/user/${params.id}`, fetcher);
   const user = data?.user;
   const extractedUserData = {

@@ -158,6 +158,14 @@ const Page = ({ params }: { params: { id: string } }) => {
                   </div>
                   <div className="flex flex-row">
                     <h2 className="w-1/2">
+                      Product Option
+                    </h2>
+                    <h2 className="w-1/2">
+                      {product?.option}
+                    </h2>
+                  </div>
+                  <div className="flex flex-row">
+                    <h2 className="w-1/2">
                       Product Quantity
                     </h2>
                     <h2 className="w-1/2">
