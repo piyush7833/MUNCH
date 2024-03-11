@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import { formatDate } from '@/utils/action';
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart, Area } from 'recharts';
+import {  Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart, Area } from 'recharts';
 
 type PropsType = {
   graphData: any[],
@@ -26,9 +26,8 @@ const LineBarGraph = ({ graphData, XLabel, YLabel, areaColor, lineColor, barColo
       setDateRange({ startDate: new Date(newValue!.startDate), endDate: new Date(newValue!.endDate) });
     }
   };
-  console.log(graphData, "graphData")
   const filteredGraphData = graphData.filter(data => {
-    const date = new Date(data.date); // Assuming the key for date in graphData is 'date'
+    const date = new Date(data.date); 
     return date >= dateRange.startDate && date <= dateRange.endDate;
   });
 

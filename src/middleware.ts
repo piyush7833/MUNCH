@@ -1,3 +1,4 @@
+"use client"
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
@@ -10,7 +11,6 @@ export function middleware(request: NextRequest) {
   const isUser = path === '/pages/cart';
   const isShopOwner = path.startsWith('/pages/add') || path.startsWith('/pages/edit/product') || path.startsWith('/pages/edit/shop')
   const token = request.cookies.get('token')?.value || '';
-
   const role = request.cookies.get('role')?.value || '';
   if (isProtected && !token) {
     return NextResponse.redirect(new URL('/pages/auth', request.nextUrl))

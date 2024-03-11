@@ -240,7 +240,7 @@ const adminStats = (data: any): any => {
 export const GET = async (req: NextRequest) => {
   try {
     const user = await getUserDetails(req);
-    if (user == null) {
+    if (!user) {
       return NextResponse.json({
         error: true,
         message: "Login to see your stats",

@@ -14,7 +14,7 @@ const fetcher = async (url: string) => {
     return response.data;
   } catch (error: any) {
     console.log(error)
-    toast.error(error.response.data);
+    return toast.error(error.response.data.message);
   }
 }
 const Stats = () => {
@@ -70,11 +70,16 @@ const Stats = () => {
       })
     }
   }, [adminData, combinedData, ownerData]);
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error</p>;
-  if (!userName) {
+  if(!userName){
     return null;
   }
+  if (isLoading) return <p>Loading...</p>;
+  if (error)  {
+    console.log("object",error)
+    return <p>Error</p>;}
+  // if (!userName) {
+  //   return null;
+  // }
   return (
     <div>
       <h1>Stats</h1>
@@ -97,14 +102,14 @@ const Stats = () => {
         <h2>Best Seller Total Quantity: {shopStats?.bestSeller?.quantity}</h2>
         <div className="graphs flex flex-wrap justify-around gap-10 text-main">
 
-        {Object?.keys(adminData).length > 0 && Object?.entries(adminGraphData).map(([key, value]) => (
+        {adminData && Object?.keys(adminData).length > 0 && Object?.entries(adminGraphData).map(([key, value]) => (
           <LineBarGraph graphData={(value as any).dataSet} key={key} title={(value as any).title} subTitle={(value as any).subTitle} XLabel={(value as any).xLabel} YLabel={(value as any).yLabel} valueKey={(value as any).valueKey} />
         ))}
-        { Object?.keys(combinedData).length > 0 &&  Object?.keys(combinedGraphData).length > 0 && Object.entries(combinedGraphData).map(([key, value]) => (
+        {combinedData && Object?.keys(combinedData).length > 0 &&  Object?.keys(combinedGraphData).length > 0 && Object.entries(combinedGraphData).map(([key, value]) => (
           <LineBarGraph graphData={(value as any).dataSet}key={key} title={(value as any).title} subTitle={(value as any).subTitle} XLabel={(value as any).xLabel} YLabel={(value as any).yLabel} valueKey={(value as any).valueKey}/>
         ))}
 
-        { Object?.keys(ownerData).length > 0 && Object?.entries(ownerGraphData).map(([key, value]) => (
+        {ownerData && Object?.keys(ownerData).length > 0 && Object?.entries(ownerGraphData).map(([key, value]) => (
           <LineBarGraph graphData={(value as any).dataSet} key={key} title={(value as any).title} subTitle={(value as any).subTitle} XLabel={(value as any).xLabel} YLabel={(value as any).yLabel} valueKey={(value as any).valueKey}/>
         ))}
         </div>
