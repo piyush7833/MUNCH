@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import { formatDate } from '@/utils/action';
-import {  Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart, Area } from 'recharts';
+import {  Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart, Area, BarChart } from 'recharts';
 
 type PropsType = {
   graphData: any[],
@@ -16,6 +16,7 @@ type PropsType = {
 };
 
 const LineBarGraph = ({ graphData, XLabel, YLabel, areaColor, lineColor, barColor, title, subTitle, valueKey }: PropsType) => {
+  // console.log(graphData,title)
   const [dateRange, setDateRange] = useState<{ startDate: Date, endDate: Date }>({
     startDate: new Date("2024-01-01"),
     endDate: new Date(),
@@ -43,7 +44,7 @@ const LineBarGraph = ({ graphData, XLabel, YLabel, areaColor, lineColor, barColo
 
     return null;
   };
-
+  // console.log(filteredGraphData,title)
   return (
     <div className="w-[46%] h-fit bg-gray-200 dark:bg-slate-600 p-4 rounded-lg">
       <div className="flex items-center justify-end">
@@ -79,7 +80,7 @@ const LineBarGraph = ({ graphData, XLabel, YLabel, areaColor, lineColor, barColo
           }}
         >
           <CartesianGrid stroke="#f5f5f5" />
-          <XAxis dataKey={XLabel || "date"} scale="band" label={{ value: XLabel || "Date", position: 'insideBottomRight' }} />
+          <XAxis dataKey={"date"}  label={{ value: XLabel || "Date", position: 'insideBottomRight' }} tick={{fontSize:"14px"}} tickFormatter={(tick)=>formatDate(tick)} />
           <YAxis dataKey={valueKey || "value"} label={{ value: YLabel || 'Price', angle: -90, position: 'insideLeft' }} />
           <Tooltip isAnimationActive content={<CustomTooltip />} />
           <Area type="monotone" dataKey={valueKey || "value"} fill={areaColor || "#8884d8"} stroke={areaColor || "#8884d8"} />

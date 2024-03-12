@@ -73,7 +73,6 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
   const handleSignout = async () => {
     try {
       setLogoutLoading(true)
-      console.log("object")
       const response = await httpservice.post(`${baseUrl}/auth/logout`, {
         headers: { 'Cache-Control': 'no-store' },
       });

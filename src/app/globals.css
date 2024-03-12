@@ -143,12 +143,7 @@
 .main{
     @apply  min-h-[calc(100vh-9rem)] md:min-h-[calc(100vh-5.5rem)] p-4  text-main 
 }
-.graph{
-    @apply h-fit w-full text-main flex items-center justify-center flex-wrap gap-4
-}
-.singleGraph{
-    @apply  h-[calc(50vh-4.5rem)] md:h-[calc(50vh-2.25rem)]
-}
+
 
 .single-product-imgContainer{
     @apply relative w-full h-1/2 md:h-1/2 md:w-1/2
