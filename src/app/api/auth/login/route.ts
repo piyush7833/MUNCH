@@ -38,10 +38,11 @@ export const POST=async(req:NextRequest)=>{
             }, { status: 403 })
         }
         var token = jwt.sign({ id: user.id }, process.env.JWT!);
-        cookies().set('token', token);
+        cookies().set('token', token,{expires: new Date(Date.now() + 1000*60*60*24*7)});
         cookies().set({
             name: 'role',
             value: user.role,
+            expires: new Date(Date.now() + 1000*60*60*24*7),
             // httpOnly: true,
           })
         await prisma.user.update({

@@ -1,4 +1,3 @@
-import Stats from '@/components/homePage/Stats'
 import Items from '../components/homePage/Items'
 import Offer from '../components/homePage/Offer'
 import Slider from '../components/homePage/Slider'
@@ -11,7 +10,6 @@ export default function Home() {
       <Offer/>
       <Items/>
       <Store/>
-      <Stats/>
     </div>
   )
 }

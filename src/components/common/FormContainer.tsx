@@ -22,8 +22,9 @@ type propsType = {
   originalAdditionalOptions?: any[];
   loading?: boolean;
   extraFunction?: any;
+  btnText?: string;
 };
-const FormContainer = ({ data, onSave, title, address, originalData, originalAddressData, additional, originalAdditionalOptions, shopOwner, originalShopOwnerData, loading, extraFunction }: propsType) => {
+const FormContainer = ({ data, onSave, title, address, originalData, originalAddressData, additional, originalAdditionalOptions, shopOwner, originalShopOwnerData, loading, extraFunction,btnText }: propsType) => {
   const [formData, setFormData] = useState<any>(originalData || null);
   const [addressData, setAdressData] = useState<any>(originalAddressData || null);
   const [shopOwnerData, setShopOwnerData] = useState<any>(originalShopOwnerData || null);
@@ -334,7 +335,7 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
           ))}
         </div>
       }
-      <Button type='submit' text='Save' loading={loading} disabled={Object.keys(formError).length <=0 || Object.values(formError).some((error) => error !== false) || Object.values(shopOwnerError).some((error) => error !== false) || Object.values(addressError).some((error) => error !== false)  }/>
+      <Button type='submit' text={btnText || 'Save'} loading={loading} disabled={Object.values(formError).some((error) => error !== false) || Object.values(shopOwnerError).some((error) => error !== false) || Object.values(addressError).some((error) => error !== false)  }/>
     </form>
   )
 }

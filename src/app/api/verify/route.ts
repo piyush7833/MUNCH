@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { genrateToken, getUserDetails, sendEmail } from "../utils/action";
-import { Subject } from "@mui/icons-material";
 import emailTemplate from "../utils/emailTemplate";
 
 export const POST=async(req:NextRequest)=>{  //email verification

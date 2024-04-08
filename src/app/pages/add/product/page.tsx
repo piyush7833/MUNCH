@@ -6,11 +6,10 @@ import ImgContainer from '@/components/common/ImgContainer';
 import { toast } from 'react-toastify';
 import ConfirmDialog from '@/components/common/ConfirmDialog';
 import FormContainer from '@/components/common/FormContainer';
-import { addProductFormData, addProductWithShopFormData } from '@/utils/formData';
+import { addProductWithShopFormData } from '@/utils/formData';
 import { ResponseShopType, productOptionType } from '@/types/types';
 import { handleUploadImage } from '@/utils/action';
 import { httpservice } from '@/utils/httpService';
-import Loader from '@/components/common/Loader';
 import { productType } from '@/app/api/product/type';
 
 

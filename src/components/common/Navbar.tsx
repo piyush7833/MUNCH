@@ -20,7 +20,8 @@ const links = [
     { id: 1, title: "Home", url: "/" },
     { id: 2, title: "Shops", url: "/pages/shops" },
     { id: 3, title: "Products", url: "/pages/product" },
-    { id: 4, title: "Contact Us", url: "/pages/contact" },
+    { id: 4, title: "Stats", url: "/pages/stats" },
+    { id: 5, title: "Contact Us", url: "/pages/contact" },
 ];
 const adminLinks = [
     { id: 1, title: "Home", url: "/" },
@@ -42,10 +43,20 @@ const Navbar = () => {
     useEffect(() => {
         userAuthStore.persist.rehydrate()
     }, [])
-    const { userName, notificationIds, logIn } = userAuthStore()
+    const { userName, notificationIds, logIn, logOut } = userAuthStore()
+    const getCookie = (name: string) => {
+        const cookieValue = document.cookie
+            .split('; ')
+            .find(row => row.startsWith(`${name}=`))
+            ?.split('=')[1];
+        return cookieValue ? decodeURIComponent(cookieValue) : null;
+    };
     useEffect(() => {
+        const token = getCookie('token');
+        !token && userName && toast.error("Session expired, Please login again");
+        !token && logOut(null);
         userName && requestPermission();
-    }, [userName]);
+    }, [userName,logOut]);
     const [isSearchDialogOpen, setSearchDialogOpen] = useState(false);
     const [searchData, setSearchData] = useState({ owners: [], products: [], shops: [] });
     const requestPermission = async () => {
@@ -85,7 +96,7 @@ const Navbar = () => {
 
     const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Searching for:", searchQuery);
+        // console.log("Searching for:", searchQuery);
         try {
             const response = await httpservice.put(`${baseUrl}/search`, { query: searchQuery });
             setSearchData({
@@ -94,7 +105,7 @@ const Navbar = () => {
                 shops: response.data.shops
             });
             setSearchDialogOpen(true)
-            console.log(response, "Search response")
+            // console.log(response, "Search response")
         } catch (error) {
             toast.error("Error in searching");
         }

@@ -753,3 +753,76 @@ export const reviewForm: formType[] = [
         actualType: "comment",
     }
 ]
+
+
+export const predictFoodFormData:formType[]=[
+    {
+        type: "select",
+        name: "meal_type",
+        id: "meal_type",
+        placeholder: "Select your meal type. *",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "option",
+        options:["Breakfast","Lunch","Dinner","Snacks","Dessert","Beverages","Others" ]
+    },
+    {
+        type: "select",
+        name: "dietary_preference",
+        id: "dietary_preference",
+        placeholder: "Select your dietary preference. *",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "option",
+        options:["Veg","Non-Veg","Vegan","Gluten Free","Dairy Free","Keto","Paleo","Low-Carb","Low-Fat","Balanced","High-Protein","Low-Sodium","Low-Sugar","Organic","Raw","Halal","Kosher","Pescetarian"]
+    },
+    {
+        type: "select",
+        name: "cusiene_preference",
+        id: "cusiene_preference",
+        placeholder: "Select your cusiene preference. *",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "option",
+        options:["Indian","Chinese","Italian","Mexican","Thai","Japanese","American","French","Spanish"]
+    },
+    {
+        type: "text",
+        name: "allergies",
+        id: "allergies",
+        placeholder: "Enter your allergies",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "text",
+    },
+    {
+        type: "text",
+        name: "budget",
+        id: "budget",
+        placeholder: "Enter amount of money you want to spend",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "text",
+    },
+    {
+        type: "option",
+        name: "health_goals",
+        id: "health_goals",
+        placeholder: "Select your health goals",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "option",
+        options:["Weight Loss","Weight Gain","Muscle Gain","Maintainance","Diabetes","Immunity","Sports Nutrition","Kids Nutrition","Senior Nutrition"]
+    },
+    {
+        type: "option",
+        name: "food_avoid",
+        id: "food_avoid",
+        placeholder: "Select food you want to avoid",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "option",
+        options:["Sugar","Salt","Oil","Spices","Gluten","Dairy","Nuts","Seafood","Eggs","Meat","Poultry","Soy","Processed Food","Junk Food","Fast Food","Alcohol","Caffeine","Carbonated Drinks"]
+    }
+
+]

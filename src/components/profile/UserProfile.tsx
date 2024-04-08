@@ -68,7 +68,7 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
       return toast.error(error.response.data.message);
     }
   };
-  const { logOut, logIn } = userAuthStore()
+  const { logOut } = userAuthStore()
   const router = useRouter()
   const handleSignout = async () => {
     try {

@@ -8,72 +8,60 @@ import LineBarGraph from '../common/Graphs/LineBarGraph';
 import { userAuthStore } from '@/utils/userStore';
 import ContainerLoader from '../common/ContainerLoader';
 import StatsCard from '../common/StatsCard';
+import Error from '../common/Error';
 
 
 const fetcher = async (url: string) => {
-  try {
     const response = await httpservice.get(url);
-    console.log(response.data)
     return response.data;
-  } catch (error: any) {
-    console.log(error)
-    return toast.error(error.response.data.message);
-  }
 }
 const Stats = () => {
   useEffect(() => {
     userAuthStore.persist.rehydrate()
   }, [])
-  const { userName } = userAuthStore();
+  const { userName, role } = userAuthStore();
   const { data, error, isLoading } = useSWR(`${baseUrl}/stats`, fetcher);
-  const [adminGraphData, setAdminGraphData] = useState<any | null>({});
-  const [combinedGraphData, setCombinedGraphData] = useState<any | null>({});
-  const [ownerGraphData, setOwnerGraphData] = useState<any | null>({});
+  console.log(error,"error from stats")
+
+  const [adminGraphData, setAdminGraphData] = useState<any | null>({}); //for admin
+  const [combinedGraphData, setCombinedGraphData] = useState<any | null>({}); //for owner
+  const [shopGraphData, setShopGraphData] = useState<any | null>({}); //for shops 
+  const [productGraphData, setProductGraphData] = useState<any | null>({}); //for shops 
   const [ownerStats, setOwnerStats] = useState<any | null>({});
   const [shopStats, setShopStats] = useState<any | null>({});
-  const [options,setOptions]= useState<any |null>({});
+  const [owner, setOwner] = useState<string | null>()
+  const [shop, setShop] = useState<string | null>()
+  const [product, setProduct] = useState<string | null>()
   const ownerData = data?.data?.finalData;
   const combinedData = data?.data?.combinedStatsData;
   const adminData = data?.data?.adminData;
-
-
   useEffect(() => {
     if (adminData && Object.keys(adminData).length > 0 && Object.values(adminData).length > 0) {
-      setAdminGraphData({
-        earning: adminData?.Earning,
-        shops: adminData?.Shop,
-        users: adminData?.User,
-        shopOwners: adminData?.ShopOwner,
-      })
-      setOptions({
-        admin:["total","verified","active","deleted"],
-      })
+      const { Earning, Shop, User, ShopOwner } = adminData;
+      setAdminGraphData({ earning: Earning, shops: Shop, users: User, shopOwners: ShopOwner });
     }
     if (combinedData && Object?.keys(combinedData).length > 0 && Object?.values(combinedData).length > 0) {
-      setCombinedGraphData({
-        ShopOwnerQuantityGraphData: (Object.values(combinedData?.ShopOwnerQuantityGraphData) as any)[0],
-        ShopOwnerValueGraphData: (Object.values(combinedData?.ShopOwnerValueGraphData) as any)[0],
-      })
-      setOptions({
-        owner:(Object.keys(combinedData?.ShopOwnerQuantityGraphData) as any)      })
-      }
-    if (ownerData && Object?.keys(ownerData).length > 0 && Object?.values(ownerData).length > 0) {
-      const firstSinglProductGraphData = (Object?.values((Object.values(ownerData) as any)[0].shopStats) as any)[0];
-      setOwnerGraphData({
-        shopQuantityGraphData: (Object?.values((Object.values(ownerData) as any)[0].shopQuantityGraphData) as any)[0],
-        shopValueGraphData: (Object?.values((Object.values(ownerData) as any)[0].shopValueGraphData) as any)[0],
-        SingleProductQuantityGraphData: (Object.values(firstSinglProductGraphData?.singleProductQuantityGraphData) as any)[0],
-        SingleProductValueGraphData: (Object.values(firstSinglProductGraphData?.singleProductValueGraphData) as any)[0],
-      })
-      setOptions({
-        shop:(Object?.keys((Object.values(ownerData) as any)[0].shopQuantityGraphData) as any),
-        products:(Object.keys(firstSinglProductGraphData?.singleProductValueGraphData) as any)
-      })
+      const { ShopOwnerQuantityGraphData, ShopOwnerValueGraphData } = combinedData;
+      setOwner(Object.keys(ShopOwnerQuantityGraphData)[0]);
+      setCombinedGraphData({ ShopOwnerQuantityGraphData, ShopOwnerValueGraphData });
     }
     if (ownerData && Object?.keys(ownerData).length > 0 && Object?.values(ownerData).length > 0) {
+      owner && setShop(Object.keys(ownerData[owner as string].shopStats)[0])
+      owner && shop && setProduct(Object.keys(ownerData[owner as string].shopStats[shop as string].singleProductQuantityGraphData)[0])
+      owner && setShopGraphData({
+        shopQuantityGraphData: ownerData[owner as string]?.shopQuantityGraphData ?? null,
+        shopValueGraphData: ownerData[owner as string]?.shopValueGraphData ?? null,
+      })
+      owner && shop && setProductGraphData({
+        SingleProductQuantityGraphData: ownerData[owner as string].shopStats[shop as string].singleProductQuantityGraphData ?? null,
+        SingleProductValueGraphData: ownerData[owner as string].shopStats[shop as string].singleProductValueGraphData ?? null,
+      })
+    }
+
+    if (ownerData && Object?.keys(ownerData).length > 0 && Object?.values(ownerData).length > 0) {
       setOwnerStats({
-        totalEarnings: (Object.values(ownerData) as any)[0].totalEarnings,
-        bestSeller: (Object.values(ownerData) as any)[0].bestSellerProduct,
+        totalEarnings: (Object.values(ownerData) as any)[0]?.totalEarnings,
+        bestSeller: (Object.values(ownerData) as any)[0]?.bestSellerProduct,
       })
     }
     if (ownerData && Object?.keys(ownerData).length > 0 && Object?.values(ownerData).length > 0 && Object?.values((Object.values(ownerData) as any)[0].shopStats).length > 0) {
@@ -82,23 +70,24 @@ const Stats = () => {
         bestSeller: (Object?.values((Object.values(ownerData) as any)[0].shopStats) as any)[0]?.bestSellerProduct,
       })
     }
-  }, [adminData, combinedData, ownerData]);
-  if (!userName || !data) {
-    return null;
-  }
+  }, [adminData, combinedData, ownerData, owner, shop]);
   if (isLoading) return <div className=" w-screen lg:h-[90vh] h-[60vh] flex">
     <ContainerLoader message='MUNCH stats are loading' />
   </div>;
   if (error) {
-    return <p>Error</p>;
+    return <div className=" w-screen lg:h-[90vh] h-[60vh] flex">
+    <Error message={error.response.data.message}/>
+  </div>;
   }
-  // console.log(options)
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>, name: string) => {
+    console.log(e.target.value, name)
+  }
   return (
-    <div className='p-8'>
+    <div className='main'>
       <h1>Stats</h1>
       <div className='flex gap-16 flex-col'>
 
-        <div className="stats flex flex-col gap-4">
+        {role === "Admin" && <div className="stats flex flex-col gap-4">
           <h1>Admin Stats</h1>
           <div className="stats flex flex-row flex-wrap gap-4 justify-between">
             <StatsCard title='Admin Earning' value={"Nan"} />
@@ -108,11 +97,45 @@ const Stats = () => {
             <StatsCard title="Best Seller Total Quantity" value={combinedData && combinedData?.bestSellerProduct?.quantity} />
           </div>
           <div className="graphs flex flex-wrap justify-between gap-10 text-main">
+            <div className="w-full">
+              <select
+                name={"admin"}
+                id={"admin"}
+                onChange={(e) => handleChange(e, "admin")}
+                className="input w-1/2"
+              >
+                <option value="" disabled selected>
+                  {"Total"}
+                </option>
+                {["Total", "Verified", "Active", "Deleted"]?.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="w-full">
+              <select
+                name={"owner"}
+                id={"owner"}
+                onChange={(e) => handleChange(e, "owner")}
+                className="input w-1/2"
+              >
+                <option value="" disabled selected>
+                  {owner || "select owner"}
+                </option>
+                {Object.keys(combinedGraphData.ShopOwnerQuantityGraphData).map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
             {adminData && Object?.keys(adminData).length > 0 && Object?.entries(adminGraphData).map(([key, value]) => (
               <LineBarGraph graphData={(value as any).dataSet} key={key} title={(value as any).title} subTitle={(value as any).subTitle} XLabel={(value as any).xLabel} YLabel={(value as any).yLabel} valueKey={(value as any).valueKey} />
             ))}
           </div>
-        </div>
+        </div>}
 
 
         <div className="stats flex flex-col gap-4">
@@ -124,8 +147,8 @@ const Stats = () => {
             <StatsCard title="Best Seller Total Quantity" value={ownerStats && ownerStats?.bestSeller?.quantity} />
           </div>
           <div className="graphs flex flex-wrap justify-between gap-10 text-main">
-            {combinedData && Object?.keys(combinedData).length > 0 && Object?.keys(combinedGraphData).length > 0 && Object.entries(combinedGraphData).map(([key, value]) => (
-              <LineBarGraph graphData={(value as any).dataSet} key={key} title={(value as any).title} subTitle={(value as any).subTitle} XLabel={(value as any).xLabel} YLabel={(value as any).yLabel} valueKey={(value as any).valueKey} />
+            {combinedData && owner && Object?.keys(combinedData).length > 0 && Object?.keys(combinedGraphData).length > 0 && owner && Object.entries(combinedGraphData).map(([key, value]) => (
+              <LineBarGraph graphData={(value as any)[owner as string].dataSet} key={key} title={(value as any)[owner as string].title} subTitle={(value as any)[owner as string].subTitle} XLabel={(value as any)[owner as string].xLabel} YLabel={(value as any)[owner as string].yLabel} valueKey={(value as any)[owner as string].valueKey} />
             ))}
           </div>
         </div>
@@ -139,8 +162,11 @@ const Stats = () => {
             <StatsCard title="Best Seller Total Quantity" value={shopStats && shopStats?.bestSeller?.quantity} />
           </div>
           <div className="graphs flex flex-wrap justify-between gap-10 text-main">
-            {ownerData && Object?.keys(ownerData).length > 0 && Object?.entries(ownerGraphData).map(([key, value]) => (
-              <LineBarGraph graphData={(value as any).dataSet} key={key} title={(value as any).title} subTitle={(value as any).subTitle} XLabel={(value as any).xLabel} YLabel={(value as any).yLabel} valueKey={(value as any).valueKey} />
+            {ownerData && Object?.keys(ownerData).length > 0 && shop && Object?.entries(shopGraphData).map(([key, value]) => (
+              <LineBarGraph graphData={(value as any)[shop as string].dataSet} key={key} title={(value as any)[shop as string].title} subTitle={(value as any)[shop as string].subTitle} XLabel={(value as any)[shop as string].xLabel} YLabel={(value as any)[shop as string].yLabel} valueKey={(value as any)[shop as string].valueKey} />
+            ))}
+            {ownerData && Object?.keys(ownerData).length > 0 && product && Object?.entries(productGraphData).map(([key, value]) => (
+              <LineBarGraph graphData={(value as any)[product as string].dataSet} key={key} title={(value as any)[product as string].title} subTitle={(value as any)[product as string].subTitle} XLabel={(value as any)[product as string].xLabel} YLabel={(value as any)[product as string].yLabel} valueKey={(value as any)[product as string].valueKey} />
             ))}
           </div>
         </div>

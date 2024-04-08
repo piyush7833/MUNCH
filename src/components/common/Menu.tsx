@@ -12,7 +12,8 @@ const links = [
   { id: 1, title: "Home", url: "/" },
   { id: 2, title: "Shops", url: "/pages/shops" },
   { id: 3, title: "Products", url: "/pages/product" },
-  { id: 4, title: "Contact Us", url: "/pages/contact" },
+  { id: 4, title: "Stats", url: "/pages/stats" },
+  { id: 5, title: "Contact Us", url: "/pages/contact" },
 ];
 const adminLinks = [
   { id: 2, title: "Shops", url: "/pages/admin/shops" },

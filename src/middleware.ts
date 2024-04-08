@@ -5,7 +5,7 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
-  const isProtected = path === '/pages/profile' || path.startsWith('/pages/orders') || path === "/pages/contact" || path.startsWith("/pages/edit/profile")
+  const isProtected = path === '/pages/profile' || path.startsWith('/pages/orders') || path === "/pages/contact" || path.startsWith("/pages/edit/profile") || path==="/pages/stats"
 
   const isAdmin = path.startsWith('/pages/admin');
   const isUser = path === '/pages/cart';
@@ -42,5 +42,6 @@ export const config = {
     '/pages/contact',
     '/pages/auth',
     '/pages/cart',
+    '/pages/stats'
   ]
 }
