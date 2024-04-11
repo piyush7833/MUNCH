@@ -79,6 +79,7 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
       logOut(null)
       tokenHelper.delete("Authorization")
       tokenHelper.delete("Role")
+      localStorage.clear()
       toast.success(response.data.message);
       setLogoutLoading(false)
       router.push('/')

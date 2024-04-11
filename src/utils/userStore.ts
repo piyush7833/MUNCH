@@ -66,7 +66,8 @@ export const userAuthStore = create(persist<fullUserType & userActionTypes>((set
             activeSession:false,
             image:null,
             shopOwner:null,
-            notificationIds:[]
+            notificationIds:[],
+            address:{},
         }))
     },
 }), { name: "user", skipHydration: true }))  //we need to skip hydration to prevent hydration error as in the beginning nextjs is trying to change component type as we are using client side component

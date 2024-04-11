@@ -29,6 +29,7 @@ const adminLinks = [
     { id: 3, title: "Products", url: "/pages/admin/products" },
     { id: 4, title: "Owners", url: "/pages/admin/shop-owners" },
     { id: 5, title: "Orders", url: "/pages/admin/orders" },
+    { id: 10, title: "Stats", url: "/pages/stats" },
     { id: 6, title: "Contact Us", url: "/pages/admin/contacts" },
     { id: 7, title: "Notification", url: "/pages/admin/notification" },
     { id: 8, title: "Add Shop", url: "/pages/add/shop" },

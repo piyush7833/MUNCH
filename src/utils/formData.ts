@@ -787,13 +787,23 @@ export const predictFoodFormData:formType[]=[
         options:["Indian","Chinese","Italian","Mexican","Thai","Japanese","American","French","Spanish"]
     },
     {
+        type: "select",
+        name: "taste_preference",
+        id: "taste_preference",
+        placeholder: "Select your taste preference. *",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "option",
+        options:["spicy", "sweet", "savory" ]
+    },
+    {
         type: "text",
         name: "allergies",
         id: "allergies",
         placeholder: "Enter your allergies",
         icon: StreetviewIcon,
         required: false,
-        actualType: "text",
+        actualType: "textWithComma",
     },
     {
         type: "text",
@@ -802,20 +812,20 @@ export const predictFoodFormData:formType[]=[
         placeholder: "Enter amount of money you want to spend",
         icon: StreetviewIcon,
         required: false,
-        actualType: "text",
+        actualType: "number",
     },
     {
-        type: "option",
+        type: "select",
         name: "health_goals",
         id: "health_goals",
         placeholder: "Select your health goals",
         icon: StreetviewIcon,
         required: false,
         actualType: "option",
-        options:["Weight Loss","Weight Gain","Muscle Gain","Maintainance","Diabetes","Immunity","Sports Nutrition","Kids Nutrition","Senior Nutrition"]
+        options:["Weight Loss","Weight Gain","Muscle Gain","Maintainance","Immunity","Sports Nutrition","Kids Nutrition","Senior Nutrition"]
     },
     {
-        type: "option",
+        type: "select",
         name: "food_avoid",
         id: "food_avoid",
         placeholder: "Select food you want to avoid",
@@ -823,6 +833,124 @@ export const predictFoodFormData:formType[]=[
         required: false,
         actualType: "option",
         options:["Sugar","Salt","Oil","Spices","Gluten","Dairy","Nuts","Seafood","Eggs","Meat","Poultry","Soy","Processed Food","Junk Food","Fast Food","Alcohol","Caffeine","Carbonated Drinks"]
+    }
+
+]
+export const predictFoodRecipieFormData:formType[]=[
+    {
+        type: "select",
+        name: "meal_type",
+        id: "meal_type",
+        placeholder: "Select your meal type. *",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "option",
+        options:["Breakfast","Lunch","Dinner","Snacks","Dessert","Beverages","Others" ]
+    },
+    {
+        type: "select",
+        name: "dietary_preference",
+        id: "dietary_preference",
+        placeholder: "Select your dietary preference. *",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "option",
+        options:["Veg","Non-Veg","Vegan","Gluten Free","Dairy Free","Keto","Paleo","Low-Carb","Low-Fat","Balanced","High-Protein","Low-Sodium","Low-Sugar","Organic","Raw","Halal","Kosher","Pescetarian"]
+    },
+    {
+        type: "select",
+        name: "cusiene_preference",
+        id: "cusiene_preference",
+        placeholder: "Select your cusiene preference. *",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "option",
+        options:["Indian","Chinese","Italian","Mexican","Thai","Japanese","American","French","Spanish"]
+    },
+    {
+        type: "select",
+        name: "taste_preference",
+        id: "taste_preference",
+        placeholder: "Select your taste preference. *",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "option",
+        options:["spicy", "sweet", "savory" ]
+    },
+    {
+        type: "text",
+        name: "ingredients_availability",
+        id: "ingredients_availability",
+        placeholder: "Enter availability of ingredients.",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "textWithComma",
+    },
+    {
+        type: "select",
+        name: "cooking_skills",
+        id: "cooking_skills",
+        placeholder: "Select cooking skills *",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "option",
+        options:["Beginner","Intermediate","Advanced","Expert","Chef"]
+    },
+    {
+        type: "text",
+        name: "allergies",
+        id: "allergies",
+        placeholder: "Enter your allergies *",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "textWithComma",
+    },
+    {
+        type: "text",
+        name: "budget",
+        id: "budget",
+        placeholder: "Enter amount of money you want to spend *",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "number",
+    },
+    {
+        type: "text",
+        name: "time",
+        id: "time",
+        placeholder: "Enter time you want to spent*",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "text",
+    },
+    {
+        type: "select",
+        name: "health_goals",
+        id: "health_goals",
+        placeholder: "Select your health goals *",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "option",
+        options:["Weight Loss","Weight Gain","Muscle Gain","Maintainance","Immunity","Sports Nutrition","Kids Nutrition","Senior Nutrition"]
+    },
+    {
+        type: "select",
+        name: "food_avoid",
+        id: "food_avoid",
+        placeholder: "Select food you want to avoid",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "option",
+        options:["Sugar","Salt","Oil","Spices","Gluten","Dairy","Nuts","Seafood","Eggs","Meat","Poultry","Soy","Processed Food","Junk Food","Fast Food","Alcohol","Caffeine","Carbonated Drinks"]
+    },
+    {
+        type:"text",
+        name:"extra_requirements",
+        id:"extra_requirements",
+        placeholder:"Enter any extra requirements",
+        icon:StreetviewIcon,
+        required:false,
+        actualType:"textWithComma"
     }
 
 ]

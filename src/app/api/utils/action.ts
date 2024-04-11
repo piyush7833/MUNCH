@@ -1,4 +1,3 @@
-;
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/utils/connect";
 import nodemailer, { createTransport } from 'nodemailer';
@@ -6,7 +5,7 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { cookies, headers } from 'next/headers';
 import crypto from 'crypto'
-import { error } from "console";
+// import { error } from "console";
 import firebase from 'firebase/app';
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { getMessaging, getToken } from "firebase/messaging";
@@ -50,7 +49,7 @@ export const sendEmail = async (email: string, subject: string, htmlContent: any
       message: "Email sent to your registered mail",
       status: 200
     }, { status: 200 })
-  } catch {
+  } catch (error: any) {
     console.log(error)
     return NextResponse.json({
       error: true,
@@ -105,5 +104,15 @@ export const getUserDetails = async (req: any) => {
     return null;
   }
 };
+
+export const getUserId=async(token:string)=>{
+  try{
+    const decodedToken: any = jwt.verify(token, process.env.JWT!);
+    return decodedToken.id;
+  }catch(error){
+    console.log(error)
+    return null;
+  }
+}
 
 

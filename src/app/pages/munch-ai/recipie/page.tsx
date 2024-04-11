@@ -7,13 +7,14 @@ import ConfirmDialog from "@/components/common/ConfirmDialog";
 import FormContainer from "@/components/common/FormContainer";
 import {
   predictFoodFormData,
+  predictFoodRecipieFormData,
 } from "@/utils/formData";
-import { foodPrecictionType } from "@/types/types";
+import { foodPrecictionType, recipiePrecictionType } from "@/types/types";
 import { httpservice } from "@/utils/httpService";
 
 const MUNCHAI = () => {
   const [isConfirmOpen, setConfirmOpen] = useState(false);
-  const [formData, setFormData] = useState<foodPrecictionType>();
+  const [formData, setFormData] = useState<recipiePrecictionType>();
   const [res, setRes] = useState<any>();
   const [visible, setVisible] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -31,9 +32,12 @@ const MUNCHAI = () => {
         health_goals: formData?.health_goals,
         food_avoid: formData?.food_avoid,
         taste_preference:formData?.taste_preference,
-        type:"food_suggestion"
+        ingredients_availability:formData?.ingredients_availability,
+        time:formData?.time,
+        cooking_skills:formData?.cooking_skills,
+        extra_requirements:formData?.extra_requirements,
+        type:"recipe_suggestion"
       });
-      // toast.success(response.data.message);
       setRes(response.data.data);
       setVisible(true);
       setLoading(false);
@@ -43,7 +47,7 @@ const MUNCHAI = () => {
       toast.error(error.response.data.message);
     }
   };
-  const handleSave = async (formDetails: foodPrecictionType) => {
+  const handleSave = async (formDetails: recipiePrecictionType) => {
     try {
       setFormData(formDetails);
       setConfirmOpen(true);
@@ -70,18 +74,18 @@ const MUNCHAI = () => {
       </div>
       <FormContainer
         onSave={handleSave}
-        data={predictFoodFormData}
-        title="Get Food Suggestions"
+        data={predictFoodRecipieFormData}
+        title="Get Food Recipies"
         loading={loading}
-        btnText="Get Food Suggestions"
+        btnText="Get Food Recipies"
       />
 
       {res && visible && (
-        <div className="h-screen hideScrollBar w-full backdrop-blur-md absolute flex items-center justify-center">
+        <div className="min-h-screen w-full backdrop-blur-md absolute flex items-center justify-center">
           <div className="w-full h-fit md:w-1/2 flex items-center justify-center ">
             <div className="w-auto h-1/2 bg-white dark:bg-darkGradient2 rounded-md p-4 flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <h1 className="font-bold text-xl">Suggested Food</h1>
+              <div className="flex items-start justify-between">
+                <h1 className="font-bold text-main text-xl">Suggested Food</h1>
                 <p
                   className="cursor-pointer font-bold"
                   onClick={() => setVisible(false)}
@@ -91,7 +95,7 @@ const MUNCHAI = () => {
               </div>
               <p
                 dangerouslySetInnerHTML={{ __html: res }}
-                className="text-start space-y-2"
+                className="text-start space-y-2 overflow-y-auto"
               ></p>
             </div>
           </div>

@@ -221,5 +221,20 @@ export type foodPrecictionType={
   allergies?:string,
   budget?:string,
   health_goals?:string,
-  food_avoid?:string
+  food_avoid?:string,
+  taste_preference?:string
+}
+export type recipiePrecictionType={
+  meal_type:string,
+  dietary_preference:string,
+  cusiene_preference:string,
+  allergies?:string,
+  budget?:string,
+  health_goals?:string,
+  food_avoid?:string,
+  taste_preference?:string,
+  time?:string,
+  cooking_skills?:string,
+  ingredients_availability?:string,
+  extra_requirements?:string
 }

@@ -70,7 +70,13 @@ const validateFormField = (field: formType, value: string): string => {
     }
   }
   if (field.actualType === 'text' && value) {
-    const textRegex = /^[a-zA-Z\s]*$/;
+    const textRegex = /^[a-zA-Z0-9\s]*$/;
+    if (!textRegex.test(value)) {
+      return 'Please enter a valid text';
+    }
+  }
+  if (field.actualType === 'textWithComma' && value) {
+    const textRegex = /^[a-zA-Z,'\s]/
     if (!textRegex.test(value)) {
       return 'Please enter a valid text';
     }
@@ -118,3 +124,18 @@ export const filterStats = (stats: any, selectedShop: string | null) => {
   return filteredProductGraphData;
 }
 
+
+export const getCookie = (tokenName: string) => {
+    
+  var name = tokenName + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var cookieArray = decodedCookie.split(";");
+
+  for (var i = 0; i < cookieArray.length; i++) {
+    var cookie = cookieArray[i].trim();
+    if (cookie.indexOf(name) === 0) {
+      return cookie.substring(name.length, cookie.length);
+    }
+  }
+  return null;
+};
