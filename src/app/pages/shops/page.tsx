@@ -1,31 +1,32 @@
-"use client"
+// "use client"
 import ShopCard from '@/components/shop/ShopCard';
 import { ResponseShopType } from '@/types/types';
-import useSWR from 'swr'; // Assuming you have swr installed
+// import useSWR from 'swr'; // Assuming you have swr installed
 import React from 'react'
 import { toast } from 'react-toastify';
-import { baseUrl } from '@/baseUrl';
+// import { baseUrl } from '@/baseUrl';
 import Loader from '@/components/common/Loader';
-import { userAuthStore } from '@/utils/userStore';
-import { httpservice } from '@/utils/httpService';
+// import { userAuthStore } from '@/utils/userStore';
+// import { httpservice } from '@/utils/httpService';
 import Error from '@/components/common/Error';
+import { httpServiceServer } from '@/utils/httpServiceServer';
 
-const fetcher = async (url: string) => {
-  try {
-    const response = await httpservice.get(url);
-    return response.data;
-  } catch (error:any) {
-    toast.error(error.response.data);
-  }
-}
+// const fetcher = async (url: string) => {
+//   try {
+//     const response = await httpservice.get(url);
+//     return response.data;
+//   } catch (error:any) {
+//     toast.error(error.response.data);
+//   }
+// }
 
-const Page = () => {
-  const { data, error } = useSWR(`${baseUrl}/shop`, fetcher);
-  const {role}=userAuthStore()
+const Page = async () => {
+  // const { data, error } = useSWR(`${baseUrl}/shop`, fetcher);
+  const data=await httpServiceServer.get('shop');
   console.log(data)
-  if (error) {
+  if (data.error) {
     return <div className="main flex items-center justify-center">
-            <Error message={error.response.data.message} />;
+            <Error message={data.message || "Something went wrong"} />;
         </div>;
   }
   if (!data) {

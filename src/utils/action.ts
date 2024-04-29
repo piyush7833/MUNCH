@@ -2,40 +2,52 @@ import { baseUrl } from "@/baseUrl";
 import { httpservice } from "./httpService";
 import { toast } from "react-toastify";
 import { formType } from "./formData";
-export function formatDate(inputDate:string) {
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-  
-    const [year, month, day] = inputDate.split('-');
-    const monthName = months[parseInt(month, 10) - 1];
-  
-    return `${parseInt(day, 10)} ${monthName} ${year}`;
-  }
 
-  export const handleUploadImage = async (selectedImage:File) => {
-    try {
-        const formData = new FormData();
-        formData.append('file', selectedImage!);
-        formData.append('type', "single");
-        const imageResponse = await httpservice.post(`${baseUrl}/upload-image`, formData)
-        return imageResponse.data.imgUrls;
-    } catch (error:any) {
-        console.log(error)
-        toast.error("Failed to upload image")
-        return null;
-    }
+export function formatDate(inputDate: string) {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const [year, month, day] = inputDate.split("-");
+  const monthName = months[parseInt(month, 10) - 1];
+
+  return `${parseInt(day, 10)} ${monthName} ${year}`;
 }
 
+export const handleUploadImage = async (selectedImage: File) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", selectedImage!);
+    formData.append("type", "single");
+    const imageResponse = await httpservice.post(
+      `${baseUrl}/upload-image`,
+      formData
+    );
+    return imageResponse.data.imgUrls;
+  } catch (error: any) {
+    console.log(error);
+    toast.error("Failed to upload image");
+    return null;
+  }
+};
 
 export const findKeys = (arrayOfObjects: any[]): string[] => {
   const keys = arrayOfObjects.reduce((acc, item) => {
-      return acc.concat(Object.keys(item));
+    return acc.concat(Object.keys(item));
   }, []);
   return Array.from(new Set(keys));
-}
-
+};
 
 type FormData = {
   [key: string]: string | number;
@@ -45,88 +57,98 @@ const validateFormField = (field: formType, value: string): string => {
   if (field.required && !value) {
     return `Please enter ${field.name}`;
   }
-  if (field.actualType === 'email' && value) {
+  if (field.actualType === "email" && value) {
     const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(value)) {
-      return 'Please enter a valid email address';
+      return "Please enter a valid email address";
     }
   }
-  if (field.actualType === 'number' && value) {
+  if (field.actualType === "number" && value) {
     const numberRegex = /^[0-9]+$/;
     if (!numberRegex.test(value)) {
-      return 'Please enter a valid number';
+      return "Please enter a valid number";
     }
   }
-  if (field.actualType === 'phone' && value) {
+  if (field.actualType === "phone" && value) {
     const numberRegex = /^[0-9]+$/;
     if (!numberRegex.test(value) || value.length < 10 || value.length > 12) {
-      return 'Please enter a valid phone number';
+      return "Please enter a valid phone number";
     }
   }
-  if (field.actualType === 'aadhar' && value) {
+  if (field.actualType === "aadhar" && value) {
     const numberRegex = /^[0-9]+$/;
     if (!numberRegex.test(value) || value.length !== 12) {
-      return 'Please enter a valid aadhar number';
+      return "Please enter a valid aadhar number";
     }
   }
-  if (field.actualType === 'text' && value) {
+  if (field.actualType === "text" && value) {
     const textRegex = /^[a-zA-Z0-9\s]*$/;
     if (!textRegex.test(value)) {
-      return 'Please enter a valid text';
+      return "Please enter a valid text";
     }
   }
-  if (field.actualType === 'textWithComma' && value) {
-    const textRegex = /^[a-zA-Z,'\s]/
+  if (field.actualType === "textWithComma" && value) {
+    const textRegex = /^[a-zA-Z,'\s]/;
     if (!textRegex.test(value)) {
-      return 'Please enter a valid text';
+      return "Please enter a valid text";
     }
   }
-  if (field.actualType === 'option' && value) {
-    return 'valid';
+  if (field.actualType === "option" && value) {
+    return "valid";
   }
-  if (field.actualType === 'password' && value) {
-    const textRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-+])[A-Za-z\d!@#$%^&*()-+]{8,}$/;
+  if (field.actualType === "password" && value) {
+    const textRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-+])[A-Za-z\d!@#$%^&*()-+]{8,}$/;
     if (!textRegex.test(value)) {
-      return 'Please enter a valid password';
+      return "Please enter a valid password";
     }
   }
-  return 'valid';
+  return "valid";
 };
 
-const validateForm = (formData: formType[], fieldId: string, fieldValue: string): string => {
-  const field = formData.find(field => field.id === fieldId);
+const validateForm = (
+  formData: formType[],
+  fieldId: string,
+  fieldValue: string
+): string => {
+  const field = formData.find((field) => field.id === fieldId);
   if (field) {
     return validateFormField(field, fieldValue);
   }
-  return 'Field not found';
+  return "Field not found";
 };
-
 
 export default validateForm;
 
 export const formatStats = (stats: any[]) => {
   let totalEarnings = 0;
-  let bestSellerProductAllShops : any|null = null;
-  if(stats?.length>0){
-      stats.forEach((shop: any) => {
-          totalEarnings += shop.totalEarnings;
-          const ownerBestSellerProduct=shop.bestSellerProduct;
-          if(!bestSellerProductAllShops || (ownerBestSellerProduct && (ownerBestSellerProduct.quantity > bestSellerProductAllShops.quantity|| ownerBestSellerProduct.price > bestSellerProductAllShops.price))){
-              bestSellerProductAllShops=ownerBestSellerProduct;
-          }
-      });
+  let bestSellerProductAllShops: any | null = null;
+  if (stats?.length > 0) {
+    stats.forEach((shop: any) => {
+      totalEarnings += shop.totalEarnings;
+      const ownerBestSellerProduct = shop.bestSellerProduct;
+      if (
+        !bestSellerProductAllShops ||
+        (ownerBestSellerProduct &&
+          (ownerBestSellerProduct.quantity >
+            bestSellerProductAllShops.quantity ||
+            ownerBestSellerProduct.price > bestSellerProductAllShops.price))
+      ) {
+        bestSellerProductAllShops = ownerBestSellerProduct;
+      }
+    });
   }
-  return {totalEarnings,bestSellerProductAllShops};
+  return { totalEarnings, bestSellerProductAllShops };
 };
 
 export const filterStats = (stats: any, selectedShop: string | null) => {
-  const filteredProductGraphData = selectedShop ? stats?.shopStats[selectedShop]?.productGraphData : stats?.productGraphData;
+  const filteredProductGraphData = selectedShop
+    ? stats?.shopStats[selectedShop]?.productGraphData
+    : stats?.productGraphData;
   return filteredProductGraphData;
-}
-
+};
 
 export const getCookie = (tokenName: string) => {
-    
   var name = tokenName + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
   var cookieArray = decodedCookie.split(";");
@@ -139,3 +161,40 @@ export const getCookie = (tokenName: string) => {
   }
   return null;
 };
+
+export const capitalizeAndSplit = (text: string) => {
+  const parts = text.split("_");
+  const capitalizedParts = parts.map(
+    (part) => part.charAt(0).toUpperCase() + part.slice(1)
+  );
+  const result = capitalizedParts.join(" ");
+  return result;
+};
+
+
+// metaGenerator.js
+
+// utils/metaGenerator.js
+
+// export const generateMeta = ({ title, description, imageUrl }) => {
+//   return (
+//     <Head>
+//       <title>{title}</title>
+
+//       {/* Open Graph meta tags for social sharing */}
+//       <meta property="og:title" content={title} />
+//       <meta property="og:description" content={description} />
+//       <meta property="og:image" content={imageUrl} />
+//       <meta property="og:image:width" content="1200" />
+//       <meta property="og:image:height" content="630" />
+//       <meta property="og:type" content="website" />
+//       <meta property="og:url" content="YOUR_CANONICAL_URL" />
+
+//       {/* Twitter meta tags */}
+//       <meta name="twitter:card" content="summary_large_image" />
+//       <meta name="twitter:title" content={title} />
+//       <meta name="twitter:description" content={description} />
+//       <meta name="twitter:image" content={imageUrl} />
+//     </Head>
+//   );
+// };

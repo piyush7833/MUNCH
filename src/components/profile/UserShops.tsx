@@ -1,16 +1,17 @@
-"use client"
+// "use client"
 import React from 'react'
 import ShopCard from '../shop/ShopCard'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ResponseShopType } from '@/types/types'
-import { userAuthStore } from '@/utils/userStore'
+// import { userAuthStore } from '@/utils/userStore'
+import { getUserIdFromToken } from '@/utils/server_action'
 type propsType = {
   shops?: ResponseShopType[];
   userId?: string;
 }
-const UserShops = ({ shops,userId }: propsType) => {
-  const {id}=userAuthStore();
+const UserShops = async ({ shops,userId }: propsType) => {
+  const id=getUserIdFromToken();
   return (
     <div className="">
       <h1 className='text-4xl px-4'>Shops</h1>

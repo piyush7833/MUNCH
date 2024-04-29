@@ -1,10 +1,11 @@
-"use client"
+// "use client"
 import Link from 'next/link'
 import React from 'react'
 import ImgContainer from '../common/ImgContainer'
 import DeleteButton from '../partials/DeleteButton'
 import { baseUrl } from '@/baseUrl'
 import EditButton from '../partials/EditButton'
+import { cookies } from 'next/headers'
 
 type propsType = {
   img?: string,
@@ -19,6 +20,8 @@ type propsType = {
   desc?: string
 }
 const ProductContainer = ({ img, id, title, price, edit, add, productType, shopSlug, shopUserId, desc }: propsType) => {
+  const cookieStore = cookies();
+  const role = cookieStore.get("role")?.value;
   let href;
   if (edit) {
     href = `/pages/edit/product/${id}`
@@ -47,7 +50,7 @@ const ProductContainer = ({ img, id, title, price, edit, add, productType, shopS
       </Link>
     </div>
     <div className="w-fit flex flex-col justify-end gap-4 ">
-      {!add && <DeleteButton url={`${baseUrl}/product/${id}`} userId={shopUserId} />}
+      {!add  && <DeleteButton url={`${baseUrl}/product/${id}`} userId={shopUserId} />}
       {!add && <EditButton url={`/pages/edit/product/${id}`} userId={shopUserId}/>}
     </div>
     </div>

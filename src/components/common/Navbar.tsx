@@ -45,6 +45,7 @@ const Navbar = () => {
         userAuthStore.persist.rehydrate()
     }, [])
     const { userName, notificationIds, logIn, logOut } = userAuthStore()
+    
     const getCookie = (name: string) => {
         const cookieValue = document.cookie
             .split('; ')

@@ -1,11 +1,13 @@
-"use client"
+// "use client"
 import React from 'react'
 import ImgContainer from '../common/ImgContainer'
 import { addressType } from '@/types/types'
-import { userAuthStore } from '@/utils/userStore'
+// import { userAuthStore } from '@/utils/userStore'
 import DeleteButton from '../partials/DeleteButton'
 import { baseUrl } from '@/baseUrl'
 import EditButton from '../partials/EditButton'
+import { getUserIdFromToken } from '@/utils/server_action'
+// import {  getUserIdFromToken } from '@/utils/action'
 
 type propsType={
     title:string,
@@ -15,10 +17,11 @@ type propsType={
     userId:string,
     owner:string,
     totalProducts:number,
-    slug:string
+    slug:string,
+    loggedInUserId?:string
 }
 const ShopHeading = ({title,img,desc,address,userId,owner,totalProducts,slug}:propsType) => {
-    const {id}=userAuthStore()
+    const id=getUserIdFromToken();
   return (
     <div className="flex flex-col h-fit w-full bg-gray-300 shadow-lg">
     <div className='shopHeading relative gap-5 p-4'>

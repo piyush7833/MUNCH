@@ -27,20 +27,20 @@ export const httpservice = {
 
     if (cachedDataParsed && isFresh(cachedDataParsed.data, cachedDataParsed.timeStamp)) {
       // Cache hit, return cached data and update cache in the background
-      console.log("Using cached data:", cachedDataParsed.data);
+      // console.log("Using cached data:", cachedDataParsed.data);
       updateCache(cacheKey, cachedDataParsed,url); // Initiate background cache update
       return cachedDataParsed.data;
     }
 
     // Cache miss or data might be stale, fetch from server
-    console.log("Fetching data from server for", url);
+    // console.log("Fetching data from server for", url);
     const response = await axios.get(url);
 
     // Check for server response differences before updating cache
     const dataHasChanged = cachedDataParsed?.data !== response.data; //or data for new cache is fetched
-    console.log("cachedDataParsed",cachedDataParsed?.data,"response.data",response.data,"hello")
+    // console.log("cachedDataParsed",cachedDataParsed?.data,"response.data",response.data,"hello")
     if (dataHasChanged) {
-      console.log("Data on server has changed, updating cache");
+      // console.log("Data on server has changed, updating cache");
     }
 
     const updatedCacheData = {
@@ -60,7 +60,7 @@ export const httpservice = {
 
 // Optional background cache update function (for improved user experience)
 async function updateCache(cacheKey: string, cachedData: any,url:string) {
-  console.log("Updating cache for", cacheKey, "in the background")
+  // console.log("Updating cache for", cacheKey, "in the background")
   const updatedResponse = await axios.get(url); // Refetch data
   const updatedCacheData = {
     data: updatedResponse,
@@ -71,7 +71,7 @@ async function updateCache(cacheKey: string, cachedData: any,url:string) {
   if (localStorage.getItem(cacheKey) === JSON.stringify(cachedData)) {
     localStorage.setItem(cacheKey, JSON.stringify(updatedCacheData));
   } else {
-    console.log("Cache update for", cacheKey, "skipped due to invalidation");
+    // console.log("Cache update for", cacheKey, "skipped due to invalidation");
   }
 }
 

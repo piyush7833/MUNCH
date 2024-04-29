@@ -1,14 +1,12 @@
-// pages/terms.tsx
+import { Metadata } from "next";
 
-import Head from 'next/head';
-
+export const metadata:Metadata = {
+  title: 'Terms and Conditions',
+  description: 'Terms and Conditions for MUNCH',
+};
 const Page = () => {
   return (
     <div className="container mx-auto py-8 px-4">
-      <Head>
-        <title>Terms and Conditions - MUNCH</title>
-        <meta name="description" content="Terms and Conditions for MUNCH" />
-      </Head>
       <h1 className="text-3xl font-semibold mb-4">Terms and Conditions</h1>
       <div className="prose">
         <p>

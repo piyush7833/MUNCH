@@ -11,6 +11,8 @@ import {
 } from "@/utils/formData";
 import { foodPrecictionType, recipiePrecictionType } from "@/types/types";
 import { httpservice } from "@/utils/httpService";
+import HtmlDataDialog from "@/components/common/HtmlDataDialog";
+// import HtmlDataDialog from "@/components/common/htmlDataDialog";
 
 const MUNCHAI = () => {
   const [isConfirmOpen, setConfirmOpen] = useState(false);
@@ -38,12 +40,18 @@ const MUNCHAI = () => {
         extra_requirements:formData?.extra_requirements,
         type:"recipe_suggestion"
       });
+      // console.log(response,"response")
+      // console.log(response.data.data,"res.data.data")
       setRes(response.data.data);
+      // console.log(res,"res")
+      // console.log(visible,"visible1")
       setVisible(true);
+      // console.log(visible,"visible2")
       setLoading(false);
     } catch (error: any) {
-      console.log(error);
+      console.log(error,"error from try catch");
       setLoading(false);
+
       toast.error(error.response.data.message);
     }
   };
@@ -80,27 +88,7 @@ const MUNCHAI = () => {
         btnText="Get Food Recipies"
       />
 
-      {res && visible && (
-        <div className="min-h-screen w-full backdrop-blur-md absolute flex items-center justify-center">
-          <div className="w-full h-fit md:w-1/2 flex items-center justify-center ">
-            <div className="w-auto h-1/2 bg-white dark:bg-darkGradient2 rounded-md p-4 flex flex-col gap-4">
-              <div className="flex items-start justify-between">
-                <h1 className="font-bold text-main text-xl">Suggested Food</h1>
-                <p
-                  className="cursor-pointer font-bold"
-                  onClick={() => setVisible(false)}
-                >
-                  X
-                </p>
-              </div>
-              <p
-                dangerouslySetInnerHTML={{ __html: res }}
-                className="text-start space-y-2 overflow-y-auto"
-              ></p>
-            </div>
-          </div>
-        </div>
-      )}
+{(res && visible )&& <HtmlDataDialog title="Suggested Recipie" onClose={()=>{setVisible(false);}} content={res}/>}
     </div>
   );
 };

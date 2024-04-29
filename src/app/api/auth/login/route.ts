@@ -37,7 +37,7 @@ export const POST=async(req:NextRequest)=>{
                 message:"Incorrect password"
             }, { status: 403 })
         }
-        var token = jwt.sign({ id: user.id }, process.env.JWT!);
+        var token = jwt.sign({ id: user.id,expires:new Date(Date.now() + 1000*60*60*24*7) }, process.env.JWT!);
         cookies().set('token', token,{expires: new Date(Date.now() + 1000*60*60*24*7)});
         cookies().set({
             name: 'role',

@@ -1,26 +1,28 @@
-"use client"
+// "use client"
 import React from 'react';
 import UserProfile from '@/components/profile/UserProfile';
 import UserShops from '@/components/profile/UserShops';
-import useSWR from 'swr';
-import { httpservice } from '@/utils/httpService';
-import { baseUrl } from '@/baseUrl';
+// import useSWR from 'swr';
+// import { httpservice } from '@/utils/httpService';
+// import { baseUrl } from '@/baseUrl';
 import { responseShopOwnerType, responseUserType } from '@/types/types';
 import Error from '@/components/common/Error';
 import Loader from '@/components/common/Loader';
+import { httpServiceServer } from '@/utils/httpServiceServer';
 
-const Profile = () => {
-  const fetcher = async (url:string) => {
-    const response = await httpservice.get(url);
-    return response.data;
-  };
-  const { data, error, isLoading } = useSWR(`${baseUrl}/user`, fetcher);
-  if (error) {
+const Profile = async() => {
+  // const fetcher = async (url:string) => {
+  //   const response = await httpservice.get(url);
+  //   return response.data;
+  // };
+  // const { data, error, isLoading } = useSWR(`${baseUrl}/user`, fetcher);.
+  const data=await httpServiceServer.get('user');
+  if (data.error) {
      return <div className="main flex items-center justify-center">
-    <Error message={error.response.data.message} />;
+    <Error message={data.message} />;
 </div>;
   }
-  if (isLoading || !data) {
+  if (!data) {
     return <Loader message='Expore your profile'/>
   }
   const user: responseUserType = data.user;

@@ -2,16 +2,15 @@
 import React, { useState } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useRouter } from 'next/navigation';
-import { baseUrl } from '@/baseUrl';
 import { toast } from 'react-toastify';
 import { userAuthStore } from '@/utils/userStore';
 import ConfirmDialog from '../common/ConfirmDialog';
 import { httpservice } from '@/utils/httpService';
-const DeleteButton = ({ url, userId }: { url: string, userId?: string }) => {
+const DeleteButton = ({ url, userId }: { url: string, userId: string }) => {
   const [isConfirmOpen, setConfirmOpen] = useState(false);
   const router = useRouter()
-  const { userName, role, id } = userAuthStore()
-  if (!userName  || (userId && userId !== id)) {
+  const { userName, id,role } = userAuthStore();
+  if (!userName  || (userId && userId !== id) && role !== 'Admin') {
     return
   }
   const handleDelete = async () => {
@@ -32,7 +31,7 @@ const DeleteButton = ({ url, userId }: { url: string, userId?: string }) => {
         title="Confirm Delete"
         message="Are you sure you want to delete?"
       />
-      <button className='bg-red-500 p-2 text-white rounded-full ' onClick={() => setConfirmOpen(true)}><DeleteIcon /></button>
+      <button className='bg-red-500 p-2 text-white rounded-full hover:bg-gray-400 ' onClick={() => setConfirmOpen(true)}><DeleteIcon /></button>
     </div>
   )
 }

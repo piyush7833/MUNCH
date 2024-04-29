@@ -14,9 +14,17 @@ import axios from 'axios'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
-  title: 'MUNCH',
+export const metadata = {
+  metadataBase:new URL('https://munchh.vercel.app/'),
+  // canonicalBase:new URL('https://munch.vercel.app/'),
+  title: {
+    default:'MUNCH',
+    template:`%s | MUNCH`
+  },
   description: 'Mobile Utility for Nourishing Campus Hunger',
+  // twitter:{
+  //   card:"summary_large_image",
+  // }
 }
 
 axios.defaults.withCredentials = true;

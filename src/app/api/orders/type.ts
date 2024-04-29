@@ -11,6 +11,7 @@ export type OrderType ={
     shopId: string,
     address: string,
     payMode: PayMode,
+    dineType: "Dine_In" | "Take_Away" | "Delivery",
     paymentId: string,
   }
 export type ProductDetails={

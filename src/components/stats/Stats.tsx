@@ -2,7 +2,6 @@
 import { baseUrl } from "@/baseUrl";
 import { httpservice } from "@/utils/httpService";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import useSWR from "swr";
 import LineBarGraph from "../common/Graphs/LineBarGraph";
 import { userAuthStore } from "@/utils/userStore";
@@ -24,7 +23,7 @@ const Stats = () => {
   const [adminGraphData, setAdminGraphData] = useState<any | null>({}); //for admin
   const [combinedGraphData, setCombinedGraphData] = useState<any | null>({}); //for owner
   const [shopGraphData, setShopGraphData] = useState<any | null>({}); //for shops
-  const [productGraphData, setProductGraphData] = useState<any | null>({}); //for shops
+  const [productGraphData, setProductGraphData] = useState<any | null>({}); //for products
   const [ownerStats, setOwnerStats] = useState<any | null>({});
   const [shopStats, setShopStats] = useState<any | null>({});
   const [owner, setOwner] = useState<string | null>();
@@ -34,6 +33,8 @@ const Stats = () => {
   const ownerData = data?.data?.finalData;
   const combinedData = data?.data?.combinedStatsData;
   const adminData = data?.data?.adminData;
+
+  
   useEffect(() => {
     if (
       adminData &&
@@ -131,6 +132,8 @@ const Stats = () => {
       });
     }
   }, [adminData, combinedData, ownerData, owner, shop]);
+
+
   if (isLoading)
     return (
       <div className=" w-screen lg:h-[90vh] h-[60vh] flex">
@@ -144,6 +147,8 @@ const Stats = () => {
       </div>
     );
   }
+
+
   const handleChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
     name: string
@@ -163,7 +168,6 @@ const Stats = () => {
       setValueChange("product");
     }
   };
-  console.log(productGraphData, "productGraphData");
   return (
     <div className="main">
       <h1>Stats</h1>

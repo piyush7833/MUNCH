@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { cookies, headers } from 'next/headers';
 import crypto from 'crypto'
-// import { error } from "console";
+// import { error } from "console";5
 import firebase from 'firebase/app';
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { getMessaging, getToken } from "firebase/messaging";
@@ -16,13 +16,13 @@ import axios from "axios";
 dotenv.config();
 
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.USER,
-    pass: process.env.USER,
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: process.env.USER,
+//     pass: process.env.USER,
+//   },
+// });
 
 export const sendEmail = async (email: string, subject: string, htmlContent: any) => {
   try {
@@ -78,15 +78,14 @@ export const sendMessage = async (phoneNumber: string) => {
 
 export const getUserDetails = async (req: any) => {
   try {
-    const token = req.cookies.get("token")?.value || '';
-    const token2 = req?.headers?.authorization
-    console.log(token2)
-    // console.log(token)
-    if (!token) {
+    const token = req.cookies.get("token")?.value;
+    if (!token || token=="undefined" || token===undefined) {
       return null;
     }
-    const decodedToken: any = jwt.verify(token!, process.env.JWT!);
-    decodedToken.id;
+    const decodedToken: any = token && token!=undefined &&  jwt.verify(token, process.env.JWT!);
+    if(new Date(decodedToken.expires)<new Date(Date.now())){
+      return null;
+    }
     const user = await prisma.user.findUnique({
       where: {
         id: decodedToken.id,
@@ -100,7 +99,7 @@ export const getUserDetails = async (req: any) => {
       return null
     }
   } catch (error: any) {
-    console.log(error)
+    console.log(error,"error from auth middleware")
     return null;
   }
 };

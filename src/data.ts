@@ -1,3 +1,33 @@
+import { faqType } from "./types/types";
+
+export const faqData:faqType[] = [
+  {
+    question: 'How can I place an order?',
+    answer:
+      "To place an order, simply browse through the available restaurants and food items on our website, select the items you'd like to order, and proceed to checkout. Follow the instructions to complete your order, and you're all set!",
+  },
+  {
+    question: 'Can I schedule a delivery in advance?',
+    answer:
+      'Yes, you can schedule a delivery in advance for a specific date and time during checkout. This feature allows you to plan your orders ahead of time and ensures that your food is delivered when you need it.',
+  },
+  {
+    question: 'How can I track my order?',
+    answer:
+      "Once your order is confirmed, you'll receive a confirmation email and/or SMS with a link to track your order in real-time. You can also track your order directly from your account on our website.",
+  },
+  {
+    question: 'What payment methods do you accept?',
+    answer:
+      'We accept a variety of payment methods, including credit/debit cards, digital wallets, and cash on delivery (COD). Choose the payment method that\'s most convenient for you during checkout.',
+  },
+  {
+    question: 'Can I modify or cancel my order?',
+    answer:
+      "Once your order is placed, modifications or cancellations may not be possible, especially if the restaurant has already started preparing your food. However, you can contact our customer support team for assistance, and we'll do our best to accommodate your request.",
+  },
+];
+
 type Product = {
     id: number;
     title: string;

@@ -29,28 +29,29 @@ enum themeType {
 }
 
 model User {
-  id                String              @id @default(cuid())
-  createdAt         DateTime            @default(now())
+  id                String                  @id @default(cuid())
+  createdAt         DateTime                @default(now())
   name              String
-  userName          String              @unique
+  userName          String                  @unique
   email             String?
   emailVerified     DateTime?
   phone             String?
   phoneVerified     DateTime?
   image             String?
   password          String?
-  role              userRole            @default(User)
-  activeSession     Boolean             @default(false)
+  role              userRole                @default(User)
+  activeSession     Boolean                 @default(false)
   shops             Shop[]
   shopOwner         ShopOwner[]
   reviews           Review[]
-  softDelete        Boolean             @default(false)
+  softDelete        Boolean                 @default(false)
   address           Json?
   notificationIds   String[]
-  theme             themeType?          @default(light) // Default theme
+  theme             themeType?              @default(light) // Default theme
   verificationToken verificationToken[]
   contact           contact[]
   orders            Order[]
+  notifications     SpecificNotifications[]
 }
 
 model ShopOwner {
@@ -90,6 +91,7 @@ model Shop {
   status      ShopStatus @default(Open)
   softDelete  Boolean    @default(false)
   contact     contact[]
+  offers      Offer[]
 }
 
 enum OrderStatus {
@@ -109,13 +111,20 @@ enum PayMode {
   Card
   Net_Banking
   Online
-  COD
+  Cash_On_Delievery
+  Pay_On_Delievery
+}
+
+enum DineType {
+  Dine_In
+  Take_Away
+  Delivery
 }
 
 model Order {
   id           String         @id @default(cuid())
-  createdAt    DateTime       @default(now())
   totalPrice   Decimal
+  createdAt    DateTime       @default(now())
   couponPrice  Decimal
   taxes        Decimal
   delieveryFee Decimal
@@ -131,6 +140,8 @@ model Order {
   reviews      Review[]
   address      Json?
   payMode      PayMode
+  dineType     DineType
+  dineTime     DateTime?
   softDelete   Boolean        @default(false)
 }
 
@@ -148,9 +159,11 @@ model OrderProduct {
 model PaymentDetails {
   id                  String   @id @default(cuid())
   createdAt           DateTime @default(now())
-  orderId             String   @unique
+  orderId             String?
   name                String
   amount              Decimal
+  payMode             PayMode
+  currency            String?  @default("INR")
   razorpay_payment_id String?
   razorpay_order_id   String?
   razorpay_signature  String?
@@ -183,6 +196,7 @@ model Product {
   reviews      Review[]
   status       ProductStatus  @default(Available)
   OrderProduct OrderProduct[]
+  offers       Offer[]
   softDelete   Boolean        @default(false)
 }
 
@@ -196,7 +210,7 @@ model Review {
   rating     Decimal
   user       User     @relation(fields: [userId], references: [id])
   product    Product  @relation(fields: [productId], references: [id])
-  order     Order    @relation(fields: [orderId], references: [id])
+  order      Order    @relation(fields: [orderId], references: [id])
   softDelete Boolean  @default(false)
 }
 
@@ -223,6 +237,44 @@ model contact {
   subject   String
   message   String
   reply     String?
+  softDelete            Boolean  @default(false)
   user      User     @relation(fields: [userId], references: [id])
   shop      Shop?    @relation(fields: [shopId], references: [id])
+}
+
+model Offer {
+  id                   String   @id @default(cuid())
+  createdAt            DateTime @default(now())
+  img                  String?
+  title                String
+  desc                 String?
+  discountedPrice      Decimal?
+  discountedPercentage Decimal?
+  discountedOption     String?
+  originalPrice        Decimal?
+  productId            String?
+  shopSlug             String
+  time                 DateTime
+  softDelete            Boolean  @default(false)
+  product              Product? @relation(fields: [productId], references: [id])
+  shop                 Shop     @relation(fields: [shopSlug], references: [slug])
+}
+
+// model GeneralNotifications {
+//   id        String   @id @default(cuid())
+//   createdAt DateTime @default(now())
+//   role      userRole
+//   title     String
+//   message   String
+// }
+
+model SpecificNotifications {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  userId    String
+  title     String
+  message   String
+  url       String?
+  seen      Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
 }

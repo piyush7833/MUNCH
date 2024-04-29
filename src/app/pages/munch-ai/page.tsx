@@ -5,11 +5,10 @@ import ImgContainer from "@/components/common/ImgContainer";
 import { toast } from "react-toastify";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import FormContainer from "@/components/common/FormContainer";
-import {
-  predictFoodFormData,
-} from "@/utils/formData";
+import { predictFoodFormData } from "@/utils/formData";
 import { foodPrecictionType } from "@/types/types";
 import { httpservice } from "@/utils/httpService";
+import HtmlDataDialog from "@/components/common/HtmlDataDialog";
 
 const MUNCHAI = () => {
   const [isConfirmOpen, setConfirmOpen] = useState(false);
@@ -30,8 +29,8 @@ const MUNCHAI = () => {
         budget: formData?.budget,
         health_goals: formData?.health_goals,
         food_avoid: formData?.food_avoid,
-        taste_preference:formData?.taste_preference,
-        type:"food_suggestion"
+        taste_preference: formData?.taste_preference,
+        type: "food_suggestion",
       });
       // toast.success(response.data.message);
       setRes(response.data.data);
@@ -53,7 +52,9 @@ const MUNCHAI = () => {
   };
 
   return (
-    <div className={`main flex flex-col md:flex-row gap-14 md:gap-4 items-center justify-center hideScrollBar w-full`}>
+    <div
+      className={`main flex flex-col md:flex-row gap-14 md:gap-4 items-center justify-center hideScrollBar w-full`}
+    >
       <ConfirmDialog
         isOpen={isConfirmOpen}
         onClose={() => setConfirmOpen(false)}
@@ -77,25 +78,13 @@ const MUNCHAI = () => {
       />
 
       {res && visible && (
-        <div className="h-screen hideScrollBar w-full backdrop-blur-md absolute flex items-center justify-center">
-          <div className="w-full h-fit md:w-1/2 flex items-center justify-center ">
-            <div className="w-auto h-1/2 bg-white dark:bg-darkGradient2 rounded-md p-4 flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <h1 className="font-bold text-xl">Suggested Food</h1>
-                <p
-                  className="cursor-pointer font-bold"
-                  onClick={() => setVisible(false)}
-                >
-                  X
-                </p>
-              </div>
-              <p
-                dangerouslySetInnerHTML={{ __html: res }}
-                className="text-start space-y-2"
-              ></p>
-            </div>
-          </div>
-        </div>
+        <HtmlDataDialog
+          title="Suggested food"
+          onClose={() => {
+            setVisible(false);
+          }}
+          content={res}
+        />
       )}
     </div>
   );

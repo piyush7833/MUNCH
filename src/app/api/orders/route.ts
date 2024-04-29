@@ -5,7 +5,8 @@ import { CreateOrderProductInput, OrderType, ProductDetails } from "./type";
 
 export const POST = async (req: NextRequest) => {
   try {
-    const {totalPrice, couponPrice, taxes, delieveryFee, shopId, payMode, address, platformFee, productDetails, paymentId }: OrderType = await req.json();
+    console.log("hello from order")
+    const {totalPrice, couponPrice, taxes, delieveryFee, shopId, payMode, address, platformFee, productDetails, paymentId, dineType }: OrderType = await req.json();
     const shop = await prisma.shop.findUnique({ where: { id: shopId, softDelete: false } });
     const user = await getUserDetails(req);
     const productIds = getAllProductIds(productDetails);
@@ -63,6 +64,7 @@ export const POST = async (req: NextRequest) => {
         userId:user.id,
         paymentId,
         shopId,
+        dineType
       }
     })
 
@@ -88,7 +90,7 @@ export const POST = async (req: NextRequest) => {
       orderProducts
     }, { status: 201 })
   } catch (error) {
-    console.log(error)
+    console.log(error,"error from order")
     return NextResponse.json({
       error: true,
       message: "Something went wrong",

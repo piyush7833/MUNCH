@@ -55,12 +55,12 @@ export const userAuthStore = create(persist<fullUserType & userActionTypes>((set
     },
     logOut(user: null) {
         set(() => ({
-            name: user,
-            userName: user,
-            email: user,
-            phone: user,
-            role: user,
-            id: user,
+            name: null,
+            userName: null,
+            email: null,
+            phone: null,
+            role: null,
+            id: null,
             emailVerified:null,
             phoneVerified:null,
             activeSession:false,

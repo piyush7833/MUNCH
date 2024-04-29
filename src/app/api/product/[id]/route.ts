@@ -7,7 +7,7 @@ import { productEditType } from "../type";
 export const GET = async (req: NextRequest, { params }: { params: { id: string } }) => {  //get particualr product
     try {
         const { id } = params;
-        const product=await prisma.product.findUnique({where:{id:id,softDelete:false}})
+        const product=await prisma.product.findUnique({where:{id:id,softDelete:false},include:{shop:{select:{userId:true}}}})
         if(!product){
             return NextResponse.json({
                 error: false,
@@ -40,7 +40,7 @@ export const POST = async (req: NextRequest, { params }: { params: { id: string 
                 status: 404
             }, { status: 404 })
         }
-        const product=await prisma.product.findMany({where:{shopId:id,softDelete:false}})
+        const product=await prisma.product.findMany({where:{shopId:id,softDelete:false},include:{shop:{select:{userId:true}}}})
         return NextResponse.json({
             error: false,
             message: "Products fetched succesfully",

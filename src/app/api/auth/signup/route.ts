@@ -56,7 +56,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
             },
         });
 
-        var token = jwt.sign({ id: newUser.id }, process.env.JWT!);
+        var token = jwt.sign({ id: newUser.id,expires: new Date(Date.now() + 1000*60*60*24*7) }, process.env.JWT!);
         cookies().set('token', token,{expires: new Date(Date.now() + 1000*60*60*24*7)});
         cookies().set({
             name: 'role',

@@ -161,6 +161,7 @@ export type ProductType = {
   price: number;
   options?: productOptionType[];
   shopId: string;
+  shop:any
 };
 
 export type productOptionType = {
@@ -237,4 +238,16 @@ export type recipiePrecictionType={
   cooking_skills?:string,
   ingredients_availability?:string,
   extra_requirements?:string
+}
+
+
+export type metaType={
+  title: string,
+  desc:string,
+  imgUrl:string
+}
+
+export type faqType={
+  question:string,
+  answer:string
 }

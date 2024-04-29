@@ -2,13 +2,12 @@
 import React from 'react'
 import { Edit } from '@mui/icons-material'
 import { useRouter } from 'next/navigation';
-import { siteUrl, testUrl } from '@/baseUrl';
+import { siteUrl } from '@/baseUrl';
 import { userAuthStore } from '@/utils/userStore';
 const EditButton = ({ url,userId }: { url: string, userId?:string }) => {
   const router =useRouter()
   const {userName, role,id} = userAuthStore()
   if(!userName  || (userId && userId!==id)){
-    console.log(userId, id, userName)
     return 
 }
 

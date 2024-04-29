@@ -153,14 +153,15 @@ export const DELETE = async (req: NextRequest) => {  //delete product by admin
 export const GET = async (req: NextRequest) => {  //get random featured product OR get product of all of your shops
     try {
         const user = await getUserDetails(req);
+        // console.log(user,"user")
         if (!user || user.role === "User") {
-            let featuredproducts = await prisma.product.findMany({where:{softDelete:false,isFeatured:true}});
-            const allProducts = await prisma.product.findMany({where:{softDelete:false}});
+            let featuredproducts = await prisma.product.findMany({where:{softDelete:false,isFeatured:true},include:{shop:{select:{userId:true}}}});
+            const allProducts = await prisma.product.findMany({where:{softDelete:false},include:{shop:{select:{userId:true}}}});
             const shuffledProducts = shuffleArray(allProducts);
             while (featuredproducts.length < 20 && shuffledProducts.length > 0) {
                 featuredproducts.push(shuffledProducts.pop()!);
               }
-        
+              
             return NextResponse.json({
                 error: false,
                 message: "Product fetched successfully",
@@ -173,7 +174,6 @@ export const GET = async (req: NextRequest) => {  //get random featured product 
                 where: { userId: user.id },
             })
             const shopIds=getAllShopIds(shops)
-            // console.log(shopIds)
             const products = await prisma.product.findMany({
                 where: {
                   shopId: {
@@ -181,6 +181,7 @@ export const GET = async (req: NextRequest) => {  //get random featured product 
                   },
                   softDelete:false
                 },
+                include:{shop:{select:{userId:true}}}
               });
             return NextResponse.json({
                 error: false,

@@ -11,14 +11,11 @@ import { LocalPhone, Visibility, VisibilityOff } from '@mui/icons-material';
 import { baseUrl } from '@/baseUrl';
 import { toast } from 'react-toastify';
 import { userAuthStore } from '@/utils/userStore';
-import tokenHelper from '@/utils/tokenHelper';
 import { httpservice } from '@/utils/httpService';
 import Button from '@/components/partials/Button';
 import validateForm from '@/utils/action';
 import { formType, logInFormData, signupFormData } from '@/utils/formData';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { getMessaging, getToken } from 'firebase/messaging';
-import app from '@/app/api/utils/firebase';
 
 const InputField = ({ icon, type, name, value, placeholder, onChange, error, required , id}: formType) => {
   return (
@@ -93,8 +90,8 @@ const Auth = () => {
         headers: { 'Cache-Control': 'no-store' },
       });
       logIn(response.data.user);
-      tokenHelper.create("Authorization", response.data.token);
-      tokenHelper.create("role", response.data.user.role);
+      // tokenHelper.create("Authorization", response.data.token);
+      // tokenHelper.create("role", response.data.user.role);
       setSigninLoading(false);
       toast.success(response.data.message);
       router.push('/');
@@ -116,8 +113,8 @@ const Auth = () => {
           headers: { 'Cache-Control': 'no-store' },
         });
         logIn(response.data.newUser);
-        tokenHelper.create("Authorization", response.data.token);
-        tokenHelper.create("role", "User");
+        // tokenHelper.create("Authorization", response.data.token);
+        // tokenHelper.create("role", "User");
         toast.success(response.data.message);
         setSignupLoading(false);
         router.push('/');

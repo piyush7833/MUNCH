@@ -14,6 +14,8 @@ import FormDialog from '../common/FormDialog'
 import tokenHelper from '@/utils/tokenHelper'
 import { useRouter } from 'next/navigation'
 import Button from '../partials/Button'
+import TextBtn from '../partials/TextBtn'
+import { getUserIdFromToken } from '@/utils/server_action'
 
 type propsType = {
   extractedData?: any,
@@ -29,7 +31,7 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
   useEffect(() => {
     userAuthStore.persist.rehydrate()
   }, [])
-  const {id } = userAuthStore()
+  const {id,logOut } = userAuthStore()
   const handleEmailVerify = async () => {
     try {
       const response = await httpservice.post(`${baseUrl}/verify`, { timeout: 10000, });
@@ -68,7 +70,7 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
       return toast.error(error.response.data.message);
     }
   };
-  const { logOut } = userAuthStore()
+  
   const router = useRouter()
   const handleSignout = async () => {
     try {
@@ -116,17 +118,20 @@ const UserProfile = ({ extractedData, userData, shopOwnerData, shopOwnerExtraced
                   key === "email" ?
                     <div className="flex gap-2 items-center">
                       <p>{value as string}</p>
-                      {!userData?.emailVerified && <p className='text-blue-400 cursor-pointer' onClick={() => handleEmailVerify()}>verify</p>}
+                      {/* {!userData?.emailVerified && <p className='text-blue-400 cursor-pointer' onClick={() => handleEmailVerify()}>verify</p>} */}
+                      {!userData?.emailVerified && userData?.id ===id && <TextBtn text='Verify' onClick={()=>handleEmailVerify()}/>}
                     </div> :
                     key === "phone" ?
                       <div className="flex gap-2 items-center">
                         <p>{value as string}</p>
-                        {!userData?.phoneVerified && <p className='text-blue-400 cursor-pointer' onClick={() => handlePhoneVerify()}>verify</p>}
+                        {/* {!userData?.phoneVerified && <p className='text-blue-400 cursor-pointer' onClick={() => handlePhoneVerify()}>verify</p>} */}
+                        {!userData?.phoneVerified && userData?.id ===id && <TextBtn text='Verify' onClick={()=>handlePhoneVerify()}/>}
                       </div> :
                       key === "role" ?
                         <div className="flex gap-2 items-center">
                           <p>{value as string}</p>
-                          {userData?.role === "User" && <p className='text-blue-400 cursor-pointer' onClick={() => setRoleEditing(true)}>change</p>}
+                          {/* {userData?.role === "User" && <p className='text-blue-400 cursor-pointer' onClick={() => setRoleEditing(true)}>change</p>} */}
+                          {userData?.role === "User" && userData?.id===id && <TextBtn text='Change' onClick={()=>setRoleEditing(true)}/>}
                         </div> :
                         key === "createdAt" ?
                           formatDate((value as string).split('T')[0]) :
