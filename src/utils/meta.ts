@@ -5,7 +5,7 @@ type dataType={
     imgUrl:string
     
 }
-const generateMetaTags = async (apiData:dataType) => {
+const generateMetaTags =  (apiData:dataType) => {
 
   // Extract relevant data from API response
   const title = apiData.title || 'MUNCH'; // Fallback for missing title

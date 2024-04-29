@@ -2,6 +2,7 @@
 "use client"
 import { faqData } from '@/data';
 import { faqType } from '@/types/types';
+import generateMetaTags from '@/utils/meta';
 import Head from 'next/head';
 import { useState } from 'react';
 
@@ -12,12 +13,13 @@ const Page = () => {
     setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
   };
   const faqs:faqType[] = faqData;
-  const metaTags={
+  const metaData={
     title:"FAQs",
     description:"Frequently Asked Questions",
     imgUrl:"/images/contact.png"
   }
-
+  
+const metaTags=  generateMetaTags(metaData)
   return (
     <div className="main mx-auto py-8 px-4">
       <Head>
