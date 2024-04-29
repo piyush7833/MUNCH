@@ -9,6 +9,7 @@ import { ProductType } from '@/types/types';
 // import { httpservice } from '@/utils/httpService';
 import { httpServiceServer } from '@/utils/httpServiceServer';
 import { getUserIdFromToken } from '@/utils/server_action';
+import { Metadata, ResolvingMetadata } from 'next';
 // import { userAuthStore } from '@/utils/userStore';
 import React from 'react'
 // import useSWR from 'swr';
@@ -17,6 +18,20 @@ type Props = {
   params: { slug: string }
 }
 
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const data=await httpServiceServer.get(`shop/${params.slug}`);
+  return {
+    title: data?.shop?.title,
+    description: data?.shop?.desc,
+    openGraph: {
+      images: [data?.shop?.img]
+    },
+  
+  }
+}
 const ShopMenuPage = async ({ params }: Props) => {
   // const { id } = userAuthStore();
   const id=getUserIdFromToken();

@@ -23,7 +23,9 @@ import { httpServiceServer } from '@/utils/httpServiceServer';
 export const metadata={
   title:'Shops',
   description:'Find the best shops around you',
-  imgUrl:'/images/logo_with_bg.png'
+  openGraph: {
+    images: ['/images/shop.png'],
+  },
 }
 const Page = async () => {
   const data=await httpServiceServer.get('shop');

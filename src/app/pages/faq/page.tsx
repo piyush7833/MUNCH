@@ -15,7 +15,7 @@ const Page = () => {
   const metaTags={
     title:"FAQs",
     description:"Frequently Asked Questions",
-    imgUrl:"/images/logo_with_bg.png"
+    imgUrl:"/images/contact.png"
   }
 
   return (
