@@ -25,8 +25,6 @@ const Page = () => {
       if (selectedImage) {
         imgUrl = await handleUploadImage(selectedImage)
       }
-      console.log("shop",shopData)
-      console.log("address",addressData)
       const response =await  httpservice.post(`${baseUrl}/shop`, { title:shopData?.title, desc:shopData?.desc, slug:shopData?.slug  ,address: addressData,img:imgUrl })
       toast.success(response.data.message);
       setLoading(false);

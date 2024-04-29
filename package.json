@@ -84,14 +84,5 @@
     "js-utils": "^2.1.0",
     "npm": "^10.5.2",
     "prisma": "^5.12.1"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "yarn prettier --write",
-      "yarn eslint"
-    ],
-    "*.css": "yarn prettier --write",
-    "*.json": "yarn prettier --write",
-    "*.html": "yarn prettier --write"
   }
 }

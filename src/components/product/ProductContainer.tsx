@@ -50,8 +50,8 @@ const ProductContainer = ({ img, id, title, price, edit, add, productType, shopS
       </Link>
     </div>
     <div className="w-fit flex flex-col justify-end gap-4 ">
-      {!add  && <DeleteButton url={`${baseUrl}/product/${id}`} userId={shopUserId} />}
-      {!add && <EditButton url={`/pages/edit/product/${id}`} userId={shopUserId}/>}
+      {!add  && <DeleteButton url={`${baseUrl}/product/${id}`} userId={shopUserId!} />}
+      {!add && <EditButton url={`/pages/edit/product/${id}`} userId={shopUserId!}/>}
     </div>
     </div>
   )

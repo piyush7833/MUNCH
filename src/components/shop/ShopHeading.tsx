@@ -68,8 +68,8 @@ const ShopHeading = ({title,img,desc,address,userId,owner,totalProducts,slug}:pr
         </div>
     </div>
     <div className=" flex justify-end gap-4 px-4 pb-4">
-        {userId===id && <DeleteButton url={`${baseUrl}/shop/${slug}`} />}
-        {userId===id && <EditButton  url={`/pages/edit/shop/${slug}`} />}
+        {userId===id && <DeleteButton url={`${baseUrl}/shop/${slug}`} userId={userId!} />}
+        {userId===id && <EditButton  url={`/pages/edit/shop/${slug}`} userId={userId!} />}
     </div>
     </div>
   )

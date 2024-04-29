@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react";
 import ColCell from "./ColCell";
 import PreviewIcon from '@mui/icons-material/Preview';
@@ -12,14 +13,14 @@ type propsType = {
 };
 
 const CustomTable = ({ data, keys, originalData, type,handleUpdate }: propsType) => {
-  const [selectedShopData, setSelectedShopData] = useState<any>(null);
+  const [selectedData, setSelectedData] = useState<any>(null);
 
   const handlePreviewIconClick = (shopData: any) => {
-    setSelectedShopData(shopData);
+    setSelectedData(shopData);
   };
 
   const handleCloseDialog = () => {
-    setSelectedShopData(null);
+    setSelectedData(null);
   };
 
   return (
@@ -56,8 +57,8 @@ const CustomTable = ({ data, keys, originalData, type,handleUpdate }: propsType)
           ))}
         </tbody>
       </table>
-      {selectedShopData && (
-        <DataDialog onClose={handleCloseDialog} handleUpdate={handleUpdate!} data={selectedShopData} type={type} />
+      {selectedData && (
+        <DataDialog onClose={handleCloseDialog} handleUpdate={handleUpdate!} data={selectedData} type={type} />
       )}
     </div>
   );

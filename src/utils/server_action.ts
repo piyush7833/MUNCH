@@ -11,3 +11,11 @@ export const getUserIdFromToken = () => {
     }
     return null;
   };
+export const getUserRoleFromCookie = () => {
+    const cookieStore = cookies();
+    const role = cookieStore.get("role")?.value;
+    if (role) {
+      return role;
+    }
+    return null;
+  };

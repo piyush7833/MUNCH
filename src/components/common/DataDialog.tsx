@@ -11,7 +11,6 @@ import { baseUrl } from '@/baseUrl';
 import { formatDate } from '@/utils/action';
 import Button from '../partials/Button';
 import { userAuthStore } from '@/utils/userStore';
-import { on } from 'events';
 
 type propsType = {
   data: any;
@@ -25,6 +24,7 @@ const DataDialog = ({ data, onClose, type, handleUpdate }: propsType) => {
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
   const [isStatusDialogOpen, setIsStatusDialogOpen] = useState(false);
   const [isRatingDialogOpen, setIsRatingDialogOpen] = useState(false);
+  const [isContactDialogOpen,setIsContactDialogOpen]=useState(false);
 
   const [loading, setLoading] = useState(false)
   useEffect(() => {
@@ -192,7 +192,7 @@ const DataDialog = ({ data, onClose, type, handleUpdate }: propsType) => {
             {isStatusDialogOpen && <InputDialog onClose={() => setIsStatusDialogOpen(false)} onSave={handleOrderStatus} title="Select Status" data={statusForm} />}
             {isRatingDialogOpen && <InputDialog onClose={() => setIsRatingDialogOpen(false)} onSave={handleReview} title="Add Review" data={reviewForm} />}
             {editUrl && <EditButton url={editUrl!} />}
-            {deleteUrl && <DeleteButton url={deleteUrl!} />}
+            {deleteUrl && <DeleteButton url={deleteUrl!} userId='' />}
           </div>
         </div>
       </div>

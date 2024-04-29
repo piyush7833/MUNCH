@@ -67,7 +67,7 @@ const Contact = () => {
   if (error) return <div className="main flex items-center justify-center">
     <Error message={error.response.data.message} />
   </div>;
-  if (isLoading) return <Loader message='Contacts are necessary to serve you bets'/>
+  if (isLoading) return <Loader message='Contacts are necessary to serve you best'/>
   return (
     <div className='main flex flex-col justify-center gap-[4vh]'>
       <ConfirmDialog
