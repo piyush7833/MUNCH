@@ -2,13 +2,7 @@
 "use client"
 import { faqData } from '@/data';
 import { faqType } from '@/types/types';
-import { Metadata } from 'next';
 import { useState } from 'react';
-
-export const metadata:Metadata = {
-  title: 'FAQs',
-  description: 'Frequently Asked Questions for M.U.N.C.H.',
-};
 
 const Page = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);

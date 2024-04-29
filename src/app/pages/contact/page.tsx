@@ -14,10 +14,6 @@ import CustomTable from '@/components/common/Table/CustomTable';
 import Error from '@/components/common/Error';
 import Loader from '@/components/common/Loader';
 
-export const metadata = {
-  title: 'Contact',
-  description: 'Contact M.U.N.C.H for support, feedback, and queries. We are here to help you.',
-};
 const Contact = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [contactData, setContactData] = useState<ContactType>();
