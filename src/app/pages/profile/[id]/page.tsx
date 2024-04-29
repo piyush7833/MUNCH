@@ -9,6 +9,22 @@ import { responseShopOwnerType, responseUserType } from '@/types/types';
 import Error from '@/components/common/Error';
 import Loader from '@/components/common/Loader';
 import { httpServiceServer } from '@/utils/httpServiceServer';
+import { Metadata, ResolvingMetadata } from 'next';
+
+export async function generateMetadata(
+  { params }: {params:{id:string}},
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const data=await httpServiceServer.get(`user/${params.id}`);
+  const previousImages = (await parent).openGraph?.images || [];
+  return {
+    title: data?.user?.name,
+    description: data?.user?.userName,
+    openGraph: {
+      images: [data?.user?.image, ...previousImages]
+    },
+  }
+}
 
 const Profile = async ({ params }: { params: { id: string } }) => {
   // const fetcher = async (url:string) => {

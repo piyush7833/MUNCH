@@ -23,15 +23,16 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const data=await httpServiceServer.get(`shop/${params.slug}`);
+  const previousImages = (await parent).openGraph?.images || [];
   return {
     title: data?.shop?.title,
     description: data?.shop?.desc,
     openGraph: {
-      images: [data?.shop?.img]
+      images: [data?.shop?.img, ...previousImages]
     },
-  
   }
 }
+
 const ShopMenuPage = async ({ params }: Props) => {
   // const { id } = userAuthStore();
   const id=getUserIdFromToken();

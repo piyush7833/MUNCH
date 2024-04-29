@@ -22,7 +22,13 @@ import { cookies } from "next/headers";
 //         toast.error(error.response.data);
 //     }
 // }
-
+export const metadata={
+  title:'Shops',
+  description:'Find the best products around you',
+  openGraph: {
+    images: ['/images/better.png'],
+  },
+}
 const Page = async () => {
   // const { data, error, isLoading } = useSWR(`${baseUrl}/product`, fetcher);
   const data = await httpServiceServer.get("product");

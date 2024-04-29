@@ -8,10 +8,24 @@ import Price from '@/components/product/Price'
 // import { httpservice } from '@/utils/httpService';
 import { httpServiceServer } from '@/utils/httpServiceServer';
 import { getUserIdFromToken } from '@/utils/server_action';
+import { Metadata, ResolvingMetadata } from 'next';
 // import useSWR from 'swr';
 
 
-
+export async function generateMetadata(
+  { params }: {params:{id:string}},
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const data=await httpServiceServer.get(`product/${params.id}`);
+  const previousImages = (await parent).openGraph?.images || [];
+  return {
+    title: data?.product?.title,
+    description: data?.product?.desc,
+    openGraph: {
+      images: [data?.product?.img, ...previousImages]
+    },
+  }
+}
 const Product = async ({ params }: { params: { id: string } }) => {
   // const fetcher = async (url: string) => {
     //   const response = await httpservice.get(url);
