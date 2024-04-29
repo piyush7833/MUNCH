@@ -16,12 +16,15 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   metadataBase:new URL('https://munchh.vercel.app/'),
-  // canonicalBase:new URL('https://munch.vercel.app/'),
+  canonicalBase:new URL('https://munch.vercel.app/'),
   title: {
     default:'MUNCH',
     template:`%s | MUNCH`
   },
   description: 'Mobile Utility for Nourishing Campus Hunger',
+  openGraph: {
+    images: ['/images/logo_with_bg.png'],
+  },
   // twitter:{
   //   card:"summary_large_image",
   // }

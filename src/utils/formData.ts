@@ -952,5 +952,80 @@ export const predictFoodRecipieFormData:formType[]=[
         required:false,
         actualType:"textWithComma"
     }
+]
 
+export const offerFormData:formType[]=[
+    {
+        type: "text",
+        name: "title",
+        id: "title",
+        placeholder: "Enter title of offer.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "text"
+    },
+    {
+        type: "text",
+        name: "desc",
+        id: "desc",
+        placeholder: "Enter description of offer.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "text"
+    },
+    {
+        type: "select",
+        name: "shop",
+        id: "shop",
+        placeholder: "Select shop for offer.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "options"
+    },
+    {
+        type: "select",
+        name: "productId",
+        id: "productId",
+        placeholder: "Select item for offer.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "options"
+    },
+    {
+        type: "text",
+        name: "discountedOption",
+        id: "discountedOption",
+        placeholder: "Enter option of discount",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "number"
+    },
+    {
+        type: "text",
+        name: "discountedPrice",
+        id: "discountedPrice",
+        placeholder: "Enter discounted price",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "number"
+    },
+    {
+        type: "text",
+        name: "discountedOption",
+        id: "discountedOption",
+        placeholder: "Enter discounted percentage",
+        icon: StreetviewIcon,
+        required: false,
+        actualType: "number"
+    },
+
+    {
+        type: "text",
+        name: "time",
+        id: "time",
+        placeholder: "Enter validity of offer.",
+        icon: StreetviewIcon,
+        required: true,
+        actualType: "text"
+    },
 ]
