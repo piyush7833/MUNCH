@@ -19,7 +19,7 @@ export async function generateMetadata(
   const data=await httpServiceServer.get(`product/${params.id}`);
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: data?.product?.title,
+    title: data?.product?.title + ' | MUNCH',
     description: data?.product?.desc,
     openGraph: {
       images: [data?.product?.img, ...previousImages]

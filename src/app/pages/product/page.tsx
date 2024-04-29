@@ -23,7 +23,7 @@ import { cookies } from "next/headers";
 //     }
 // }
 export const metadata={
-  title:'Shops',
+  title:'Products | MUNCH',
   description:'Find the best products around you',
   openGraph: {
     images: ['/images/better.png'],

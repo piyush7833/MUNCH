@@ -17,7 +17,7 @@ export async function generateMetadata(
   const data=await httpServiceServer.get(`user`);
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: data?.user?.name,
+    title: data?.user?.name + ' | MUNCH',
     description: data?.user?.userName,
     openGraph: {
       images: [data?.user?.image, ...previousImages]

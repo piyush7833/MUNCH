@@ -21,7 +21,7 @@ import { httpServiceServer } from '@/utils/httpServiceServer';
 // }
 
 export const metadata={
-  title:'Shops',
+  title:'Shops | MUNCH',
   description:'Find the best shops around you',
   openGraph: {
     images: ['/images/shop.png'],
