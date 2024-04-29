@@ -20,10 +20,13 @@ import { httpServiceServer } from '@/utils/httpServiceServer';
 //   }
 // }
 
+export const metadata={
+  title:'Shops',
+  description:'Find the best shops around you',
+  imgUrl:'/images/logo_with_bg.png'
+}
 const Page = async () => {
-  // const { data, error } = useSWR(`${baseUrl}/shop`, fetcher);
   const data=await httpServiceServer.get('shop');
-  console.log(data)
   if (data.error) {
     return <div className="main flex items-center justify-center">
             <Error message={data.message || "Something went wrong"} />;

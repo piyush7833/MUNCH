@@ -2,6 +2,7 @@
 "use client"
 import { faqData } from '@/data';
 import { faqType } from '@/types/types';
+import Head from 'next/head';
 import { useState } from 'react';
 
 const Page = () => {
@@ -11,10 +12,19 @@ const Page = () => {
     setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
   };
   const faqs:faqType[] = faqData;
-
+  const metaTags={
+    title:"FAQs",
+    description:"Frequently Asked Questions",
+    imgUrl:"/images/logo_with_bg.png"
+  }
 
   return (
     <div className="main mx-auto py-8 px-4">
+      <Head>
+      {Object.entries(metaTags).map(([key, value]) => (
+          <meta key={key} property={key} content={value} />
+        ))}
+      </Head>
       <h1 className="text-3xl font-semibold mb-4">Frequently Asked Questions (FAQs)</h1>
       <div className="accordion">
         {faqs.map((faq:faqType, index) => (
