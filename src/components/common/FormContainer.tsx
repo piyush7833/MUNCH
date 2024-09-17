@@ -44,9 +44,12 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
       ...formData,
       [name]: e.target.value,
     });
-    if(name==="role"){
+    if(name==="shopId" || name==="productId"){
+        extraFunction && extraFunction(e.target.value,name)
+    }
+    else if(name==="role"){
       console.log(e.target.value)
-      extraFunction(e.target.value)
+      extraFunction && extraFunction(e.target.value,name)
     }
     const fieldErrors = validateForm(data, name, e.target.value);
     setFormError({
@@ -129,8 +132,8 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
                   {originalData && originalData[field.name] ? originalData[field.name] : field.placeholder}
                 </option>
                 {field.options?.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
+                  <option key={typeof option === 'object' ? option.value : option} value={typeof option === 'object' ? option.value : option}>
+                    {typeof option === 'object' ? option.title : option}
                   </option>
                 ))}
               </select>
@@ -197,9 +200,9 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
                   {originalAddressData && originalAddressData[field.name] ? originalAddressData[field.name] : field.placeholder}
                 </option>
                 {field.options?.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
+                   <option key={typeof option === 'object' ? option.value : option} value={typeof option === 'object' ? option.value : option}>
+                   {typeof option === 'object' ? option.title : option}
+                 </option>
                 ))}
               </select>
               {addressError[field.name as keyof typeof addressError] && (
@@ -265,9 +268,9 @@ const FormContainer = ({ data, onSave, title, address, originalData, originalAdd
                   {originalShopOwnerData && originalShopOwnerData[field.name] ? originalShopOwnerData[field.name] : field.placeholder}
                 </option>
                 {field.options?.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
+                   <option key={typeof option === 'object' ? option.value : option} value={typeof option === 'object' ? option.value : option}>
+                   {typeof option === 'object' ? option.title : option}
+                 </option>
                 ))}
               </select>
               {shopOwnerError[field.name as keyof typeof shopOwnerError] && (

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -40,7 +37,7 @@ model User {
   image             String?
   password          String?
   role              userRole                @default(User)
-  activeSession     Boolean                 @default(false)
+  activeSession     String?                 @default("")
   shops             Shop[]
   shopOwner         ShopOwner[]
   reviews           Review[]
@@ -52,6 +49,7 @@ model User {
   contact           contact[]
   orders            Order[]
   notifications     SpecificNotifications[]
+  cart              Cart[]
 }
 
 model ShopOwner {
@@ -92,6 +90,7 @@ model Shop {
   softDelete  Boolean    @default(false)
   contact     contact[]
   offers      Offer[]
+  cart        Cart[]
 }
 
 enum OrderStatus {
@@ -229,17 +228,17 @@ model verificationToken {
 }
 
 model contact {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  img       String?
-  userId    String //reference from user
-  shopId    String? //reference from user
-  subject   String
-  message   String
-  reply     String?
-  softDelete            Boolean  @default(false)
-  user      User     @relation(fields: [userId], references: [id])
-  shop      Shop?    @relation(fields: [shopId], references: [id])
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  img        String?
+  userId     String //reference from user
+  shopId     String? //reference from user
+  subject    String
+  message    String
+  reply      String?
+  softDelete Boolean  @default(false)
+  user       User     @relation(fields: [userId], references: [id])
+  shop       Shop?    @relation(fields: [shopId], references: [id])
 }
 
 model Offer {
@@ -253,11 +252,11 @@ model Offer {
   discountedOption     String?
   originalPrice        Decimal?
   productId            String?
-  shopSlug             String
+  shopId             String
   time                 DateTime
-  softDelete            Boolean  @default(false)
+  softDelete           Boolean  @default(false)
   product              Product? @relation(fields: [productId], references: [id])
-  shop                 Shop     @relation(fields: [shopSlug], references: [slug])
+  shop                 Shop     @relation(fields: [shopId], references: [id])
 }
 
 // model GeneralNotifications {
@@ -277,4 +276,16 @@ model SpecificNotifications {
   url       String?
   seen      Boolean  @default(false)
   user      User     @relation(fields: [userId], references: [id])
+}
+
+model Cart {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  userId     String
+  shopId     String
+  totalItems Decimal
+  totalPrice Decimal
+  products   Json?
+  user       User     @relation(fields: [userId], references: [id])
+  shop       Shop     @relation(fields: [shopId], references: [id])
 }

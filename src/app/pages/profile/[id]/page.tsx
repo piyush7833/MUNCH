@@ -17,11 +17,12 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const data=await httpServiceServer.get(`user/${params.id}`);
   const previousImages = (await parent).openGraph?.images || [];
+  const img=data?.user?.image || '/images/logo_with_bg.png';
   return {
     title: data?.user?.name + ' | MUNCH',
     description: data?.user?.userName,
     openGraph: {
-      images: [data?.user?.image, ...previousImages]
+      images: [img, ...previousImages]
     },
   }
 }

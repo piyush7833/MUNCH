@@ -10,7 +10,6 @@ var razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET!,
 });
 export const PUT = async (req: NextRequest) => {
-  //for creating a bill
   try {
     const {
       name,

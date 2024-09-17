@@ -13,11 +13,13 @@ import { Metadata, ResolvingMetadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
 	const data = await httpServiceServer.get(`user`);
+	const img=data?.user?.image || '/images/logo_with_bg.png';
 	return {
 		title: data?.user?.name + " | MUNCH",
 		description: data?.user?.userName,
+
 		openGraph: {
-			images: [data?.user?.image],
+			images: [img],
 		},
 	};
 }

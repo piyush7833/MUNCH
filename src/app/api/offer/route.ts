@@ -4,7 +4,7 @@ import { prisma } from "@/utils/connect";
 
 export const POST=async(req:NextRequest)=>{
     try {
-        const {title,desc,img,discountedPrice,discountedPercentage,discountedOption,originalPrice,time,productId,shopSlug}:addOfferType=await req.json();
+        const {title,desc,img,discountedPrice,discountedPercentage,discountedOption,time,productId,shopSlug}:addOfferType=await req.json();
         const product=await prisma.product.findUnique({where:{id:productId}});
         const shop=await prisma.shop.findUnique({where:{slug:shopSlug}});
         if(!product){
@@ -22,6 +22,7 @@ export const POST=async(req:NextRequest)=>{
             }, { status: 404 });
         }
         let imgUrl=img || product.img || shop.img;
+        const originalPrice=product.price;
         const offer=await prisma.offer.create({
             data:{
                 title,

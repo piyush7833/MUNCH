@@ -2,14 +2,14 @@ import { initializeApp } from "firebase/app";
 // import admin from 'firebase-admin';
 // const serviceAccount = require('../munch-396608-firebase-adminsdk-jmmm1-95eec9c461.json');
 const firebaseConfig = {
-  apiKey: "AIzaSyBNXQLb0QBa2bmmhPBQHhD2jLxAT_IExTA",
-  authDomain: "munch-396608.firebaseapp.com",
-  projectId: "munch-396608",
-  storageBucket: "munch-396608.appspot.com",
-  messagingSenderId: "689719876048",
-  appId: "1:689719876048:web:98844cfb516eca5972c1d5",
-  measurementId: "G-0CRWYJ2DTY",
-  // credential: admin.credential.cert(serviceAccount)
+	apiKey: process.env.FIREBASE_API_KEY,
+	authDomain: process.env.FIREBASE_AUTHDOMAIN,
+	projectId: process.env.FIREBASE_PROJECT_ID,
+	storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+	appId: process.env.FIREBASE_APP_ID,
+	measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+	// credential: admin.credential.cert(serviceAccount)
 };
 
 const app = initializeApp(firebaseConfig);

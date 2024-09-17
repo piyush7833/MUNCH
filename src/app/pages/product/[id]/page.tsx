@@ -18,11 +18,12 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const data=await httpServiceServer.get(`product/${params.id}`);
   const previousImages = (await parent).openGraph?.images || [];
+  const img=data?.product?.img || '/images/better.png';
   return {
     title: data?.product?.title + ' | MUNCH',
     description: data?.product?.desc,
     openGraph: {
-      images: [data?.product?.img, ...previousImages]
+      images: [img, ...previousImages]
     },
   }
 }

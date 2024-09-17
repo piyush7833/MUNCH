@@ -24,7 +24,7 @@
 8. Pagination in frontend and backend both
 9. Upgrade data dialog ui
 10. Explore use of useMemo to optimise the performance
-11. Explore possibility of ssr in all pages
+11. Explore possibility of ssr in all pages -- done
 12. Delete, Edit btn in data dialog
 13. Reply to contacts by admin in data dialog
-
+14. Add share button

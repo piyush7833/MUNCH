@@ -13,20 +13,10 @@ const Page = () => {
     setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
   };
   const faqs:faqType[] = faqData;
-  const metaData={
-    title:"FAQs",
-    description:"Frequently Asked Questions",
-    imgUrl:"/images/contact.png"
-  }
+
   
-const metaTags=  generateMetaTags(metaData)
   return (
     <div className="main mx-auto py-8 px-4">
-      <Head>
-      {Object.entries(metaTags).map(([key, value]) => (
-          <meta key={key} property={key} content={value} />
-        ))}
-      </Head>
       <h1 className="text-3xl font-semibold mb-4">Frequently Asked Questions (FAQs)</h1>
       <div className="accordion">
         {faqs.map((faq:faqType, index) => (

@@ -1,33 +1,42 @@
-import { getStorage, ref,uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { NextRequest, NextResponse } from 'next/server';
-import app from '../utils/firebase'
+import app from '../utils/firebase';
+import sharp from 'sharp';
+
 const storage = getStorage(app);
 const storageRef = ref(storage, 'images'); // You may adjust the storage path as needed
 
-const uploadSingle=async(file:File)=>{
-    const fileName = `${Date.now()}-${file.name}`;
-    const fileRef = ref(storageRef, fileName);
-    await uploadBytes(fileRef, file).then((snapshot) => {});
-    const downloadURL = await getDownloadURL(fileRef);
-    return downloadURL;
-}
-const uploadMultiple=async(files:File[])=>{
+const uploadSingle = async (file: File) => {
+  const fileName = `${Date.now()}-${file.name}`;
+  const webpBuffer = await convertToWebP(file);
+  const fileRef = ref(storageRef, fileName);
+  await uploadBytes(fileRef, webpBuffer).then((snapshot) => {});
+  const downloadURL = await getDownloadURL(fileRef);
+  return downloadURL;
+};
+
+const uploadMultiple = async (files: File[]) => {
   const uploadedImages = [];
   for (const file of files) {
     const fileName = `${Date.now()}-${file.name}`;
+    const webpBuffer = await convertToWebP(file);
     const fileRef = ref(storageRef, fileName);
-    await uploadBytes(fileRef, file).then((snapshot) => {});
+    await uploadBytes(fileRef, webpBuffer).then((snapshot) => {});
     const downloadURL = await getDownloadURL(fileRef);
     uploadedImages.push(downloadURL);
   }
   return uploadedImages;
-}
+};
+
+const convertToWebP = async (file: File): Promise<Buffer> => {
+  return sharp(await file.arrayBuffer()).webp().toBuffer();
+};
+
 export const POST = async (req: NextRequest) => {
   try {
     const data = await req.formData();
-    const type=data.get('type')
-    console.log(type)
-    const files: File[] | null  = data.getAll('file') as unknown as File[];
+    const type = data.get('type');
+    const files: File[] | null = data.getAll('file') as unknown as File[];
     if (!files) {
       return NextResponse.json({
         error: true,
@@ -36,11 +45,11 @@ export const POST = async (req: NextRequest) => {
       }, { status: 400 });
     }
     var urls;
-    if(type=="single"){
-      urls=await uploadSingle(files[0])
+    if (type === "single") {
+      urls = await uploadSingle(files[0]);
     }
-    else if(type=="multiple"){
-      urls=await uploadMultiple(files)
+    else if (type === "multiple") {
+      urls = await uploadMultiple(files);
     }
     return NextResponse.json(
       {
@@ -52,7 +61,7 @@ export const POST = async (req: NextRequest) => {
       { status: 200 }
     );
   } catch (error) {
-    console.log("error",error);
+    console.log("error", error);
     return NextResponse.json(
       {
         error: true,

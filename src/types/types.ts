@@ -251,3 +251,15 @@ export type faqType={
   question:string,
   answer:string
 }
+
+export type offerType={
+  title:string,
+  desc:string,
+  img?:string,
+  discountedPrice?:number,
+  discountedPercentage?:number,
+  discountedOption?:string,
+  time:Date,
+  productId:any,
+  shopSlug:any
+}

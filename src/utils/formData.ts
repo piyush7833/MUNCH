@@ -7,6 +7,10 @@ import { SvgIconTypeMap } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { httpservice } from './httpService';
 import { baseUrl } from '@/baseUrl';
+export type optionType={
+    value:string;
+    title:string;
+}
 export type formType = {
     type: string,
     name: string,
@@ -14,7 +18,7 @@ export type formType = {
     placeholder: string,
     required: boolean,
     icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> | any
-    options?: string[];
+    options?: optionType[] | string[];
     editable?: boolean;
     actualType?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -975,8 +979,8 @@ export const offerFormData:formType[]=[
     },
     {
         type: "select",
-        name: "shop",
-        id: "shop",
+        name: "shopId",
+        id: "shopId",
         placeholder: "Select shop for offer.",
         icon: StreetviewIcon,
         required: true,
@@ -992,13 +996,13 @@ export const offerFormData:formType[]=[
         actualType: "options"
     },
     {
-        type: "text",
+        type: "select",
         name: "discountedOption",
         id: "discountedOption",
-        placeholder: "Enter option of discount",
+        placeholder: "Select option of discount",
         icon: StreetviewIcon,
         required: true,
-        actualType: "number"
+        actualType: "options"
     },
     {
         type: "text",
