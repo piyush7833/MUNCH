@@ -17,14 +17,14 @@ export const POST=async(req:NextRequest)=>{
         }
         cookies().delete('token');
         cookies().delete('role');
-        await prisma.user.update({
-            where:{
-                id:user.id
-            },
-            data:{
-                activeSession:false
-            }
-        })
+        // await prisma.user.update({
+        //     where:{
+        //         id:user.id
+        //     },
+        //     data:{
+        //         activeSession:false
+        //     }
+        // })
         cookies().delete('token')
         return NextResponse.json({
             error:false,

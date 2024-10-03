@@ -11,7 +11,7 @@ type PropsType = {
     func?: any;
 };
 
-const ImgContainer: React.FC<PropsType> = ({ imgUrl, type, edit, alt, func }) => {
+const ImgContainer = ({ imgUrl, type, edit, alt, func }:PropsType) => {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null); // Initialize to null
     const [editing,setEditing]=useState<boolean>(false)
     const inputRef = useRef<HTMLInputElement | null>(null);
