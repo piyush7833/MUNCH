@@ -6,7 +6,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
 import { cookies } from 'next/headers'
-import { headers } from 'next/headers'
 dotenv.config();
 export const POST=async(req:NextRequest)=>{
     const { userName,email,phone, password }:signinType = await req.json();
@@ -45,14 +44,7 @@ export const POST=async(req:NextRequest)=>{
             expires: new Date(Date.now() + 1000*60*60*24*7),
             // httpOnly: true,
           })
-        await prisma.user.update({
-            where:{
-                id:user.id
-            },
-            data:{
-                activeSession:true
-            }
-        })
+
         return NextResponse.json({
             error:false,
             status:200,

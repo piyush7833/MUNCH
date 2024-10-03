@@ -66,10 +66,10 @@ const InputDialog = ({ data, onClose, onSave, title }: propsType) => {
                   <option value="" disabled selected>
                     {field.placeholder}
                   </option>
-                  {field.options?.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
+                  {field.options?.map((option,idx) => (
+                    <option key={idx} value={typeof(option)!=="string"?option?.title:option}>
+                    {typeof(option)!=="string"?option?.title:option}
+                  </option>
                   ))}
                 </select>
               ) : field.id === "rating" ?
