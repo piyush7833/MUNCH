@@ -21,7 +21,9 @@ const links = [
     { id: 2, title: "Shops", url: "/pages/shops" },
     { id: 3, title: "Products", url: "/pages/product" },
     { id: 4, title: "Stats", url: "/pages/stats" },
-    { id: 5, title: "Contact Us", url: "/pages/contact" },
+    { id: 5, title: "munch-ai", url: "/pages/munch-ai" },
+    { id: 6, title: "recipie-generator", url: "/pages/munch-ai/recipie" },
+    { id: 7, title: "Contact Us", url: "/pages/contact" },
 ];
 const adminLinks = [
     { id: 1, title: "Home", url: "/" },
@@ -29,6 +31,8 @@ const adminLinks = [
     { id: 3, title: "Products", url: "/pages/admin/products" },
     { id: 4, title: "Owners", url: "/pages/admin/shop-owners" },
     { id: 5, title: "Orders", url: "/pages/admin/orders" },
+    { id: 11, title: "munch-ai", url: "/pages/munch-ai" },
+    { id: 12, title: "recipie-generator", url: "/pages/munch-ai/recipie" },
     { id: 10, title: "Stats", url: "/pages/stats" },
     { id: 6, title: "Contact Us", url: "/pages/admin/contacts" },
     { id: 7, title: "Notification", url: "/pages/admin/notification" },
@@ -57,31 +61,31 @@ const Navbar = () => {
         const token = getCookie('token');
         !token && userName && toast.error("Session expired, Please login again");
         !token && logOut(null);
-        userName && requestPermission();
+        // userName && requestPermission();
     }, [userName,logOut]);
     const [isSearchDialogOpen, setSearchDialogOpen] = useState(false);
     const [searchData, setSearchData] = useState({ owners: [], products: [], shops: [] });
-    const requestPermission = async () => {
-        const messaging = getMessaging(app);
-        const permission = await Notification.requestPermission();
-        try {
-            if (permission === "granted") {
-                let response = null;
-                const token = await getToken(messaging, { vapidKey: "BIiWeWMjEC1Mw3-s_5vEWkAt8LW3xAFKpVMhfL6KxKGU1dMwuXnx__mrOmTz5v0JuIAYSZAZoD_2cbwnAYw-C3U" });
-                response = !notificationIds.includes(token) ? await httpservice.put(`${baseUrl}/user`, { notificationId: token }) : null;
-                if (response !== null) {
-                    logIn(response.data.updatedUser)
-                    toast.success("Notification permission granted");
-                }
-            }
-            else {
-                toast.warning("Notification permission denied");
-            }
-        } catch (error: any) {
-            console.log(error, "Error in getting notification permission");
-            toast.error(error.toString());
-        }
-    }
+    // const requestPermission = async () => {
+    //     const messaging = getMessaging(app);
+    //     const permission = await Notification.requestPermission();
+    //     try {
+    //         if (permission === "granted") {
+    //             let response = null;
+    //             const token = await getToken(messaging, { vapidKey: "BIiWeWMjEC1Mw3-s_5vEWkAt8LW3xAFKpVMhfL6KxKGU1dMwuXnx__mrOmTz5v0JuIAYSZAZoD_2cbwnAYw-C3U" });
+    //             response = !notificationIds.includes(token) ? await httpservice.put(`${baseUrl}/user`, { notificationId: token }) : null;
+    //             if (response !== null) {
+    //                 logIn(response.data.updatedUser)
+    //                 toast.success("Notification permission granted");
+    //             }
+    //         }
+    //         else {
+    //             toast.warning("Notification permission denied");
+    //         }
+    //     } catch (error: any) {
+    //         console.log(error, "Error in getting notification permission");
+    //         toast.error(error.toString());
+    //     }
+    // }
 
 
     const [open, SetOpen] = useState(false);
